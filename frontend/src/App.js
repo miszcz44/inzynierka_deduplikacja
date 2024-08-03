@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import api from './api';
 
-const App = () => {
+const Home = () => (
+    <h1>Hello!</h1>
+)
+
+const Version = () => {
   const [version, setVersion] = useState('');
 
   const fetchVersion = async () => {
@@ -24,5 +29,14 @@ const App = () => {
     </div>
   );
 };
+
+const App = () => (
+    <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/version" element={<Version />} />
+        </Routes>
+    </Router>
+);
 
 export default App;
