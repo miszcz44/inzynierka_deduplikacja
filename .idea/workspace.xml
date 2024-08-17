@@ -4,17 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="feat: Add react frontend, configure docker containers">
-      <change afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="feat: Added basic user registration and logging with jwt token, password hashing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,8 +15,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="Python Script" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -74,7 +65,11 @@
       <workItem from="1722684611250" duration="7618000" />
       <workItem from="1723537041944" duration="894000" />
       <workItem from="1723538567922" duration="17694000" />
-      <workItem from="1723630350950" duration="15356000" />
+      <workItem from="1723630350950" duration="17072000" />
+      <workItem from="1723822161252" duration="833000" />
+      <workItem from="1723900968021" duration="37000" />
+      <workItem from="1723901063478" duration="13000" />
+      <workItem from="1723901251449" duration="2563000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Add react frontend, configure docker containers">
       <created>1722272364083</created>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import api from './api';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Register() {
     const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -11,8 +11,8 @@ function Login() {
     const navigate = useNavigate();
 
     const validateForm = () => {
-        if (!username || !password) {
-            setError('Username and password are required');
+        if (!username || !email || !password) {
+            setError('All fields are required');
             return false;
         }
         setError('');
@@ -21,34 +21,33 @@ function Login() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm()) return;
         setLoading(true);
 
-        const formDetails = new URLSearchParams();
-        formDetails.append('username', username);
-        formDetails.append('password', password);
+        const userDetails = {
+            username,
+            email,
+            password
+        };
+
+        console.log(userDetails); // Log the user details
 
         try {
-            const response = await fetch('http://localhost:8000/api/token/', {
+            const response = await fetch('http://localhost:8000/api/register/', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: formDetails,
+                body: JSON.stringify(userDetails),
             });
 
             setLoading(false);
 
             if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('token', data.access_token);
-                navigate('/protected')
-            }
-            else {
+                navigate('/login');
+            } else {
                 const errorData = await response.json();
-                setError(errorData.detail || 'Authentication failed');
+                setError(errorData.detail || 'Registration failed');
             }
         } catch (error) {
             setLoading(false);
@@ -68,6 +67,14 @@ function Login() {
                     />
                 </div>
                 <div>
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div>
                     <label>Password:</label>
                     <input
                         type="password"
@@ -75,14 +82,14 @@ function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                    <button type="submit" disabled={loading}>
-                        {loading ? 'Loading...' : 'Login'}
-                    </button>
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Loading...' : 'Register'}
+                </button>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
             </form>
-            <p>Don't have an account? <a href="/register">Sign up here</a></p>
+            <p>Already registered? <a href="/login">Sign in</a></p>
         </div>
     );
 }
 
-export default Login;
+export default Register;
