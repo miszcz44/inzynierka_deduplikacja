@@ -4,7 +4,7 @@ import api from './api';
 import Login from './Login';
 import Register from './Register';
 import ProtectedPage from './Protected';
-// import FileUpload from './FileUpload';
+import FileUpload from './FileUpload';
 
 const Home = () => (
     <div>
@@ -51,11 +51,12 @@ const App = () => {
   return (
     <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path={'/login'} element={<Login />} />
-          <Route path={'/register'} element={<Register />} />
-          <Route path={'/protected'} element={<ProtectedPage />} />
-          <Route path="/version" element={<Version />} />
+            <Route path="/" element={<Home />} />
+            <Route path={'/login'} element={<Login />} />
+            <Route path={'/register'} element={<Register />} />
+            <Route path={'/protected'} element={<ProtectedPage />} />
+            <Route path="/version" element={<Version />} />
+            <Route path="/upload" element={<FileUpload />} />
         </Routes>
     </Router>
   );

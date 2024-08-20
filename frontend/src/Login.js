@@ -57,7 +57,7 @@ function Login() {
     };
 
     return (
-        <div>
+        <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Username:</label>

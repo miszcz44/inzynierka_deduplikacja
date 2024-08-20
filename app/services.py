@@ -1,16 +1,22 @@
 from typing import TYPE_CHECKING, Optional
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
 import database as _database
 import models as _models
 import schemas as _schemas
 from config import SECRET_KEY, ALGORITHM
 import datetime as dt
 import pandas as pd
+import numpy as np
 import io
 import bcrypt
-from jose import jwt
+from jose import jwt, JWTError
+
 
 if TYPE_CHECKING:
     from sqlalchemy.orm import Session
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 def _add_tables():
@@ -79,28 +85,47 @@ def create_access_token(data: dict, expires_delta: dt.timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-# def load_file(file: bytes, file_type:str) -> pd.DataFrame:
-#     if file_type == "text/csv":
-#         try:
-#             df = pd.read_csv(io.StringIO(file.decode('utf-8')))
-#         except Exception as e:
-#             raise ValueError(f"Failed to read the file: {e}")
-#     elif file_type == "application/json":
-#         try:
-#             df = pd.read_json(io.StringIO(file.decode('utf-8')))
-#         except Exception as e:
-#             raise ValueError(f"Failed to read the file: {e}")
-#     else:
-#         raise ValueError("File type not supported")
-#     return df
-#
-#
-# def save_file_data_to_db(user_id: int, file_content: bytes, file_type: str, file_name: str, db: "Session") -> _models.RawData:
-#     df = load_file(file_content, file_type)
-#     raw_data_json = df.to_dict(orient="records")
-#
-#     raw_data = _models.RawData(name=file_name, data=raw_data_json, user_id=user_id)
-#     db.add(raw_data)
-#     db.commit()
-#     db.refresh(raw_data)
-#     return raw_data
+
+def save_file_data_to_db(user, file_content: bytes, file_type: str, db: "Session"):
+    if file_type == "text/csv":
+        df = pd.read_csv(io.StringIO(file_content.decode('utf-8')))
+    elif file_type == "application/json":
+        df = pd.read_json(io.StringIO(file_content.decode('utf-8')))
+    else:
+        raise ValueError("File type not supported")
+
+    # Replace NaN with None (null in JSON)
+    df = df.replace({np.nan: None})
+
+    raw_data_json = df.to_dict(orient="records")
+    raw_data = _models.RawData(
+        user_id=user.id,
+        username=user.username,
+        email=user.email,
+        data=raw_data_json
+    )
+    db.add(raw_data)
+    db.commit()
+    db.refresh(raw_data)
+    return raw_data
+
+
+async def get_current_user(token: str = Depends(oauth2_scheme), db: "Session" = Depends(get_db)) -> _schemas.User:
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+
+    user = db.query(_models.User).filter(_models.User.username == username).first()
+    if user is None:
+        raise credentials_exception
+
+    return _schemas.User.from_orm(user)

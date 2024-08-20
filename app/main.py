@@ -3,6 +3,7 @@ import fastapi as _fastapi
 import sqlalchemy.orm as _orm
 import schemas as _schemas
 import services as _services
+import models as _models
 from config import SECRET_KEY, ALGORITHM
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import File, UploadFile, HTTPException, Depends, status
@@ -103,18 +104,24 @@ async def login_for_access_token(db: "Session" = Depends(_services.get_db),
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-# @app.post("/api/upload/{user_id}/", response_model=_schemas.RawData)
-# async def upload_file(
-#         user_id: int, file: UploadFile = File(...), db: "Session" = _fastapi.Depends(_services.get_db)):
-#     if file.content_type not in ["text/csv", "application/json"]:
-#         raise HTTPException(status_code=400, detail="Invalid file type")
-#
-#     try:
-#         file_content = await file.read()
-#         raw_data = _services.save_file_data_to_db(
-#             user_id=user_id, file_content=file_content, file_type=file.content_type, file_name=file.filename, db=db
-#         )
-#         return {"message": "File uploaded successfully", "raw_data": raw_data}
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Failed to ingest the file: {str(e)}")
+@app.post("/api/upload/", response_model=_schemas.RawDataBase)
+async def upload_file(
+        file: UploadFile = File(...),
+        db: "Session" = _fastapi.Depends(_services.get_db),
+        current_user: _schemas.User = _fastapi.Depends(_services.get_current_user)):
+    if file.content_type not in ["text/csv", "application/json"]:
+        raise HTTPException(status_code=400, detail="Invalid file type")
 
+    file_content = await file.read()
+    raw_data = _services.save_file_data_to_db(current_user, file_content, file.content_type, db)
+
+    return raw_data
+
+
+@app.get("/api/raw-data/{data_id}", response_model=_schemas.RawDataBase)
+async def get_raw_data_by_id(data_id: int, db: "Session" = Depends(_services.get_db),
+                             current_user: _schemas.User = Depends(_services.get_current_user)):
+    raw_data = db.query(_models.RawData).filter_by(id=data_id, user_id=current_user.id).first()
+    if not raw_data:
+        raise HTTPException(status_code=404, detail="Data not found")
+    return raw_data

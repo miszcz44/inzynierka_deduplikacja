@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 function ProtectedPage() {
     const navigate = useNavigate();
@@ -24,7 +24,12 @@ function ProtectedPage() {
         verifyToken();
     }, [navigate]);
 
-    return <div>This is a proteced page. Only visible to authenticated users.</div>
+    return (
+        <div>
+            <h1>This is a protected page. Only visible to authenticated users.</h1>
+            <Link to="/upload">Go to File Upload</Link>
+        </div>
+    );
 }
 
 export default ProtectedPage;

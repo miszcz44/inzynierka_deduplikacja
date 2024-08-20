@@ -1,9 +1,11 @@
 import datetime as dt
+import uuid
 import sqlalchemy as _sql
 import database as _database
 import pydantic as _pydantic
 from pydantic import BaseModel, Field
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.dialects.postgresql import JSONB
 
 
 class User(_database.Base):
@@ -14,15 +16,18 @@ class User(_database.Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     date_created = Column(DateTime, default=dt.datetime.utcnow)
-    # raw_data_tables = _sql.orm.relationship("RawData", back_populates="owner")
+    raw_data_tables = _sql.orm.relationship("RawData", back_populates="owner")
 
 
-# class RawData(_database.Base):
-#     __tablename__ = "raw_data"
-#
-#     id = _sql.Column(Integer, primary_key=True, index=True)
-#     name = _sql.Column(String, index=True)
-#     data = _sql.Column(JSON)
-#     date_created = Column(_sql.DateTime, default=dt.datetime.utcnow)
-#     user_id = Column(_sql.Integer, ForeignKey('users.id'))
-#     owner = _sql.orm.relationship("User", back_populates="raw_data_tables")
+class RawData(_database.Base):
+    __tablename__ = "raw_data"
+
+    id = _sql.Column(_sql.Integer, primary_key=True, index=True)
+    dataID = _sql.Column(_sql.String, default=lambda: str(uuid.uuid4()), unique=True, index=True) # to delete later, but db needs to be dropped
+    user_id = _sql.Column(_sql.Integer, _sql.ForeignKey('users.id'), nullable=False)
+    username = _sql.Column(_sql.String, nullable=False)
+    email = _sql.Column(_sql.String, nullable=False)
+    data = _sql.Column(JSONB)
+    date_created = _sql.Column(_sql.DateTime, default=dt.datetime.utcnow)
+
+    owner = _sql.orm.relationship("User", back_populates="raw_data_tables")

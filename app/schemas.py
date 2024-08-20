@@ -3,17 +3,17 @@ import pydantic as _pydantic
 from typing import Optional, List, Any
 
 
-# class _BaseRawData(_pydantic.BaseModel):
-#     name: str
-#     data: Optional[Any]
-#
-#
-# class RawData(_BaseRawData):
-#     id: int
-#     user_id: int
-#
-#     class Config:
-#         from_attributes = True
+class RawDataBase(_pydantic.BaseModel):
+    id: int
+    dataID: str     # to delete later, but db needs to be dropped, useless column
+    user_id: int
+    username: str
+    email: str
+    data: Any
+    date_created: _dt.datetime
+
+    class Config:
+        from_attributes = True
 
 
 class _BaseUser(_pydantic.BaseModel):
