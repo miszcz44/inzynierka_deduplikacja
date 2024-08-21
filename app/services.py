@@ -99,6 +99,7 @@ def save_file_data_to_db(user, file_content: bytes, file_type: str, db: "Session
 
     raw_data_json = df.to_dict(orient="records")
     raw_data = _models.RawData(
+        table_name=file_content.filename,
         user_id=user.id,
         username=user.username,
         email=user.email,

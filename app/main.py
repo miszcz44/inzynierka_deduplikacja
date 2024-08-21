@@ -125,3 +125,19 @@ async def get_raw_data_by_id(data_id: int, db: "Session" = Depends(_services.get
     if not raw_data:
         raise HTTPException(status_code=404, detail="Data not found")
     return raw_data
+
+
+@app.get("/api/user/tables", response_model=List[_schemas.RawDataBase])
+async def get_user_tables(db: "Session" = Depends(_services.get_db),
+                          current_user: _schemas.User = Depends(_services.get_current_user)):
+    tables = db.query(_models.RawData).filter_by(user_id=current_user.id).all()
+    return tables
+
+
+@app.get("/api/user/table/{table_id}", response_model=_schemas.RawDataBase)
+async def get_table_by_id(table_id: int, db: "Session" = Depends(_services.get_db),
+                          current_user: _schemas.User = Depends(_services.get_current_user)):
+    table = db.query(_models.RawData).filter_by(id=table_id, user_id=current_user.id).first()
+    if not table:
+        raise HTTPException(status_code=404, detail="Table not found")
+    return table

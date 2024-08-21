@@ -5,6 +5,8 @@ import Login from './Login';
 import Register from './Register';
 import ProtectedPage from './Protected';
 import FileUpload from './FileUpload';
+import UserTables from './UserTables';
+import UserTable from './UserTable';
 
 const Home = () => (
     <div>
@@ -57,6 +59,8 @@ const App = () => {
             <Route path={'/protected'} element={<ProtectedPage />} />
             <Route path="/version" element={<Version />} />
             <Route path="/upload" element={<FileUpload />} />
+            <Route path="/user/tables" element={<UserTables />} />
+            <Route path="/user/table/:table_id" element={<UserTable />} />
         </Routes>
     </Router>
   );

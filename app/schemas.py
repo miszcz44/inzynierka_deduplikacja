@@ -5,7 +5,7 @@ from typing import Optional, List, Any
 
 class RawDataBase(_pydantic.BaseModel):
     id: int
-    dataID: str     # to delete later, but db needs to be dropped, useless column
+    # table_name: str # TODO: FOR BETTER VISIBILITY AND QUERYING
     user_id: int
     username: str
     email: str

@@ -23,7 +23,7 @@ class RawData(_database.Base):
     __tablename__ = "raw_data"
 
     id = _sql.Column(_sql.Integer, primary_key=True, index=True)
-    dataID = _sql.Column(_sql.String, default=lambda: str(uuid.uuid4()), unique=True, index=True) # to delete later, but db needs to be dropped
+    # table_name = _sql.Column(_sql.String, index=True) # TODO: FOR BETTER VISIBILITY AND QUERYING
     user_id = _sql.Column(_sql.Integer, _sql.ForeignKey('users.id'), nullable=False)
     username = _sql.Column(_sql.String, nullable=False)
     email = _sql.Column(_sql.String, nullable=False)
