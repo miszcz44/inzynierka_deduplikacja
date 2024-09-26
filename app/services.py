@@ -47,18 +47,19 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 async def create_user(user: _schemas.CreateUser, db: "Session") -> _schemas.User:
     hashed_password = hash_password(user.password)
-    user = _models.User(username=user.username, email=user.email, hashed_password=hashed_password)
+    user = _models.User(username=user.username, hashed_password=hashed_password)
     db.add(user)
     db.commit()
     db.refresh(user)
     return _schemas.User.from_orm(user)
 
 
-async def get_user(user: _schemas.CreateUser, db: "Session"):
+async def user_exists(user: _schemas.CreateUser, db: "Session") -> bool:
     existing_user = db.query(_models.User).filter(
-        (_models.User.username == user.username) | (_models.User.email == user.email)
+        _models.User.username == user.username
     ).first()
-    return existing_user
+    print("eeeeeeeeeeeeeeeeeeeeeee")
+    return existing_user is not None
 
 
 async def get_user_by_id(id: int, db: "Session") -> Optional[_models.User]:

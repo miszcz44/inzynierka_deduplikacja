@@ -14,7 +14,6 @@ from jose import JWTError, jwt
 if TYPE_CHECKING:
     from sqlalchemy.orm import Session
 
-# Authentication
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = _fastapi.FastAPI()
@@ -42,14 +41,7 @@ async def startup():
 def version():
     return "1.0.0"
 
-
-@app.post("/api/user/", response_model=_schemas.User)
-async def create_user(user: _schemas.CreateUser,
-                         db: "Session" = _fastapi.Depends(_services.get_db)):
-    return await _services.create_user(user=user, db=db)
-
-
-@app.get("/api/user/{id}/", response_model=_schemas.User)
+@app.get("/api/user/{id}", response_model=_schemas.User)
 async def get_user(id: int, db: "Session" = _fastapi.Depends(_services.get_db)):
     user = await _services.get_user_by_id(id=id, db=db)
     if user is None:
@@ -57,20 +49,20 @@ async def get_user(id: int, db: "Session" = _fastapi.Depends(_services.get_db)):
     return user
 
 
-@app.post("/api/register/", response_model=_schemas.User)
-async def register_user(user: _schemas.CreateUser,
-                         db: "Session" = _fastapi.Depends(_services.get_db)):
-    existing_user = await _services.get_user(user=user, db=db)
-    if existing_user:
-        if existing_user.username:
-            raise _fastapi.HTTPException(status_code=400, detail="Username already exists")
-        elif existing_user.email:
-            raise _fastapi.HTTPException(status_code=400, detail="Email already taken")
+@app.post("/api/register", response_model=_schemas.User)
+async def register_user(user: _schemas.CreateUser, db: "Session" = _fastapi.Depends(_services.get_db)):
+    try:
+        user_data = _schemas.CreateUser(username=user.username, password=user.password)
+    except ValueError as e:
+        raise _fastapi.HTTPException(status_code=400, detail=str(e))
+
+    if await _services.user_exists(user, db):
+        raise _fastapi.HTTPException(status_code=409, detail="Username already exists")
 
     return await _services.create_user(user=user, db=db)
 
 
-@app.get("/api/verify-token/")
+@app.get("/api/verify-token")
 async def verify_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -90,7 +82,7 @@ async def verify_token(token: str):
         )
 
 
-@app.post("/api/token/")
+@app.post("/api/token")
 async def login_for_access_token(db: "Session" = Depends(_services.get_db),
                                  form_data: OAuth2PasswordRequestForm = Depends()):
     user = await _services.authenticate_user(form_data.username, form_data.password, db)
@@ -104,7 +96,7 @@ async def login_for_access_token(db: "Session" = Depends(_services.get_db),
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@app.post("/api/upload/", response_model=_schemas.RawDataBase)
+@app.post("/api/upload", response_model=_schemas.RawDataBase)
 async def upload_file(
         file: UploadFile = File(...),
         db: "Session" = _fastapi.Depends(_services.get_db),

@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import api from './api';
 import Login from './Login';
 import Register from './Register';
-import ProtectedPage from './Protected';
 import FileUpload from './FileUpload';
 import UserTables from './UserTables';
 import UserTable from './UserTable';
+import ProtectedRoute from './ProtectedRoute';
 
 const Home = () => (
     <div>
@@ -47,20 +47,29 @@ const Version = () => {
 };
 
 const App = () => {
-  // You can set a hardcoded userId or fetch it dynamically
-  const userId = 1;
 
   return (
     <Router>
         <Routes>
             <Route path="/" element={<Home />} />
-            <Route path={'/login'} element={<Login />} />
-            <Route path={'/register'} element={<Register />} />
-            <Route path={'/protected'} element={<ProtectedPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/version" element={<Version />} />
-            <Route path="/upload" element={<FileUpload />} />
-            <Route path="/user/tables" element={<UserTables />} />
-            <Route path="/user/table/:table_id" element={<UserTable />} />
+            <Route path="/upload" element={
+                <ProtectedRoute>
+                    <FileUpload />
+                </ProtectedRoute>
+            } />
+            <Route path="/user/tables" element={
+                <ProtectedRoute>
+                    <UserTables />
+                </ProtectedRoute>
+            } />
+            <Route path="/user/table/:table_id" element={
+                <ProtectedRoute>
+                    <UserTable />
+                </ProtectedRoute>
+            } />
         </Routes>
     </Router>
   );

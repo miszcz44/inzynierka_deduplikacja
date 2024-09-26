@@ -44,7 +44,7 @@ function Login() {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.access_token);
-                navigate('/protected')
+                navigate('/upload')
             }
             else {
                 const errorData = await response.json();
@@ -57,31 +57,42 @@ function Login() {
     };
 
     return (
-        <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Username:</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                    <button type="submit" disabled={loading}>
-                        {loading ? 'Loading...' : 'Login'}
-                    </button>
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-            </form>
-            <p>Don't have an account? <a href="/register">Sign up here</a></p>
-        </div>
+    <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+        padding: '20px',
+        maxWidth: '1200px',
+        margin: '0 auto'
+    }}>
+        <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '400px', marginBottom: '5px' }}>
+            <div>
+                <label>Username:</label>
+                <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    style={{ width: '100%' }}
+                />
+            </div>
+            <div>
+                <label>Password:</label>
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={{ width: '100%' }}
+                />
+            </div>
+            <button type="submit" disabled={loading} style={{ marginTop: '10px' }}>
+                {loading ? 'Loading...' : 'Login'}
+            </button>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+        </form>
+        <p style={{ marginTop: '0' }}>Don't have an account? <a href="/register">Sign up here</a></p>
+    </div>
     );
 }
 
