@@ -7,12 +7,13 @@ from typing import Optional, List, Any
 USERNAME_REGEX = r"^[a-zA-Z][a-zA-Z0-9_-]{3,23}$"
 PASSWORD_REGEX = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%!])[A-Za-z\d@#$%!]{8,24}$"
 
+
 class RawDataBase(_pydantic.BaseModel):
     id: int
-    # table_name: str # TODO: FOR BETTER VISIBILITY AND QUERYING
+    table_name: str
     user_id: int
     username: str
-    email: str
+    # email: str
     data: Any
     date_created: _dt.datetime
 
@@ -52,3 +53,12 @@ class CreateUser(_BaseUser):
                 "Password must be 8 to 24 characters long,"
                 " and include uppercase and lowercase letters, a number, and a special character (!@#$%).")
         return value
+
+
+class BlockBuildingInfo(_pydantic.BaseModel):
+    table_name: str
+    table_id: int
+    user_id: int
+    username: str
+    methods_available: List[str]
+    date_created: _dt.datetime

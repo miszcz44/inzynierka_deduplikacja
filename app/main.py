@@ -105,7 +105,11 @@ async def upload_file(
         raise HTTPException(status_code=400, detail="Invalid file type")
 
     file_content = await file.read()
-    raw_data = _services.save_file_data_to_db(current_user, file_content, file.content_type, db)
+    file_type = file.content_type
+    file_name = file.filename
+    raw_data = _services.save_file_data_to_db(current_user,
+                                              file_content, file_type, file_name,
+                                              db)
 
     return raw_data
 
@@ -133,3 +137,29 @@ async def get_table_by_id(table_id: int, db: "Session" = Depends(_services.get_d
     if not table:
         raise HTTPException(status_code=404, detail="Table not found")
     return table
+
+
+@app.get("/api/block_building/{table_id}", response_model=_schemas.BlockBuildingInfo)
+async def block_building_info(table_id: int,
+                              db: "Session" = Depends(_services.get_db),
+                              current_user: _schemas.User = Depends(_services.get_current_user)):
+
+    table = db.query(_models.RawData).filter_by(id=table_id, user_id=current_user.id).first()
+
+    if not table:
+        raise HTTPException(status_code=404, detail="Table not found")
+
+    block_building_info = {
+        "table_name": table.table_name,
+        "table_id": table.id,
+        "user_id": current_user.id,
+        "username": current_user.username,
+        "methods_available": ["Rolling Window", "Suffix Table"],
+        "date_created": table.date_created
+    }
+
+    return block_building_info
+
+
+
+

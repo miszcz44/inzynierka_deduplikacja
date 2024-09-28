@@ -7,6 +7,9 @@ import FileUpload from './FileUpload';
 import UserTables from './UserTables';
 import UserTable from './UserTable';
 import ProtectedRoute from './ProtectedRoute';
+import BlockBuilding from './BlockBuilding';
+// import RollingWindow from './RollingWindow';
+// import SuffixTable from './SuffixTable';
 
 const Home = () => (
     <div>
@@ -70,6 +73,21 @@ const App = () => {
                     <UserTable />
                 </ProtectedRoute>
             } />
+            <Route path="/block_building/:table_id" element={
+                <ProtectedRoute>
+                    <BlockBuilding />
+                </ProtectedRoute>
+            } />
+                {/*<Route path="/block_building/rolling_window" element={*/}
+                {/*    <ProtectedRoute>*/}
+                {/*        <RollingWindow />*/}
+                {/*    </ProtectedRoute>*/}
+                {/*} />*/}
+                {/*<Route path="/block_building/suffix_table" element={*/}
+                {/*    <ProtectedRoute>*/}
+                {/*        <SuffixTable />*/}
+                {/*    </ProtectedRoute>*/}
+                {/*} />*/}
         </Routes>
     </Router>
   );

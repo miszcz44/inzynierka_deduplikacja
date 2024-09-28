@@ -86,6 +86,13 @@ function FileUpload() {
         }
     };
 
+    // Navigate to the block_building page
+    const goToBlockBuilding = (raw_data) => {
+        if (raw_data) {
+            navigate(`/block_building/${raw_data.id}`, { state: { table_name: raw_data.table_name } });
+        }
+    };
+
     return (
         <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
             <h1 style={{ marginBottom: '30px' }}>Upload a File</h1>
@@ -103,7 +110,26 @@ function FileUpload() {
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
-            <h2 style={{ marginBottom: '20px' }}>Existing Data</h2>
+            {/* Header section with "Existing Data" and button on the same line */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <h2>Uploaded Data</h2>
+                {/* render the button when rawData is available */}
+                {rawData && (
+                    <button
+                        onClick={goToBlockBuilding}
+                        style={{
+                            padding: '10px 20px',
+                            cursor: 'pointer',
+                            backgroundColor: '#007bff',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '5px'
+                        }}>
+                        Go to Block Building
+                    </button>
+                )}
+            </div>
+
             {loading ? (
                 <p>Loading data...</p>
             ) : (

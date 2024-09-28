@@ -1,5 +1,5 @@
 from typing import TYPE_CHECKING, Optional
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, UploadFile
 from fastapi.security import OAuth2PasswordBearer
 import database as _database
 import models as _models
@@ -86,24 +86,32 @@ def create_access_token(data: dict, expires_delta: dt.timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
+def save_file_data_to_db(user, file_content: bytes,
+                               content_type: str, file_name: str,
+                               db: "Session"):
 
-def save_file_data_to_db(user, file_content: bytes, file_type: str, db: "Session"):
-    if file_type == "text/csv":
+    # file_content = await file.read()
+    # table_name = file.filename
+    # content_type = file.content_type
+
+    if content_type == "text/csv":
         df = pd.read_csv(io.StringIO(file_content.decode('utf-8')))
-    elif file_type == "application/json":
+    elif content_type == "application/json":
         df = pd.read_json(io.StringIO(file_content.decode('utf-8')))
     else:
         raise ValueError("File type not supported")
+
 
     # Replace NaN with None (null in JSON)
     df = df.replace({np.nan: None})
 
     raw_data_json = df.to_dict(orient="records")
+
     raw_data = _models.RawData(
-        table_name=file_content.filename,
+        table_name=file_name,
         user_id=user.id,
         username=user.username,
-        email=user.email,
+        # email=user.email,
         data=raw_data_json
     )
     db.add(raw_data)
