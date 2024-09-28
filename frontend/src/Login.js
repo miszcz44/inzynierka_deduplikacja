@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import api from './api';
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -44,7 +43,7 @@ function Login() {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.access_token);
-                navigate('/upload')
+                navigate('/dashboard')
             }
             else {
                 const errorData = await response.json();
