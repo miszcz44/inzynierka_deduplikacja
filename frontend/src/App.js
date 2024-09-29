@@ -12,6 +12,7 @@ import Statistics from "./Statistics";
 import Projects from "./Projects";
 import ProtectedRoute from './ProtectedRoute';
 import WorkflowSteps from "./WorkflowSteps";
+import ProjectDetails from "./ProjectDetails";
 
 const Version = () => {
   const [version, setVersion] = useState('');
@@ -60,11 +61,6 @@ const App = () => {
                     <Statistics />
                 </ProtectedRoute>
             } />
-            <Route path="/project/:projectId" element={
-                <ProtectedRoute>
-                    <WorkflowSteps />
-                </ProtectedRoute>
-            } />
             <Route path="/projects" element={
                 <ProtectedRoute>
                     <Projects />
@@ -83,6 +79,16 @@ const App = () => {
             <Route path="/user/table/:table_id" element={
                 <ProtectedRoute>
                     <UserTable />
+                </ProtectedRoute>
+            } />
+            <Route path="/projects/:projectId" element={
+                <ProtectedRoute>
+                    <ProjectDetails />
+                </ProtectedRoute>
+            } />
+            <Route path="/projects/:projectId/workflow/:workflowId" element={
+                <ProtectedRoute>
+                    <WorkflowSteps />
                 </ProtectedRoute>
             } />
         </Routes>
