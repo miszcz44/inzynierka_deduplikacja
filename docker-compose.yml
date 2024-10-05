@@ -30,5 +30,18 @@ services:
     depends_on:
       - web
 
+  jupyter:
+    build:
+      context: .  # Set build context to the root directory
+      dockerfile: ./data_pipeline/Dockerfile  # Specify the Dockerfile path
+    container_name: jupyter_notebook
+    volumes:
+      - ./app:/app  # Mount the app folder
+      - ./data_pipeline:/home/jupyter/data_pipeline  # Mount the data_pipeline folder
+    ports:
+      - "8888:8888"
+    depends_on:
+      - db
+      - web
 volumes:
   postgres_data:
