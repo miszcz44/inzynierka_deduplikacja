@@ -2,23 +2,9 @@ import re
 import datetime as _dt
 import pydantic as _pydantic
 from pydantic import validator
-from typing import Optional, List, Any
 
 USERNAME_REGEX = r"^[a-zA-Z][a-zA-Z0-9_-]{3,23}$"
 PASSWORD_REGEX = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%!])[A-Za-z\d@#$%!]{8,24}$"
-
-
-class RawDataBase(_pydantic.BaseModel):
-    id: int
-    table_name: str
-    user_id: int
-    username: str
-    # email: str
-    data: Any
-    date_created: _dt.datetime
-
-    class Config:
-        from_attributes = True
 
 
 class _BaseUser(_pydantic.BaseModel):
@@ -28,7 +14,6 @@ class _BaseUser(_pydantic.BaseModel):
 class User(_BaseUser):
     id: int
     date_created: _dt.datetime
-    # raw_data_tables: List[RawData] = []
 
     class Config:
         from_attributes = True
@@ -43,7 +28,8 @@ class CreateUser(_BaseUser):
         if not re.match(USERNAME_REGEX, value):
             raise ValueError(
                 "Username must be 4 to 24 characters long, begin with a letter,"
-                " and can contain letters, numbers, underscores, and hyphens.")
+                " and can contain letters, numbers, underscores, and hyphens."
+            )
         return value
 
     @validator('password')
@@ -51,14 +37,6 @@ class CreateUser(_BaseUser):
         if not re.match(PASSWORD_REGEX, value):
             raise ValueError(
                 "Password must be 8 to 24 characters long,"
-                " and include uppercase and lowercase letters, a number, and a special character (!@#$%).")
+                " and include uppercase and lowercase letters, a number, and a special character (!@#$%)."
+            )
         return value
-
-
-class BlockBuildingInfo(_pydantic.BaseModel):
-    table_name: str
-    table_id: int
-    user_id: int
-    username: str
-    methods_available: List[str]
-    date_created: _dt.datetime

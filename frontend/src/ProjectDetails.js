@@ -17,35 +17,35 @@ const ProjectDetails = () => {
 
 
   useEffect(() => {
-    const fetchProjectDetails = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`/projects/${projectId}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          handleError(response.status);
-          return;
-        }
-
-        const data = await response.json();
-        setProjectData(data);
-        setTitle(data.title);
-        setDescription(data.description);
-        setFile(data.filename);
-      } catch (err) {
-        setError('Wystąpił błąd podczas komunikacji z serwerem.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProjectDetails();
   }, [projectId]);
+
+  const fetchProjectDetails = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:8000/api/projects/${projectId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        handleError(response.status);
+        return;
+      }
+
+      const data = await response.json();
+      setProjectData(data);
+      setTitle(data.title);
+      setDescription(data.description);
+      setFile(data.filename);
+    } catch (err) {
+      setError('Wystąpił błąd podczas komunikacji z serwerem.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleError = (status) => {
     if (status === 403) {
@@ -58,46 +58,48 @@ const ProjectDetails = () => {
   };
 
   const handleUpdate = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('description', description);
-      if (file) {
-        formData.append('file', file);
-      }
-
-      const response = await fetch(`/projects/${projectId}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        if (response.status === 403 || response.status === 404) {
-          handleError(response.status);
-        } else if (response.status === 400) {
-          const { message } = await response.json();
-          setError(message);
-        } else {
-          setError('Wystąpił błąd podczas aktualizacji projektu.');
-        }
-        return;
-      }
-
-      navigate('/dashboard', { state: { message: 'Projekt został zaktualizowany pomyślnie.' } });
-    } catch (err) {
-      setError('Wystąpił błąd podczas komunikacji z serwerem.');
+  try {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    if (file) {
+      formData.append('file', file);
     }
-  };
+
+    const response = await fetch(`http://localhost:8000/api/projects/${projectId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      if (response.status === 403 || response.status === 404) {
+        handleError(response.status);
+      } else if (response.status === 400) {
+        const { message } = await response.json();
+        setError(message);
+      } else {
+        setError('Wystąpił błąd podczas aktualizacji projektu.');
+      }
+      return;
+    }
+
+    await fetchProjectDetails();
+
+    setIsEditing(false);
+  } catch (err) {
+    setError('Wystąpił błąd podczas komunikacji z serwerem.');
+  }
+};
 
   const handleDelete = async () => {
     if (window.confirm('Czy na pewno chcesz usunąć ten projekt?')) {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`/projects/${projectId}`, {
+        const response = await fetch(`http://localhost:8000/api/projects/${projectId}`, {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -233,19 +235,19 @@ const ProjectDetails = () => {
               ) : (
                 <>
                   <Card.Text>
-                    <strong>Tytuł:</strong> {projectData !== null ? projectData.title : 'd'}
+                    <strong>Tytuł:</strong> {projectData.title}
                   </Card.Text>
                   <Card.Text>
-                    <strong>Opis:</strong> {projectData !== null ? projectData.description : 'd'}
+                    <strong>Opis:</strong> {projectData.description}
                   </Card.Text>
                   <Card.Text>
-                    <strong>Plik:</strong> {projectData !== null ? projectData.filename : 'd'}
+                    <strong>Plik:</strong> {projectData.filename}
                   </Card.Text>
                   <Card.Text>
-                    <strong>Data utworzenia:</strong> {projectData !== null ? projectData.dateCreated : 'd'}
+                    <strong>Data utworzenia:</strong> {projectData.date_created.slice(0, 19).replace('T', ' ')}
                   </Card.Text>
                   <Card.Text>
-                    <strong>Data aktualizacji:</strong> {projectData !== null ? projectData.dateUpdated : 'd'}
+                    <strong>Data aktualizacji:</strong> {projectData.date_updated.slice(0, 19).replace('T', ' ')}
                   </Card.Text>
                 </>
               )}

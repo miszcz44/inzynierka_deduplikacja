@@ -32,7 +32,7 @@ const Dashboard = () => {
 
   const token = localStorage.getItem('token');
   try {
-    const response = await fetch('/projects', {
+    const response = await fetch('http://localhost:8000/api/projects', {
       method: 'POST',
       headers: {
             Authorization: `Bearer ${token}`,
@@ -42,16 +42,15 @@ const Dashboard = () => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to create project');
+      throw new Error(errorData.detail.message || 'Failed to create project');
     }
 
     const data = await response.json();
     console.log('Project Created:', data);
 
-    navigate(`/projects/${data.projectId}`);
+    navigate(`/projects/${data.id}`);
     setShowModal(false);
   } catch (error) {
-    navigate(`/projects/1`);
     console.error(error);
     setError(error.message);
   }

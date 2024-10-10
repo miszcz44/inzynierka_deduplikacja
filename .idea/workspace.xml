@@ -5,7 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="feat: Add react frontend, configure docker containers">
+      <change afterPath="$PROJECT_DIR$/app/common/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/common/dependencies.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/config/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/crud/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/crud/project.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/crud/user.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/project.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routers/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routers/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routers/projects.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routers/users.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/schemas/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/schemas/project.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/schemas/user.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/services/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/services/token.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/hashing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +44,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="JavaScript File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -49,6 +78,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\nauka\Projekty\inzynierka_deduplikacja\app\config" />
       <recent name="C:\nauka\Projekty\inzynierka_deduplikacja\frontend" />
     </key>
   </component>
@@ -104,6 +134,12 @@
       <workItem from="1727368377060" duration="1525000" />
       <workItem from="1727370008893" duration="9089000" />
       <workItem from="1727510289989" duration="10437000" />
+      <workItem from="1728031145839" duration="369000" />
+      <workItem from="1728134146652" duration="8788000" />
+      <workItem from="1728202625840" duration="18469000" />
+      <workItem from="1728417485145" duration="4235000" />
+      <workItem from="1728464116097" duration="5071000" />
+      <workItem from="1728501078001" duration="1237000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Add react frontend, configure docker containers">
       <created>1722272364083</created>
