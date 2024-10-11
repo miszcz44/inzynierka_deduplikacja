@@ -18,7 +18,7 @@ async def authenticate_user(username: str, password: str, db: Session) -> Option
 
 def create_access_token(data: dict, expires_delta: dt.timedelta | None = None):
     to_encode = data.copy()
-    expire = dt.datetime.utcnow() + (expires_delta if expires_delta else dt.timedelta(minutes=15))
+    expire = dt.datetime.utcnow() + (expires_delta if expires_delta else dt.timedelta(minutes=300))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 

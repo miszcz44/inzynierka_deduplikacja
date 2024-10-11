@@ -1,0 +1,29 @@
+.sidebar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 300px;
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  padding: 20px;
+  box-shadow: -3px 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+}
+
+.sidebar input {
+  margin-bottom: 10px;
+}
+
+.sidebar button {
+  margin-right: 10px;
+}
+
+.flow-disable-interaction .react-flow__nodes,
+.flow-disable-interaction .react-flow__edges {
+  pointer-events: none;
+}

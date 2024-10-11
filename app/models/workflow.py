@@ -1,19 +1,22 @@
-import datetime as dt
+from config.database import Base
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from config.database import Base
+import datetime as dt
 
 
-class Project(Base):
-    __tablename__ = "projects"
+class Workflow(Base):
+    __tablename__ = "workflows"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
-    description = Column(String)
+    filename = Column(String)
+    file_content = Column(JSONB)
     date_created = Column(DateTime, default=dt.datetime.utcnow, nullable=False)
     date_updated = Column(DateTime, default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow, nullable=False)
-    workflows = relationship("Workflow", back_populates="owner", cascade="all, delete-orphan")
 
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
 
-    owner = relationship("User", back_populates="projects")
+    owner = relationship("Project", back_populates="workflows")
+
+

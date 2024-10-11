@@ -16,7 +16,6 @@ router = APIRouter(
 async def create_project(
         title: str = Form(...),
         description: str = Form(None),
-        file: UploadFile = File(...),
         db: Session = Depends(get_db),
         current_user: _schemas_user = Depends(get_current_user)
 ):
@@ -28,7 +27,6 @@ async def create_project(
     return await _crud.create_project(
         db=db,
         project=project_data,
-        file=file,
         user_id=current_user.id
     )
 
@@ -56,7 +54,6 @@ async def update_project(
         project_id: int,
         title: str = Form(...),
         description: str = Form(None),
-        file: UploadFile = File(...),
         db: Session = Depends(get_db),
         current_user: _schemas_user = Depends(get_current_user)
 ):
@@ -78,8 +75,8 @@ async def update_project(
         db=db,
         project=project,
         project_dto=project_data,
-        file=file,
     )
+
 
 @router.delete("/{project_id}", status_code=200)
 async def delete_project(
@@ -96,7 +93,7 @@ async def delete_project(
         raise HTTPException(status_code=403,
                             detail="Not enough permissions to access this project")
 
-    return await _crud.delete_project(
+    await _crud.delete_project(
         db=db,
         project=project,
     )

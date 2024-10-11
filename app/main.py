@@ -1,5 +1,5 @@
 import fastapi as _fastapi
-from routers import users, auth, projects
+from routers import users, auth, projects, workflows
 from fastapi.middleware.cors import CORSMiddleware
 from common.dependencies import _add_tables
 from fastapi import File, UploadFile, HTTPException, Depends, status
@@ -27,6 +27,7 @@ async def startup():
 app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(projects.router)
+app.include_router(workflows.router)
 
 
 @app.get("/")

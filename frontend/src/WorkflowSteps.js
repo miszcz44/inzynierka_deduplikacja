@@ -7,7 +7,6 @@ const WorkflowSteps = () => {
 
   return (
     <div>
-      <h2>Proces deduplikacji danych dla projektu: {projectId}</h2>
       <DataProcessingFlow />
     </div>
   );

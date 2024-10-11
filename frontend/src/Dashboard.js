@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
-  const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -17,18 +16,9 @@ const Dashboard = () => {
   const title = form.elements['projectTitle'].value;
   const description = form.elements['projectDescription'].value;
 
-  if (file) {
-    const fileExtension = file.name.split('.').pop();
-    if (fileExtension !== 'csv' && fileExtension !== 'json') {
-      setError('Plik musi być w formacie CSV lub JSON.');
-      return;
-    }
-  }
-
   const projectData = new FormData();
   projectData.append('title', title);
   projectData.append('description', description);
-  projectData.append('file', file);
 
   const token = localStorage.getItem('token');
   try {
@@ -104,15 +94,6 @@ const Dashboard = () => {
             <Form.Group className="mb-3" controlId="projectDescription">
               <Form.Label>Opis (opcjonalnie)</Form.Label>
               <Form.Control as="textarea" rows={3} placeholder="Krótki opis projektu" />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="dataFile">
-              <Form.Label>Plik danych (CSV/JSON)</Form.Label>
-              <Form.Control
-                type="file"
-                accept=".csv,.json"
-                onChange={(e) => setFile(e.target.files[0])}
-                required
-              />
             </Form.Group>
             {error && <div className="text-danger">{error}</div>}
             <Button variant="primary" type="submit">

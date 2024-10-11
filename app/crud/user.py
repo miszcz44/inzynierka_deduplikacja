@@ -12,11 +12,14 @@ async def create_user(user: _schemas.CreateUser, db: Session) -> _schemas.User:
     db.refresh(new_user)
     return _schemas.User.from_orm(new_user)
 
+
 async def user_exists(username: str, db: Session) -> bool:
     return db.query(_models.User).filter(_models.User.username == username).first() is not None
 
+
 async def get_user_by_id(id: int, db: Session) -> Optional[_models.User]:
     return db.query(_models.User).filter(_models.User.id == id).first()
+
 
 async def get_user_by_username(username: str, db: Session) -> Optional[_models.User]:
     return db.query(_models.User).filter(_models.User.username == username).first()
