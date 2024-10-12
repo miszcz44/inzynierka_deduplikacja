@@ -12,4 +12,4 @@ class User(Base):
     hashed_password = Column(String)
     date_created = Column(DateTime, default=dt.datetime.utcnow)
 
-    projects = relationship("Project", back_populates="owner")
+    projects = relationship("Project", back_populates="user")

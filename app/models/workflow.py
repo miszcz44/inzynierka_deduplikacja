@@ -14,9 +14,10 @@ class Workflow(Base):
     file_content = Column(JSONB)
     date_created = Column(DateTime, default=dt.datetime.utcnow, nullable=False)
     date_updated = Column(DateTime, default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow, nullable=False)
+    workflow_steps = relationship("WorkflowStep", back_populates="workflow", cascade="all, delete-orphan")
 
     project_id = Column(Integer, ForeignKey('projects.id'), nullable=False)
 
-    owner = relationship("Project", back_populates="workflows")
+    project = relationship("Project", back_populates="workflows")
 
 

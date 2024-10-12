@@ -12,8 +12,8 @@ class Project(Base):
     description = Column(String)
     date_created = Column(DateTime, default=dt.datetime.utcnow, nullable=False)
     date_updated = Column(DateTime, default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow, nullable=False)
-    workflows = relationship("Workflow", back_populates="owner", cascade="all, delete-orphan")
+    workflows = relationship("Workflow", back_populates="project", cascade="all, delete-orphan")
 
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
 
-    owner = relationship("User", back_populates="projects")
+    user = relationship("User", back_populates="projects")

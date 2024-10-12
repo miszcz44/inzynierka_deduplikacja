@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from crud.project import get_project_by_id
 from fastapi import HTTPException, UploadFile
+from crud.workflow_step import data_reading_step
 import models.workflow as _models
 import schemas.workflow as _schemas
 import datetime as _dt
@@ -93,7 +94,7 @@ async def update_workflow(workflow_id: int, db: Session, title: str, user_id: in
     return workflow
 
 
-async def delete_workflow(workflow_id: int, db: Session, user_id: int) -> _models.Workflow:
+async def delete_workflow(workflow_id: int, db: Session, user_id: int):
     workflow = await get_workflow_by_id(db=db, workflow_id=workflow_id)
 
     if workflow is None:
@@ -107,8 +108,6 @@ async def delete_workflow(workflow_id: int, db: Session, user_id: int) -> _model
 
     db.delete(workflow)
     db.commit()
-
-    return workflow
 
 
 async def set_file(workflow_id: int, db: Session, file: UploadFile,  user_id: int):
@@ -130,6 +129,11 @@ async def set_file(workflow_id: int, db: Session, file: UploadFile,  user_id: in
 
     db.commit()
     db.refresh(workflow)
+
+    await data_reading_step(
+        workflow_id=workflow_id,
+        db=db
+    )
 
 
 async def _process_file(file: UploadFile) -> tuple:
