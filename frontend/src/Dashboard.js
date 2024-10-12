@@ -46,6 +46,10 @@ const Dashboard = () => {
   }
 };
 
+  const handleProjectsClick = () => {
+    navigate('/projects');
+  };
+
   return (
     <div>
       <Navbar bg="dark" variant="dark">
@@ -61,7 +65,7 @@ const Dashboard = () => {
               <ListGroup.Item action onClick={handleShowModal}>
                 Nowy Projekt
               </ListGroup.Item>
-              <ListGroup.Item action>
+              <ListGroup.Item action onClick={handleProjectsClick}>
                 Projekty
               </ListGroup.Item>
               <ListGroup.Item action>

@@ -9,10 +9,10 @@ import UserTable from './UserTable';
 import Dashboard from "./Dashboard";
 import Settings from "./Settings"
 import Statistics from "./Statistics";
-import Projects from "./Projects";
 import ProtectedRoute from './ProtectedRoute';
 import WorkflowSteps from "./WorkflowSteps";
 import ProjectDetails from "./ProjectDetails";
+import ProjectList from "./ProjectList"
 
 const Version = () => {
   const [version, setVersion] = useState('');
@@ -61,11 +61,6 @@ const App = () => {
                     <Statistics />
                 </ProtectedRoute>
             } />
-            <Route path="/projects" element={
-                <ProtectedRoute>
-                    <Projects />
-                </ProtectedRoute>
-            } />
             <Route path="/upload" element={
                 <ProtectedRoute>
                     <FileUpload />
@@ -89,6 +84,11 @@ const App = () => {
             <Route path="/projects/:projectId/workflow/:workflowId" element={
                 <ProtectedRoute>
                     <WorkflowSteps />
+                </ProtectedRoute>
+            } />
+            <Route path="/projects" element={
+                <ProtectedRoute>
+                    <ProjectList />
                 </ProtectedRoute>
             } />
         </Routes>
