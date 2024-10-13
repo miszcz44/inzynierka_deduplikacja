@@ -1,9 +1,10 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Depends
 from sqlalchemy.orm import Session
+from typing import List
+from common.dependencies import get_db, get_current_user
 import crud.project as _crud
 import schemas.project as _schemas_project
 import schemas.user as _schemas_user
-from common.dependencies import get_db, get_current_user
 
 
 router = APIRouter(
@@ -47,6 +48,14 @@ async def get_project(
                             detail="Not enough permissions to access this project")
 
     return project
+
+
+@router.get("/", response_model=List[_schemas_project.Project])
+async def get_user_projects(
+        db: Session = Depends(get_db),
+        current_user: _schemas_user.User = Depends(get_current_user)
+):
+    return await _crud.get_user_projects(db=db, user_id=current_user.id)
 
 
 @router.put("/{project_id}", status_code=200)

@@ -1,0 +1,53 @@
+.project-list-container {
+  margin: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.project-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.project-table th, .project-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.project-table th {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination__link {
+  margin: 0 5px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.pagination__link:hover {
+  background-color: #f2f2f2;
+}
+
+.pagination__link--active {
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination__link--disabled {
+  color: #ccc;
+}

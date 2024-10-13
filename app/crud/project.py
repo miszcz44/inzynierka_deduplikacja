@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from typing import List
 import models.project as _models
 import schemas.project as _schemas
 import datetime as _dt
@@ -43,11 +44,14 @@ async def update_project(db: Session, project: _models.Project, project_dto: _sc
     return project
 
 
-async def delete_project(db: Session, project: _models.Project) \
-        -> _models.Project:
+async def delete_project(db: Session, project: _models.Project) -> _models.Project:
 
     db.delete(project)
     db.commit()
+
+
+async def get_user_projects(db: Session, user_id: int) -> List[_models.Project]:
+    return db.query(_models.Project).filter(_models.Project.user_id == user_id).all()
 
 
 async def get_project_by_id(db: Session, project_id: int) -> _models.Project | None:
