@@ -29,6 +29,7 @@ class ProjectCreate(_pydantic.BaseModel):
 
 class Project(_BaseProject):
     id: int
+    filename: str
     date_created: _dt.datetime
     date_updated: _dt.datetime
     workflows: List[WorkflowBase]

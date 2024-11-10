@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="feat: Add react frontend, configure docker containers">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/project.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/project.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/projects.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/projects.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/schemas/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/project.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +123,10 @@
       <workItem from="1728664706244" duration="2367000" />
       <workItem from="1728726336597" duration="11799000" />
       <workItem from="1728814542488" duration="2320000" />
-      <workItem from="1728842999811" duration="313000" />
+      <workItem from="1728842999811" duration="1087000" />
+      <workItem from="1729186431467" duration="599000" />
+      <workItem from="1731232859136" duration="1175000" />
+      <workItem from="1731253004040" duration="3347000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Add react frontend, configure docker containers">
       <created>1722272364083</created>

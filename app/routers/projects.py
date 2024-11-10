@@ -12,11 +12,11 @@ router = APIRouter(
     tags=["projects"]
 )
 
-
 @router.post("/", status_code=201)
 async def create_project(
         title: str = Form(...),
         description: str = Form(None),
+        file: UploadFile = File(...),
         db: Session = Depends(get_db),
         current_user: _schemas_user = Depends(get_current_user)
 ):
@@ -28,6 +28,7 @@ async def create_project(
     return await _crud.create_project(
         db=db,
         project=project_data,
+        file=file,
         user_id=current_user.id
     )
 

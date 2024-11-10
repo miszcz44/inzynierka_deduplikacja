@@ -1,4 +1,6 @@
-from fastapi import HTTPException
+import io
+import json
+from fastapi import HTTPException, UploadFile
 from sqlalchemy.orm import Session
 from typing import List
 import models.project as _models
@@ -6,7 +8,11 @@ import schemas.project as _schemas
 import datetime as _dt
 
 
-async def create_project(db: Session, project: _schemas.ProjectCreate, user_id: int) -> _models.Project:
+MAX_FILE_SIZE = 10 * 1024 * 1024
+
+
+async def create_project(db: Session, project: _schemas.ProjectCreate, file: UploadFile,
+                         user_id: int) -> _models.Project:
     existing_project = db.query(_models.Project).filter(
         _models.Project.title == project.title,
         _models.Project.user_id == user_id
@@ -18,9 +24,13 @@ async def create_project(db: Session, project: _schemas.ProjectCreate, user_id: 
             detail={"message": "A project with this title already exists for the user."}
         )
 
+    file_content, filename = await _process_file(file)
+
     new_project = _models.Project(
         title=project.title,
         description=project.description,
+        filename=filename,
+        file_content=file_content,
         user_id=user_id,
         date_created=_dt.datetime.utcnow(),
         date_updated=_dt.datetime.utcnow()
@@ -31,6 +41,34 @@ async def create_project(db: Session, project: _schemas.ProjectCreate, user_id: 
     db.refresh(new_project)
 
     return new_project
+
+
+async def _process_file(file: UploadFile) -> tuple:
+    if not file:
+        raise HTTPException(status_code=400, detail={"message": "No file was uploaded."})
+    if file.content_type not in ['text/csv', 'application/json']:
+        raise HTTPException(
+            status_code=400,
+            detail={"message": "Invalid file type. Only CSV and JSON files are allowed."}
+        )
+    try:
+        content = await file.read()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail={"message": f"Error reading file: {str(e)}"})
+    if len(content) > MAX_FILE_SIZE:
+        raise HTTPException(
+            status_code=400,
+            detail={"message": "File size exceeds the 10MB limit."}
+        )
+    file_content = None
+    if file.content_type == 'application/json':
+        try:
+            file_content = json.loads(content.decode('utf-8'))
+        except json.JSONDecodeError:
+            raise HTTPException(status_code=400, detail={"message": "Invalid JSON file."})
+    elif file.content_type == 'text/csv':
+        file_content = content.decode('utf-8')
+    return file_content, file.filename
 
 
 async def update_project(db: Session, project: _models.Project, project_dto: _schemas.ProjectCreate) -> _models.Project:

@@ -312,6 +312,9 @@ const ProjectDetails = () => {
                     <strong>Opis:</strong> {projectData.description}
                   </Card.Text>
                   <Card.Text>
+                    <strong>Plik:</strong> {projectData.filename}
+                  </Card.Text>
+                  <Card.Text>
                     <strong>Data utworzenia:</strong> {projectData.date_created.slice(0, 19).replace('T', ' ')}
                   </Card.Text>
                   <Card.Text>
