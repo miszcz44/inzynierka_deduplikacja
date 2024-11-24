@@ -5,11 +5,11 @@
       <list>
         <JupyterConnectionParameters>
           <option name="authType" value="notebook" />
-          <option name="token" value="1eb970d969d3b8b92b317bb51d5d80baac0939db6571292d" />
+          <option name="token" value="bf9d9bda7cf8a37883815212e3cfb5f514c4f15da41ad5c0" />
           <option name="urlString" value="http://127.0.0.1:8888" />
           <authParams2>
             <map>
-              <entry key="token" value="1eb970d969d3b8b92b317bb51d5d80baac0939db6571292d" />
+              <entry key="token" value="bf9d9bda7cf8a37883815212e3cfb5f514c4f15da41ad5c0" />
             </map>
           </authParams2>
         </JupyterConnectionParameters>
@@ -20,14 +20,8 @@
         <entry key="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml">
           <value>
             <JupyterConnectionParameters>
-              <option name="authType" value="notebook" />
-              <option name="token" value="1eb970d969d3b8b92b317bb51d5d80baac0939db6571292d" />
-              <option name="urlString" value="http://127.0.0.1:8888" />
-              <authParams2>
-                <map>
-                  <entry key="token" value="1eb970d969d3b8b92b317bb51d5d80baac0939db6571292d" />
-                </map>
-              </authParams2>
+              <option name="managed" value="true" />
+              <option name="sdkName" value="" />
             </JupyterConnectionParameters>
           </value>
         </entry>
