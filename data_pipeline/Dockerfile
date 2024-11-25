@@ -17,3 +17,5 @@ RUN jupyter notebook --generate-config && \
 EXPOSE 8888
 
 CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--allow-root", "--no-browser", "--notebook-dir=/home/jupyter"]
+
+
