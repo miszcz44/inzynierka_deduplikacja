@@ -95,6 +95,7 @@ const DataProcessingFlow = () => {
       {/* Dynamically render the appropriate sidebar */}
       {activeStepId && (
         <StepSidebarFactory
+          workflowId={workflowId}
           stepId={activeStepId}
           onSave={handleSave}
           onCancel={handleCancel}

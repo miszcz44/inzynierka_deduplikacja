@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="feat: Add react frontend, configure docker containers">
-      <change beforePath="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jupyter-settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jupyter-settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/.ipynb_checkpoints/data_pipeline-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/.ipynb_checkpoints/data_pipeline-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/workflows.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/workflows.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +78,6 @@
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="inzynierka_deduplikacja" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>

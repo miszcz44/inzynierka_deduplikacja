@@ -4,6 +4,8 @@ import schemas.user as _schemas_user
 import schemas.workflow as _schemas
 import crud.workflow as _crud
 from common.dependencies import get_db, get_current_user
+from typing import Dict, Any, List
+
 
 router = APIRouter(
     prefix="/api/workflows",
@@ -65,6 +67,23 @@ async def delete_workflow(
         db=db,
         user_id=current_user.id
     )
+
+
+@router.get("/{workflow_id}/file-content", response_model=Dict[str, Any])
+async def get_workflow_file_content(
+        workflow_id: int,
+        db: Session = Depends(get_db),
+        current_user: _schemas_user = Depends(get_current_user)
+):
+    unique_columns = await _crud.get_workflow_file_content(
+        workflow_id=workflow_id,
+        db=db,
+        user_id=current_user.id
+    )
+
+    return {
+        "columns": unique_columns,
+    }
 
 
 @router.put("/{workflow_id}/set-file", status_code=200)
