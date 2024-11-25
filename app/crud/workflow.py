@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from crud.project import get_project_by_id
 from fastapi import HTTPException, UploadFile
-from crud.workflow_step import data_reading_step
 import models.workflow as _models
 import schemas.workflow as _schemas
 import datetime as _dt
@@ -108,32 +107,6 @@ async def delete_workflow(workflow_id: int, db: Session, user_id: int):
 
     db.delete(workflow)
     db.commit()
-
-
-async def set_file(workflow_id: int, db: Session, file: UploadFile,  user_id: int):
-    workflow = await get_workflow_by_id(db=db, workflow_id=workflow_id)
-
-    if workflow is None:
-        raise HTTPException(status_code=404, detail="Workflow not found")
-
-    project = await get_project_by_id(db=db, project_id=workflow.project_id)
-
-    if project.user_id != user_id:
-        raise HTTPException(status_code=403,
-                            detail="Not enough permissions to access this workflow")
-
-    file_content, filename = await _process_file(file)
-
-    workflow.filename = filename
-    workflow.file_content = file_content
-
-    db.commit()
-    db.refresh(workflow)
-
-    await data_reading_step(
-        workflow_id=workflow_id,
-        db=db
-    )
 
 
 async def _process_file(file: UploadFile) -> tuple:

@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="feat: Add react frontend, configure docker containers">
+      <change afterPath="$PROJECT_DIR$/app/routers/workflow_step.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/schemas/workflow_step.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/project.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/project.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/projects.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/projects.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/project.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/workflow_step.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow_step.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +27,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -126,7 +127,11 @@
       <workItem from="1728842999811" duration="1087000" />
       <workItem from="1729186431467" duration="599000" />
       <workItem from="1731232859136" duration="1175000" />
-      <workItem from="1731253004040" duration="3347000" />
+      <workItem from="1731253004040" duration="4502000" />
+      <workItem from="1732266840835" duration="578000" />
+      <workItem from="1732377946913" duration="1264000" />
+      <workItem from="1732442492699" duration="8971000" />
+      <workItem from="1732477175525" duration="2793000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Add react frontend, configure docker containers">
       <created>1722272364083</created>
