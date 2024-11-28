@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 from crud.project import get_project_by_id
 from fastapi import HTTPException, UploadFile
-from crud.workflow_step import data_reading_step
 import models.workflow as _models
 import schemas.workflow as _schemas
 import datetime as _dt
+from typing import List
 import json
 
 MAX_FILE_SIZE = 10 * 1024 * 1024
@@ -110,32 +110,6 @@ async def delete_workflow(workflow_id: int, db: Session, user_id: int):
     db.commit()
 
 
-async def set_file(workflow_id: int, db: Session, file: UploadFile,  user_id: int):
-    workflow = await get_workflow_by_id(db=db, workflow_id=workflow_id)
-
-    if workflow is None:
-        raise HTTPException(status_code=404, detail="Workflow not found")
-
-    project = await get_project_by_id(db=db, project_id=workflow.project_id)
-
-    if project.user_id != user_id:
-        raise HTTPException(status_code=403,
-                            detail="Not enough permissions to access this workflow")
-
-    file_content, filename = await _process_file(file)
-
-    workflow.filename = filename
-    workflow.file_content = file_content
-
-    db.commit()
-    db.refresh(workflow)
-
-    await data_reading_step(
-        workflow_id=workflow_id,
-        db=db
-    )
-
-
 async def _process_file(file: UploadFile) -> tuple:
     if not file:
         raise HTTPException(status_code=400, detail={"message": "No file was uploaded."})
@@ -168,6 +142,44 @@ async def _process_file(file: UploadFile) -> tuple:
 
     return file_content, file.filename
 
+
+async def get_workflow_file_content(workflow_id: int, db: Session, user_id: int) -> set:
+    workflow = await get_workflow_by_id(db=db, workflow_id=workflow_id)
+
+    if workflow is None:
+        raise HTTPException(status_code=404, detail="Workflow not found")
+
+    project = await get_project_by_id(db=db, project_id=workflow.project_id)
+
+    if project.user_id != user_id:
+        raise HTTPException(status_code=403,
+                            detail="Not enough permissions to access this workflow")
+
+    if not project.file_content:
+        raise HTTPException(status_code=404, detail="No file content available for this workflow")
+
+    return extract_unique_columns(project.file_content)
+
+
+def extract_unique_columns(data: list) -> set:
+    """
+    Recursively extracts all unique keys from a list of dictionaries, handling nested objects.
+    """
+    unique_columns = set()
+
+    def recursive_keys(item, prefix=''):
+        if isinstance(item, dict):
+            for key, value in item.items():
+                new_prefix = f"{prefix}.{key}" if prefix else key
+                recursive_keys(value, new_prefix)
+        else:
+            # Non-dict values are considered leaf nodes
+            unique_columns.add(prefix)
+
+    for row in data:
+        recursive_keys(row)
+
+    return unique_columns
 
 async def get_workflow_by_id(db: Session, workflow_id: int) -> _models.Workflow | None:
     return db.query(_models.Workflow).filter(_models.Workflow.id == workflow_id).first()

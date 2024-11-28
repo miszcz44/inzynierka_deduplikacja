@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
 import models.workflow_step as _models
 from models.enums.step_name import StepName
+import schemas.workflow_step as _schemas
 
 
-async def data_reading_step(workflow_id: int, db: Session):
+async def save_workflow_step(db: Session, workflow_step: _schemas.WorkflowStep, workflow_id: int):
     step = _models.WorkflowStep(
         name=StepName.DATA_READING,
         workflow_id=workflow_id
