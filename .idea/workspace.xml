@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="feat: Add react frontend, configure docker containers">
-      <change beforePath="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jupyter-settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jupyter-settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/.ipynb_checkpoints/data_pipeline-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/.ipynb_checkpoints/data_pipeline-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +155,7 @@
       <workItem from="1731851615523" duration="34000" />
       <workItem from="1732213024062" duration="10679000" />
       <workItem from="1732380568531" duration="6426000" />
-      <workItem from="1732484834379" duration="1340000" />
+      <workItem from="1732484834379" duration="2411000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Add react frontend, configure docker containers">
       <created>1722272364083</created>
