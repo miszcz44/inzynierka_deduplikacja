@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react';
 const ComparisonSidebar = ({ workflowId, onSave, onCancel }) => {
   const [columns, setColumns] = useState([]);
   const [selectedAlgorithms, setSelectedAlgorithms] = useState({});
+  const [qValue, setQValue] = useState(2); // Default value for Q-gram
   const [error, setError] = useState('');
 
-  const algorithms = ['jaro-winkler', 'Q-gram', 'soundex', 'levenshtein'];
+  const algorithms = ['jaro-winkler', 'Q-gram'];
 
   useEffect(() => {
     // Fetch file content when component loads
@@ -52,10 +53,16 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel }) => {
   };
 
   const handleSave = () => {
-    // Example save logic
-    console.log('Selected algorithms:', selectedAlgorithms);
-    onSave(selectedAlgorithms); // Pass data back to parent
+    const dataToSave = {
+      selectedAlgorithms,
+      ...(Object.values(selectedAlgorithms).includes('Q-gram') && { qValue }), // Include qValue only if Q-gram is selected
+    };
+    console.log('Save Data:', dataToSave);
+    onSave(dataToSave); // Pass data back to parent
   };
+
+  // Check if at least one column has 'Q-gram' selected
+  const hasQGramSelected = Object.values(selectedAlgorithms).includes('Q-gram');
 
   return (
     <div className="sidebar">
@@ -63,24 +70,40 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel }) => {
       {error ? (
         <div className="error">{error}</div>
       ) : (
-        <div className="dropdown-group">
-          {columns.map((column) => (
-            <div key={column} className="input-group">
-              <label htmlFor={`algorithm-${column}`}>{column}</label>
-              <select
-                id={`algorithm-${column}`}
-                value={selectedAlgorithms[column] || 'jaro-winkler'}
-                onChange={(e) => handleAlgorithmChange(column, e.target.value)}
-              >
-                {algorithms.map((algo) => (
-                  <option key={algo} value={algo}>
-                    {algo}
-                  </option>
-                ))}
-              </select>
+        <>
+          <div className="dropdown-group">
+            {columns.map((column) => (
+              <div key={column} className="input-group">
+                <label htmlFor={`algorithm-${column}`}>{column}</label>
+                <select
+                  id={`algorithm-${column}`}
+                  value={selectedAlgorithms[column] || 'jaro-winkler'}
+                  onChange={(e) => handleAlgorithmChange(column, e.target.value)}
+                >
+                  {algorithms.map((algo) => (
+                    <option key={algo} value={algo}>
+                      {algo}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
+          </div>
+
+          {/* Show Q-value input field only if Q-gram is selected for at least one column */}
+          {hasQGramSelected && (
+            <div className="q-value-group">
+              <label htmlFor="q-value">Q Value:</label>
+              <input
+                id="q-value"
+                type="number"
+                min="1"
+                value={qValue}
+                onChange={(e) => setQValue(Number(e.target.value))}
+              />
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
 
       <div className="button-group">

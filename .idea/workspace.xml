@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="feat: Add react frontend, configure docker containers">
+    <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/project.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/workflow_step.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow_step.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/workflow_step.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/workflow_step.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +81,6 @@
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="inzynierka_deduplikacja" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>

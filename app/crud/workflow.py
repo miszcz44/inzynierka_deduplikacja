@@ -6,6 +6,7 @@ import schemas.workflow as _schemas
 import datetime as _dt
 from typing import List
 import json
+import csv
 
 MAX_FILE_SIZE = 10 * 1024 * 1024
 
@@ -138,9 +139,17 @@ async def _process_file(file: UploadFile) -> tuple:
         except json.JSONDecodeError:
             raise HTTPException(status_code=400, detail={"message": "Invalid JSON file."})
     elif file.content_type == 'text/csv':
-        file_content = content.decode('utf-8')
+        try:
+            # Convert CSV to JSON
+            csv_content = content.decode('utf-8')
+            csv_reader = csv.DictReader(csv_content.splitlines())
 
-    return file_content, file.filename
+            # Convert each row to a JSON object
+            file_content = [row for row in csv_reader]
+        except Exception as e:
+            raise HTTPException(status_code=400, detail={"message": f"Error processing CSV file: {str(e)}"})
+
+    return file_content, file.filenam
 
 
 async def get_workflow_file_content(workflow_id: int, db: Session, user_id: int) -> set:

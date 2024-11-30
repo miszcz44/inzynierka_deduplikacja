@@ -1,12 +1,42 @@
 import React from 'react';
 
-const DataPreprocessingSidebar = ({ onSave, onCancel, sharedState }) => {
+const DataPreprocessingSidebar = ({ workflowId, onSave, onCancel, sharedState }) => {
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     sharedState.setCheckboxValues((prev) => ({
       ...prev,
       [name]: checked,
     }));
+  };
+
+  const handleSave = async () => {
+    const payload = {
+      step: "data_preprocessing", // Specify the step name
+      parameters: JSON.stringify(sharedState.checkboxValues), // Convert parameters to JSON string
+    };
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:8000/api/workflow-step/${workflowId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: payload,
+      });
+
+      if (response.ok) {
+        console.log("Data preprocessing step saved successfully");
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to save workflow step:", errorData.detail);
+        alert("Error saving the workflow step: " + errorData.detail);
+      }
+    } catch (error) {
+      console.error("An error occurred while saving the workflow step:", error);
+      alert("An error occurred. Please try again.");
+    }
   };
 
   return (
@@ -34,7 +64,7 @@ const DataPreprocessingSidebar = ({ onSave, onCancel, sharedState }) => {
       </div>
 
       <div className="button-group">
-        <button className="save-button" onClick={onSave}>
+        <button className="save-button" onClick={handleSave}>
           Save
         </button>
         <button className="cancel-button" onClick={onCancel}>

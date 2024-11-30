@@ -79,3 +79,21 @@ select {
 .cancel-button:hover {
   background-color: #e53935;
 }
+
+.q-value-group {
+  margin-top: 20px;
+}
+
+.q-value-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.q-value-group input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100px;
+}

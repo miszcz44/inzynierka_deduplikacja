@@ -1,5 +1,6 @@
 import io
 import json
+import csv
 from fastapi import HTTPException, UploadFile
 from sqlalchemy.orm import Session
 from typing import List
@@ -46,20 +47,24 @@ async def create_project(db: Session, project: _schemas.ProjectCreate, file: Upl
 async def _process_file(file: UploadFile) -> tuple:
     if not file:
         raise HTTPException(status_code=400, detail={"message": "No file was uploaded."})
+
     if file.content_type not in ['text/csv', 'application/json']:
         raise HTTPException(
             status_code=400,
             detail={"message": "Invalid file type. Only CSV and JSON files are allowed."}
         )
+
     try:
         content = await file.read()
     except Exception as e:
         raise HTTPException(status_code=500, detail={"message": f"Error reading file: {str(e)}"})
+
     if len(content) > MAX_FILE_SIZE:
         raise HTTPException(
             status_code=400,
             detail={"message": "File size exceeds the 10MB limit."}
         )
+
     file_content = None
     if file.content_type == 'application/json':
         try:
@@ -67,7 +72,16 @@ async def _process_file(file: UploadFile) -> tuple:
         except json.JSONDecodeError:
             raise HTTPException(status_code=400, detail={"message": "Invalid JSON file."})
     elif file.content_type == 'text/csv':
-        file_content = content.decode('utf-8')
+        try:
+            # Convert CSV to JSON
+            csv_content = content.decode('utf-8')
+            csv_reader = csv.DictReader(csv_content.splitlines())
+
+            # Convert each row to a JSON object
+            file_content = [row for row in csv_reader]
+        except Exception as e:
+            raise HTTPException(status_code=400, detail={"message": f"Error processing CSV file: {str(e)}"})
+
     return file_content, file.filename
 
 

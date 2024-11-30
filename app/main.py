@@ -1,5 +1,5 @@
 import fastapi as _fastapi
-from routers import users, auth, projects, workflows
+from routers import users, auth, projects, workflows, workflow_step
 from fastapi.middleware.cors import CORSMiddleware
 from common.dependencies import _add_tables
 from fastapi import File, UploadFile, HTTPException, Depends, status
@@ -28,6 +28,7 @@ app.include_router(users.router)
 app.include_router(auth.router)
 app.include_router(projects.router)
 app.include_router(workflows.router)
+app.include_router(workflow_step.router)
 
 
 @app.get("/")
