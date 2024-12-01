@@ -6,10 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/project.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/workflow_step.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow_step.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/enums/step_name.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/enums/step_name.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/workflow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/workflow_step.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/workflow_step.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/workflow_step.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/workflow_step.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -160,6 +161,8 @@
       <workItem from="1732213024062" duration="10679000" />
       <workItem from="1732380568531" duration="6426000" />
       <workItem from="1732484834379" duration="2411000" />
+      <workItem from="1733058918865" duration="4291000" />
+      <workItem from="1733080221054" duration="8551000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Add react frontend, configure docker containers">
       <created>1722272364083</created>

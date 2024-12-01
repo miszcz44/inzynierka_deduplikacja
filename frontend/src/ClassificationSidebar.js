@@ -2,19 +2,18 @@ import React, { useState, useEffect } from 'react';
 
 const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
   const [columns, setColumns] = useState([]);
-  const [classificationType, setClassificationType] = useState('threshold'); // Default to 'threshold'
+  const [classificationType, setClassificationType] = useState("threshold"); // Default to 'threshold'
   const [thresholdMatch, setThresholdMatch] = useState(0.5); // Default threshold match value
   const [columnWeights, setColumnWeights] = useState({});
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    // Fetch file content when component loads
     fetchFileContent();
   }, [workflowId]);
 
   const fetchFileContent = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       const response = await fetch(`http://localhost:8000/api/workflows/${workflowId}/file-content`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -28,15 +27,14 @@ const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
         initializeWeights(uniqueColumns);
       } else {
         const err = await response.json();
-        setError(err.detail || 'Failed to fetch file content');
+        setError(err.detail || "Failed to fetch file content");
       }
     } catch (e) {
-      setError('An error occurred while fetching file content');
+      setError("An error occurred while fetching file content");
     }
   };
 
   const initializeWeights = (columns) => {
-    // Initialize weights for all columns with a default value (e.g., 1)
     const initialWeights = columns.reduce((acc, column) => {
       acc[column] = 1; // Default weight
       return acc;
@@ -51,13 +49,37 @@ const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
     }));
   };
 
-  const handleSave = () => {
-    const dataToSave =
-      classificationType === 'threshold'
-        ? { classificationType, thresholdMatch }
-        : { classificationType, columnWeights };
-    console.log('Save Data:', dataToSave);
-    onSave(dataToSave); // Pass data back to parent
+  const handleSave = async () => {
+    const payload = {
+      step: "CLASSIFICATION", // Specify the step name
+      parameters: classificationType === "threshold"
+        ? JSON.stringify({ classificationType, thresholdMatch })
+        : JSON.stringify({ classificationType, columnWeights }),
+    };
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:8000/api/workflow-step/${workflowId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        console.log("Classification settings saved successfully");
+        onSave(); // Call the parent-provided onSave
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to save workflow step:", errorData.detail);
+        alert("Error saving the workflow step: " + errorData.detail);
+      }
+    } catch (error) {
+      console.error("An error occurred while saving the workflow step:", error);
+      alert("An error occurred. Please try again.");
+    }
   };
 
   return (
@@ -79,8 +101,7 @@ const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
             </select>
           </div>
 
-          {/* Render fields based on selected classification type */}
-          {classificationType === 'threshold' ? (
+          {classificationType === "threshold" ? (
             <div className="input-group">
               <label htmlFor="threshold-match">Threshold Match:</label>
               <input

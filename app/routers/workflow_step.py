@@ -19,8 +19,20 @@ async def save_workflow_step(
         db: Session = Depends(get_db),
         current_user: _schemas_user = Depends(get_current_user),
 ):
-    _crud.save_workflow_step(
+    await _crud.save_workflow_step(
         db,
         workflow_step=workflow_step,
+        workflow_id=workflow_id
+    )
+
+
+@router.get("/{workflow_id}/last-step", status_code=200)
+async def get_last_step(
+        workflow_id: int,
+        db: Session = Depends(get_db),
+        current_user: _schemas_user = Depends(get_current_user),
+):
+    return await _crud.get_last_step(
+        db,
         workflow_id=workflow_id
     )

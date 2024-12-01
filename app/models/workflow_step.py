@@ -10,7 +10,7 @@ class WorkflowStep(Base):
     __tablename__ = "workflow_steps"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(SQLAlchemyEnum(StepName), nullable=False)
+    name = Column(String, nullable = False)
     parameters = Column(JSON, nullable=True)
 
     workflow_id = Column(Integer, ForeignKey('workflows.id'), nullable=False)

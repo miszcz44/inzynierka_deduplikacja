@@ -11,6 +11,7 @@ class Workflow(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     filename = Column(String)
+    last_step = Column(String)
     file_content = Column(JSONB)
     date_created = Column(DateTime, default=dt.datetime.utcnow, nullable=False)
     date_updated = Column(DateTime, default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow, nullable=False)

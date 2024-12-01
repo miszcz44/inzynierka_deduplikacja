@@ -190,5 +190,6 @@ def extract_unique_columns(data: list) -> set:
 
     return unique_columns
 
+
 async def get_workflow_by_id(db: Session, workflow_id: int) -> _models.Workflow | None:
     return db.query(_models.Workflow).filter(_models.Workflow.id == workflow_id).first()

@@ -9,7 +9,6 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel }) => {
   const algorithms = ['jaro-winkler', 'Q-gram'];
 
   useEffect(() => {
-    // Fetch file content when component loads
     fetchFileContent();
   }, [workflowId]);
 
@@ -37,7 +36,6 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel }) => {
   };
 
   const initializeAlgorithms = (columns) => {
-    // Initialize dropdown state with default algorithm (e.g., 'jaro-winkler')
     const initialState = columns.reduce((acc, column) => {
       acc[column] = 'jaro-winkler';
       return acc;
@@ -52,16 +50,40 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel }) => {
     }));
   };
 
-  const handleSave = () => {
-    const dataToSave = {
-      selectedAlgorithms,
-      ...(Object.values(selectedAlgorithms).includes('Q-gram') && { qValue }), // Include qValue only if Q-gram is selected
+  const handleSave = async () => {
+    const payload = {
+      step: "FIELD_AND_RECORD_COMPARISON", // Specify the step name
+      parameters: JSON.stringify({
+        selectedAlgorithms,
+        ...(Object.values(selectedAlgorithms).includes('Q-gram') && { qValue }), // Include qValue only if Q-gram is selected
+      }),
     };
-    console.log('Save Data:', dataToSave);
-    onSave(dataToSave); // Pass data back to parent
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:8000/api/workflow-step/${workflowId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        console.log("Comparison step saved successfully");
+        onSave();
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to save workflow step:", errorData.detail);
+        alert("Error saving the workflow step: " + errorData.detail);
+      }
+    } catch (error) {
+      console.error("An error occurred while saving the workflow step:", error);
+      alert("An error occurred. Please try again.");
+    }
   };
 
-  // Check if at least one column has 'Q-gram' selected
   const hasQGramSelected = Object.values(selectedAlgorithms).includes('Q-gram');
 
   return (
@@ -90,7 +112,6 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel }) => {
             ))}
           </div>
 
-          {/* Show Q-value input field only if Q-gram is selected for at least one column */}
           {hasQGramSelected && (
             <div className="q-value-group">
               <label htmlFor="q-value">Q Value:</label>

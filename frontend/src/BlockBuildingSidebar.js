@@ -1,45 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const BlockBuildingSidebar = ({ onSave, onCancel }) => {
-  const [algorithm, setAlgorithm] = useState(''); // Dropdown selection
+const BlockBuildingSidebar = ({ workflowId, onSave, onCancel }) => {
+  const [algorithm, setAlgorithm] = useState("standardBlocking"); // Default algorithm
   const [inputs, setInputs] = useState({
-    windowSize: '',
-    nLetters: '',
-    maxWindowSize: '',
-    threshold: '',
+    windowSize: 5, // Default window size
+    nLetters: 3, // Default number of letters
+    maxWindowSize: 10, // Default max window size
+    threshold: 0.8, // Default threshold
   });
 
   const handleAlgorithmChange = (e) => {
     setAlgorithm(e.target.value);
-    setInputs({ windowSize: '', nLetters: '', maxWindowSize: '', threshold: '' }); // Reset inputs
+    setInputs({
+      windowSize: 5,
+      nLetters: 3,
+      maxWindowSize: 10,
+      threshold: 0.8,
+    }); // Reset inputs with default values
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (!/^\d*$/.test(value)) return; // Ensure only integers are allowed
+    if (!/^\d*\.?\d*$/.test(value)) return; // Allow only numeric values (integers or floats)
     setInputs((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Validation
     const errors = [];
-    if (algorithm === 'sortedNeighborhood' && (!inputs.windowSize || !inputs.nLetters)) {
-      errors.push('Window size and N letters are required for Sorted Neighborhood Method.');
-    } else if (algorithm === 'dynamicSortedNeighborhood' && (!inputs.maxWindowSize || !inputs.nLetters || !inputs.threshold)) {
-      errors.push('Max window size, N letters, and Threshold are required for Dynamic Sorted Neighborhood Method.');
+    if (algorithm === "sortedNeighborhood" && (!inputs.windowSize || !inputs.nLetters)) {
+      errors.push("Window size and N letters are required for Sorted Neighborhood Method.");
+    } else if (
+      algorithm === "dynamicSortedNeighborhood" &&
+      (!inputs.maxWindowSize || !inputs.nLetters || !inputs.threshold)
+    ) {
+      errors.push(
+        "Max window size, N letters, and Threshold are required for Dynamic Sorted Neighborhood Method."
+      );
     }
 
     if (errors.length > 0) {
-      alert(errors.join('\n')); // Display validation errors
+      alert(errors.join("\n")); // Display validation errors
       return;
     }
 
-    // Save logic here
-    console.log('Saved Block Building settings:', { algorithm, inputs });
-    onSave();
+    // Prepare the payload for the API
+    const payload = {
+      step: "BLOCK_BUILDING", // Specify the step name
+      parameters: JSON.stringify({
+        algorithm, // Selected algorithm
+        ...inputs, // Include the input fields
+      }),
+    };
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:8000/api/workflow-step/${workflowId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload), // Send payload
+      });
+
+      if (response.ok) {
+        console.log("Block building step saved successfully");
+        onSave(); // Call the parent-provided `onSave` to handle any post-save actions
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to save workflow step:", errorData.detail);
+        alert("Error saving the workflow step: " + errorData.detail);
+      }
+    } catch (error) {
+      console.error("An error occurred while saving the workflow step:", error);
+      alert("An error occurred. Please try again.");
+    }
   };
 
   return (
@@ -50,7 +89,6 @@ const BlockBuildingSidebar = ({ onSave, onCancel }) => {
       <div className="dropdown-group">
         <label htmlFor="algorithm">Algorithm</label>
         <select id="algorithm" value={algorithm} onChange={handleAlgorithmChange}>
-          <option value="">Select an algorithm</option>
           <option value="standardBlocking">Standard Blocking</option>
           <option value="sortedNeighborhood">Sorted Neighborhood Method</option>
           <option value="dynamicSortedNeighborhood">Dynamic Sorted Neighborhood Method</option>
@@ -58,7 +96,7 @@ const BlockBuildingSidebar = ({ onSave, onCancel }) => {
       </div>
 
       {/* Conditional Input Fields */}
-      {algorithm === 'sortedNeighborhood' && (
+      {algorithm === "sortedNeighborhood" && (
         <div className="input-group">
           <label htmlFor="windowSize">Window Size</label>
           <input
@@ -82,7 +120,7 @@ const BlockBuildingSidebar = ({ onSave, onCancel }) => {
         </div>
       )}
 
-      {algorithm === 'dynamicSortedNeighborhood' && (
+      {algorithm === "dynamicSortedNeighborhood" && (
         <div className="input-group">
           <label htmlFor="maxWindowSize">Max Window Size</label>
           <input
@@ -109,7 +147,8 @@ const BlockBuildingSidebar = ({ onSave, onCancel }) => {
             type="number"
             id="threshold"
             name="threshold"
-            min="1"
+            min="0"
+            step="0.01"
             value={inputs.threshold}
             onChange={handleInputChange}
           />

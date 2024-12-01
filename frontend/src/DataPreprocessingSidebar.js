@@ -11,7 +11,7 @@ const DataPreprocessingSidebar = ({ workflowId, onSave, onCancel, sharedState })
 
   const handleSave = async () => {
     const payload = {
-      step: "data_preprocessing", // Specify the step name
+      step: "DATA_PREPROCESSING", // Specify the step name
       parameters: JSON.stringify(sharedState.checkboxValues), // Convert parameters to JSON string
     };
 
@@ -23,11 +23,12 @@ const DataPreprocessingSidebar = ({ workflowId, onSave, onCancel, sharedState })
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: payload,
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
         console.log("Data preprocessing step saved successfully");
+        onSave();
       } else {
         const errorData = await response.json();
         console.error("Failed to save workflow step:", errorData.detail);

@@ -27,9 +27,7 @@ const StepSidebarFactory = ({ workflowId, stepId, onSave, onCancel, sharedState 
         return (
           <ComparisonSidebar
             workflowId={workflowId}
-            onSave={(selectedAlgorithms) => {
-              console.log('Comparison step saved with:', selectedAlgorithms);
-            }}
+            onSave={onSave}
             onCancel={onCancel}
           />
         );
@@ -37,9 +35,7 @@ const StepSidebarFactory = ({ workflowId, stepId, onSave, onCancel, sharedState 
         return (
           <ClassificationSidebar
             workflowId={workflowId}
-            onSave={(selectedAlgorithms) => {
-              console.log('Comparison step saved with:', selectedAlgorithms);
-            }}
+            onSave={onSave}
             onCancel={onCancel}
           />
         );
