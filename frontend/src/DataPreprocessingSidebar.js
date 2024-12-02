@@ -1,6 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const DataPreprocessingSidebar = ({ workflowId, onSave, onCancel, sharedState }) => {
+  const [loading, setLoading] = useState(true); // Loading state
+
+  // Fetch step parameters on mount
+  useEffect(() => {
+    fetchStepData();
+  }, [workflowId]); // Dependency on `workflowId` ensures the fetch happens when the workflow ID changes
+
+  const fetchStepData = async () => {
+    setLoading(true); // Start loading
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:8000/api/workflow-step/${workflowId}/step?step_name=DATA_PREPROCESSING`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        // Check if the response contains `parameters`
+        if (data.parameters) {
+          // Map the response parameters to checkbox values in sharedState
+          sharedState.setCheckboxValues({
+            lowercase: data.parameters.lowercase || false, // Default to false if undefined
+            removeDiacritics: data.parameters.removeDiacritics || false,
+            removePunctuation: data.parameters.removePunctuation || false,
+          });
+        }
+      } else {
+        console.error("Failed to fetch step data");
+      }
+    } catch (error) {
+      console.error("An error occurred while fetching the step data:", error);
+    } finally {
+      setLoading(false); // Finish loading
+    }
+  };
+
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     sharedState.setCheckboxValues((prev) => ({
@@ -39,6 +82,10 @@ const DataPreprocessingSidebar = ({ workflowId, onSave, onCancel, sharedState })
       alert("An error occurred. Please try again.");
     }
   };
+
+  if (loading) {
+    return <div className="sidebar">Loading...</div>; // Show a loading state
+  }
 
   return (
     <div className="sidebar">

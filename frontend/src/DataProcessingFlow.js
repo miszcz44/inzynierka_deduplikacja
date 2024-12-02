@@ -4,13 +4,13 @@ import './css/Sidebar.css';
 import StepSidebarFactory from './StepSidebarFactory';
 import { useParams } from "react-router-dom";
 
-const initialNodes = [
-  { id: '2', data: { label: 'Data Pre-processing' }, position: { x: 100, y: 200 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
-  { id: '3', data: { label: 'Block Building' }, position: { x: 100, y: 300 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
-  { id: '4', data: { label: 'Field and Record Comparison' }, position: { x: 100, y: 400 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
-  { id: '5', data: { label: 'Classification' }, position: { x: 100, y: 500 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
-  { id: '6', data: { label: 'Evaluation' }, position: { x: 100, y: 600 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
-];
+  const initialNodes = [
+    { id: '2', data: { label: 'Data Pre-processing' }, position: { x: 100, y: 200 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
+    { id: '3', data: { label: 'Block Building' }, position: { x: 100, y: 300 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
+    { id: '4', data: { label: 'Field and Record Comparison' }, position: { x: 100, y: 400 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
+    { id: '5', data: { label: 'Classification' }, position: { x: 100, y: 500 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
+    { id: '6', data: { label: 'Evaluation' }, position: { x: 100, y: 600 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
+  ];
 
 const initialEdges = [
   { id: 'e1-2', source: '1', target: '2' },
@@ -38,10 +38,12 @@ const DataProcessingFlow = () => {
   const [activeStepId, setActiveStepId] = useState(null);
   const [lastStep, setLastStep] = useState(null);
   const [checkboxValues, setCheckboxValues] = useState({
-  lowercase: false,
-  removeDiacritics: false,
-  removePunctuation: false,
-});
+    lowercase: false,
+    removeDiacritics: false,
+    removePunctuation: false,
+  });
+
+  const initialStyles = initialNodes.map((node) => ({ id: node.id, style: node.style }));
 
 
   useEffect(() => {
@@ -90,39 +92,52 @@ const DataProcessingFlow = () => {
     }
   };
 
-  const updateNodeStyles = (lastStep) => {
-    const lastStepIndex = stepOrder.indexOf(lastStep);
-    const currentStepIndex = lastStepIndex + 1;
+ const updateNodeStyles = (lastStep) => {
+  const lastStepIndex = stepOrder.indexOf(lastStep);
+  const currentStepIndex = lastStepIndex + 1;
 
-    setNodes((prevNodes) =>
-      prevNodes.map((node, index) => {
-        const step = stepOrder[index];
+  // Reset all node styles and labels to their initial state
+  setNodes((prevNodes) =>
+    prevNodes.map((node) => {
+      const originalNode = initialNodes.find((n) => n.id === node.id); // Find matching initial node
+      return {
+        ...node,
+        style: { ...originalNode.style }, // Reset style
+        data: { ...node.data, label: originalNode.data.label }, // Reset label
+      };
+    })
+  );
 
-        if (index === lastStepIndex) {
-          // Style for the previous step
-          return {
-            ...node,
-            style: { ...node.style, background: '#FFDF85', fontWeight: 'bold' },
-          };
-        } else if (index === currentStepIndex) {
-          // Style for the current step
-          return {
-            ...node,
-            style: { ...node.style, background: '#FFD700', border: '2px solid #000' },
-          };
-        } else if (index > currentStepIndex) {
-          // Disable future steps
-          return {
-            ...node,
-            style: { ...node.style, opacity: 0.5, pointerEvents: 'none' },
-            data: { ...node.data, label: `${node.data.label} (Locked)` },
-          };
-        }
+  // Apply styles based on lastStep
+  setNodes((prevNodes) =>
+    prevNodes.map((node, index) => {
+      if (index === lastStepIndex) {
+        // Style for the previous step
+        return {
+          ...node,
+          style: { ...node.style, background: '#FFDF85', fontWeight: 'bold' },
+        };
+      } else if (index === currentStepIndex) {
+        // Style for the current step
+        return {
+          ...node,
+          style: { ...node.style, background: '#FFD700', border: '2px solid #000' },
+        };
+      } else if (index > currentStepIndex) {
+        // Disable future steps
+        const originalNode = initialNodes.find((n) => n.id === node.id); // Use original node for label
+        return {
+          ...node,
+          style: { ...node.style, opacity: 0.5, pointerEvents: 'none' },
+          data: { ...node.data, label: `${originalNode.data.label} (Locked)` }, // Append "(Locked)"
+        };
+      }
 
-        return node; // Keep the rest unchanged
-      })
-    );
-  };
+      return node; // Keep the rest unchanged
+    })
+  );
+};
+
 
   const handleNodeClick = (event, node) => {
     // Allow interaction only with the current step or earlier
@@ -136,63 +151,23 @@ const DataProcessingFlow = () => {
   const handleSave = () => {
     console.log('Saved');
 
-    if (activeStepId && workflowData) {
-      const activeNode = nodes.find((node) => node.id === activeStepId);
-      const lastStepLabel = activeNode ? activeNode.data.label : null;
+    // Find the current step index using activeStepId
+    const currentNode = nodes.find((node) => node.id === activeStepId);
+    const currentStepIndex = nodes.findIndex((node) => node.id === activeStepId);
 
-      if (lastStepLabel) {
-        // Update the `last_step` in the frontend (workflowData state)
-        setWorkflowData((prevData) => ({
-          ...prevData,
-          last_step: lastStepLabel, // Set the last step as the label of the active step
-        }));
+    if (currentStepIndex !== -1) {
+      // Get the corresponding step from stepOrder
+      const currentStepKey = stepOrder[activeStepId-2];
+      // Update lastStep (frontend logic only)
+      setLastStep(currentStepKey);
 
-        // Find the index of the current active node to manage styles for next and previous steps
-        const activeNodeIndex = nodes.findIndex((node) => node.id === activeStepId);
-
-        // Update the nodes to handle previous and next steps
-        setNodes((prevNodes) => {
-          // Clone the previous nodes array to safely mutate
-          const updatedNodes = [...prevNodes];
-
-          // Loop through all nodes and update styles based on their position relative to the active step
-          updatedNodes.forEach((node, index) => {
-            if (index < activeNodeIndex) {
-              // Previous steps should be white (resetting their color)
-              updatedNodes[index] = {
-                ...node,
-                style: { ...node.style, background: 'white', border: '1px solid #777' },
-              };
-            } else if (index === activeNodeIndex) {
-              // The active step stays as it is (or you can highlight it if needed)
-              updatedNodes[index] = {
-                ...node,
-                style: { ...node.style, background: '#ff0', border: '1px solid #ff0' }, // Optional: highlight active step
-              };
-            } else if (index === activeNodeIndex + 1) {
-              // The next step should be unblocked (change color to indicate clickable)
-              updatedNodes[index] = {
-                ...node,
-                style: { ...node.style, background: '#ff0', border: '1px solid #ff0' }, // Highlight next step
-              };
-            } else {
-              // Steps after the next one should remain "blocked"
-              updatedNodes[index] = {
-                ...node,
-                style: { ...node.style, background: '#ddd', border: '1px solid #777' }, // Grey color for blocked steps
-              };
-            }
-          });
-
-          return updatedNodes;
-        });
-      }
+      // Trigger node styles update via updateNodeStyles
+      updateNodeStyles(currentStepKey);
     }
 
-    // Close the sidebar after saving
+    // Close sidebar
     setActiveStepId(null);
   };
-
 
   const handleCancel = () => {
     setActiveStepId(null); // Close sidebar without saving
@@ -224,7 +199,7 @@ const DataProcessingFlow = () => {
           stepId={activeStepId}
           onSave={handleSave}
           onCancel={handleCancel}
-          sharedState={{ checkboxValues, setCheckboxValues }}
+          sharedState={{ checkboxValues, setCheckboxValues }} // This is where the error originates
         />
       )}
     </div>

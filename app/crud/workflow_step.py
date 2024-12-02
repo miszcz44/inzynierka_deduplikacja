@@ -38,3 +38,11 @@ async def save_workflow_step(db: Session, workflow_step: _schemas.WorkflowStep, 
 async def get_last_step(db: Session, workflow_id: int):
     workflow = await get_workflow_by_id(db, workflow_id)
     return workflow.last_step
+
+
+async def get_step(db: Session, workflow_id: int, step_name: str):
+    workflow = await get_workflow_by_id(db, workflow_id)
+    return db.query(_models.WorkflowStep).filter(
+        _models.WorkflowStep.name == step_name,  # Compare by step name
+        _models.WorkflowStep.workflow_id == workflow_id   # Compare by workflow ID
+    ).first()

@@ -1,24 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
   const [columns, setColumns] = useState([]);
-  const [classificationType, setClassificationType] = useState("threshold"); // Default to 'threshold'
-  const [thresholdMatch, setThresholdMatch] = useState(0.5); // Default threshold match value
+  const [classificationType, setClassificationType] = useState("threshold");
+  const [thresholdMatch, setThresholdMatch] = useState(0.5);
   const [columnWeights, setColumnWeights] = useState({});
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
-    fetchFileContent();
+    fetchData();
   }, [workflowId]);
+
+  const fetchData = async () => {
+    setLoading(true); // Start loading
+    try {
+      await fetchFileContent();
+      await fetchSavedChoices();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // Finish loading
+    }
+  };
 
   const fetchFileContent = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8000/api/workflows/${workflowId}/file-content`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/workflows/${workflowId}/file-content`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -42,6 +58,39 @@ const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
     setColumnWeights(initialWeights);
   };
 
+  const fetchSavedChoices = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:8000/api/workflow-step/${workflowId}/step?step_name=CLASSIFICATION`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const parameters = data.parameters;
+
+        if (parameters) {
+          setClassificationType(parameters.classificationType || "threshold");
+          if (parameters.classificationType === "threshold") {
+            setThresholdMatch(parameters.thresholdMatch || 0.5);
+          } else if (parameters.classificationType === "weighted-threshold") {
+            setColumnWeights((prevWeights) => ({
+              ...prevWeights,
+              ...parameters.columnWeights,
+            }));
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching saved choices:", error);
+    }
+  };
+
   const handleWeightChange = (column, value) => {
     setColumnWeights((prev) => ({
       ...prev,
@@ -51,26 +100,30 @@ const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
 
   const handleSave = async () => {
     const payload = {
-      step: "CLASSIFICATION", // Specify the step name
-      parameters: classificationType === "threshold"
-        ? JSON.stringify({ classificationType, thresholdMatch })
-        : JSON.stringify({ classificationType, columnWeights }),
+      step: "CLASSIFICATION",
+      parameters:
+        classificationType === "threshold"
+          ? JSON.stringify({ classificationType, thresholdMatch })
+          : JSON.stringify({ classificationType, columnWeights }),
     };
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8000/api/workflow-step/${workflowId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/workflow-step/${workflowId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (response.ok) {
         console.log("Classification settings saved successfully");
-        onSave(); // Call the parent-provided onSave
+        onSave(); // Notify parent component
       } else {
         const errorData = await response.json();
         console.error("Failed to save workflow step:", errorData.detail);
@@ -81,6 +134,10 @@ const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
       alert("An error occurred. Please try again.");
     }
   };
+
+  if (loading) {
+    return <div className="sidebar">Loading...</div>; // Show a loading state
+  }
 
   return (
     <div className="sidebar">

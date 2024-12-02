@@ -36,3 +36,18 @@ async def get_last_step(
         db,
         workflow_id=workflow_id
     )
+
+
+@router.get("/{workflow_id}/step", status_code=200)
+async def get_step(
+        workflow_id: int,
+        step_name: str,
+        db: Session = Depends(get_db),
+        current_user: _schemas_user = Depends(get_current_user),
+):
+    return await _crud.get_step(
+        db,
+        workflow_id=workflow_id,
+        step_name=step_name
+    )
+

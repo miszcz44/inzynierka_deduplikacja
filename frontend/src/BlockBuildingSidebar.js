@@ -1,27 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const BlockBuildingSidebar = ({ workflowId, onSave, onCancel }) => {
+  const defaultInputs = {
+    windowSize: 5,
+    nLetters: 3,
+    maxWindowSize: 10,
+    threshold: 0.8,
+  };
+
   const [algorithm, setAlgorithm] = useState("standardBlocking"); // Default algorithm
-  const [inputs, setInputs] = useState({
-    windowSize: 5, // Default window size
-    nLetters: 3, // Default number of letters
-    maxWindowSize: 10, // Default max window size
-    threshold: 0.8, // Default threshold
-  });
+  const [inputs, setInputs] = useState(defaultInputs);
+  const [loading, setLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    const fetchStepParameters = async () => {
+      setLoading(true); // Start loading
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          `http://localhost:8000/api/workflow-step/${workflowId}/step?step_name=BLOCK_BUILDING`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+
+          // Check if parameters exist and set state accordingly
+          if (data.parameters) {
+            const params = data.parameters;
+
+            // Set algorithm and input values from response
+            setAlgorithm(params.algorithm || "standardBlocking");
+            setInputs({
+              windowSize: params.inputs?.windowSize || defaultInputs.windowSize,
+              nLetters: params.inputs?.nLetters || defaultInputs.nLetters,
+              maxWindowSize: params.inputs?.maxWindowSize || defaultInputs.maxWindowSize,
+              threshold: params.inputs?.threshold || defaultInputs.threshold,
+            });
+          }
+        } else {
+          console.error("Failed to fetch parameters:", response.statusText);
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching the parameters:", error);
+      } finally {
+        setLoading(false); // Finish loading
+      }
+    };
+
+    fetchStepParameters();
+  }, [workflowId]); // Trigger when workflowId changes
 
   const handleAlgorithmChange = (e) => {
-    setAlgorithm(e.target.value);
-    setInputs({
-      windowSize: 5,
-      nLetters: 3,
-      maxWindowSize: 10,
-      threshold: 0.8,
-    }); // Reset inputs with default values
+    const selectedAlgorithm = e.target.value;
+    setAlgorithm(selectedAlgorithm);
+    setInputs(defaultInputs); // Reset inputs to default when algorithm changes
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (!/^\d*\.?\d*$/.test(value)) return; // Allow only numeric values (integers or floats)
+
+    // Ensure only numeric values are accepted
+    if (!/^\d*\.?\d*$/.test(value)) return;
+
     setInputs((prev) => ({
       ...prev,
       [name]: value,
@@ -29,7 +75,7 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel }) => {
   };
 
   const handleSave = async () => {
-    // Validation
+    // Validation for required fields based on algorithm
     const errors = [];
     if (algorithm === "sortedNeighborhood" && (!inputs.windowSize || !inputs.nLetters)) {
       errors.push("Window size and N letters are required for Sorted Neighborhood Method.");
@@ -43,7 +89,7 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel }) => {
     }
 
     if (errors.length > 0) {
-      alert(errors.join("\n")); // Display validation errors
+      alert(errors.join("\n"));
       return;
     }
 
@@ -52,20 +98,23 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel }) => {
       step: "BLOCK_BUILDING", // Specify the step name
       parameters: JSON.stringify({
         algorithm, // Selected algorithm
-        ...inputs, // Include the input fields
+        inputs, // The input fields
       }),
     };
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8000/api/workflow-step/${workflowId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload), // Send payload
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/workflow-step/${workflowId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload), // Send payload
+        }
+      );
 
       if (response.ok) {
         console.log("Block building step saved successfully");
@@ -80,6 +129,10 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel }) => {
       alert("An error occurred. Please try again.");
     }
   };
+
+  if (loading) {
+    return <div className="sidebar">Loading...</div>; // Show a loading state
+  }
 
   return (
     <div className="sidebar">
