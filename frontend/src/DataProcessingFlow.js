@@ -197,6 +197,7 @@ const DataProcessingFlow = () => {
         <StepSidebarFactory
           workflowId={workflowId}
           stepId={activeStepId}
+          lastStep={lastStep}
           onSave={handleSave}
           onCancel={handleCancel}
           sharedState={{ checkboxValues, setCheckboxValues }} // This is where the error originates

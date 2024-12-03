@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
+const ClassificationSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepId, }) => {
   const [columns, setColumns] = useState([]);
   const [classificationType, setClassificationType] = useState("threshold");
   const [thresholdMatch, setThresholdMatch] = useState(0.5);
@@ -11,6 +11,19 @@ const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
   useEffect(() => {
     fetchData();
   }, [workflowId]);
+
+    const stepOrder = [
+    'DATA_PREPROCESSING',
+    'BLOCK_BUILDING',
+    'FIELD_AND_RECORD_COMPARISON',
+    'CLASSIFICATION',
+    'EVALUATION',
+  ];
+
+  const activeStepIndex = stepOrder.indexOf(stepOrder[activeStepId - 2]);
+  const lastStepIndex = stepOrder.indexOf(lastStep);
+
+  const shouldWarn = activeStepIndex < lastStepIndex;
 
   const fetchData = async () => {
     setLoading(true); // Start loading
@@ -200,6 +213,15 @@ const ClassificationSidebar = ({ workflowId, onSave, onCancel }) => {
           Cancel
         </button>
       </div>
+
+      {shouldWarn && (
+        <div className="warning" style={{ marginTop: '20px', backgroundColor: '#ffcccc', padding: '10px', borderRadius: '5px' }}>
+          <p>
+            Saving this step will reset all steps after "{stepOrder[activeStepIndex]}".
+            You will need to reconfigure them.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

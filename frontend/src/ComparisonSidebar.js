@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const ComparisonSidebar = ({ workflowId, onSave, onCancel }) => {
+const ComparisonSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepId }) => {
   const [columns, setColumns] = useState([]);
   const [selectedAlgorithms, setSelectedAlgorithms] = useState({});
   const [qValue, setQValue] = useState(2); // Default value for Q-gram
@@ -8,6 +8,19 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel }) => {
   const [loading, setLoading] = useState(true); // Loading state
 
   const algorithms = ["jaro-winkler", "Q-gram"];
+
+    const stepOrder = [
+    'DATA_PREPROCESSING',
+    'BLOCK_BUILDING',
+    'FIELD_AND_RECORD_COMPARISON',
+    'CLASSIFICATION',
+    'EVALUATION',
+  ];
+
+  const activeStepIndex = stepOrder.indexOf(stepOrder[activeStepId - 2]);
+  const lastStepIndex = stepOrder.indexOf(lastStep);
+
+  const shouldWarn = activeStepIndex < lastStepIndex;
 
   // Fetch the existing comparison parameters
   useEffect(() => {
@@ -170,6 +183,15 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel }) => {
           Cancel
         </button>
       </div>
+
+      {shouldWarn && (
+        <div className="warning" style={{ marginTop: '20px', backgroundColor: '#ffcccc', padding: '10px', borderRadius: '5px' }}>
+          <p>
+            Saving this step will reset all steps after "{stepOrder[activeStepIndex]}".
+            You will need to reconfigure them.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

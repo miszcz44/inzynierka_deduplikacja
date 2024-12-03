@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react';
 
-const DataPreprocessingSidebar = ({ workflowId, onSave, onCancel, sharedState }) => {
+const DataPreprocessingSidebar = ({ workflowId, lastStep, activeStepId,  onSave, onCancel, sharedState }) => {
   const [loading, setLoading] = useState(true); // Loading state
+
+  const stepOrder = [
+    'DATA_PREPROCESSING',
+    'BLOCK_BUILDING',
+    'FIELD_AND_RECORD_COMPARISON',
+    'CLASSIFICATION',
+    'EVALUATION',
+  ];
+
+  const activeStepIndex = stepOrder.indexOf(stepOrder[activeStepId - 2]);
+  const lastStepIndex = stepOrder.indexOf(lastStep);
+
+  const shouldWarn = activeStepIndex < lastStepIndex;
 
   // Fetch step parameters on mount
   useEffect(() => {
@@ -119,6 +132,15 @@ const DataPreprocessingSidebar = ({ workflowId, onSave, onCancel, sharedState })
           Cancel
         </button>
       </div>
+
+      {shouldWarn && (
+        <div className="warning" style={{ marginTop: '20px', backgroundColor: '#ffcccc', padding: '10px', borderRadius: '5px' }}>
+          <p>
+            Saving this step will reset all steps after "{stepOrder[activeStepIndex]}".
+            You will need to reconfigure them.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

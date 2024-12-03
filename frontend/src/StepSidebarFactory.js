@@ -4,7 +4,7 @@ import BlockBuildingSidebar from './BlockBuildingSidebar';
 import ComparisonSidebar from './ComparisonSidebar';
 import ClassificationSidebar from './ClassificationSidebar';
 
-const StepSidebarFactory = ({ workflowId, stepId, onSave, onCancel, sharedState }) => {
+const StepSidebarFactory = ({ workflowId, stepId, lastStep, onSave, onCancel, sharedState }) => {
   switch (stepId) {
     case '2':
       return (
@@ -12,6 +12,8 @@ const StepSidebarFactory = ({ workflowId, stepId, onSave, onCancel, sharedState 
           workflowId={workflowId}
           onSave={onSave}
           onCancel={onCancel}
+          lastStep={lastStep} // Pass lastStep
+          activeStepId={stepId}
           sharedState={sharedState}
         />
       );
@@ -20,6 +22,8 @@ const StepSidebarFactory = ({ workflowId, stepId, onSave, onCancel, sharedState 
         <BlockBuildingSidebar
           workflowId={workflowId}
           onSave={onSave}
+          lastStep={lastStep} // Pass lastStep
+          activeStepId={stepId}
           onCancel={onCancel}
         />
       );
@@ -27,6 +31,8 @@ const StepSidebarFactory = ({ workflowId, stepId, onSave, onCancel, sharedState 
         return (
           <ComparisonSidebar
             workflowId={workflowId}
+            lastStep={lastStep} // Pass lastStep
+            activeStepId={stepId}
             onSave={onSave}
             onCancel={onCancel}
           />
@@ -35,6 +41,8 @@ const StepSidebarFactory = ({ workflowId, stepId, onSave, onCancel, sharedState 
         return (
           <ClassificationSidebar
             workflowId={workflowId}
+            lastStep={lastStep} // Pass lastStep
+            activeStepId={stepId}
             onSave={onSave}
             onCancel={onCancel}
           />

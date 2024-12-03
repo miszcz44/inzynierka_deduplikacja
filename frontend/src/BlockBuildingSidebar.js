@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 
-const BlockBuildingSidebar = ({ workflowId, onSave, onCancel }) => {
+const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepId }) => {
   const defaultInputs = {
     windowSize: 5,
     nLetters: 3,
     maxWindowSize: 10,
     threshold: 0.8,
   };
+
+    const stepOrder = [
+    'DATA_PREPROCESSING',
+    'BLOCK_BUILDING',
+    'FIELD_AND_RECORD_COMPARISON',
+    'CLASSIFICATION',
+    'EVALUATION',
+  ];
+
+  const activeStepIndex = stepOrder.indexOf(stepOrder[activeStepId - 2]);
+  const lastStepIndex = stepOrder.indexOf(lastStep);
+
+  const shouldWarn = activeStepIndex < lastStepIndex;
 
   const [algorithm, setAlgorithm] = useState("standardBlocking"); // Default algorithm
   const [inputs, setInputs] = useState(defaultInputs);
@@ -216,6 +229,15 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel }) => {
           Cancel
         </button>
       </div>
+
+      {shouldWarn && (
+        <div className="warning" style={{ marginTop: '20px', backgroundColor: '#ffcccc', padding: '10px', borderRadius: '5px' }}>
+          <p>
+            Saving this step will reset all steps after "{stepOrder[activeStepIndex]}".
+            You will need to reconfigure them.
+          </p>
+        </div>
+      )}
     </div>
   );
 };
