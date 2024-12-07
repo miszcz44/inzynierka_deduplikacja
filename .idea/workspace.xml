@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/pipeline/BlockBuilding.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pipeline/Classifier.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pipeline/Comparison.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pipeline/DataPreprocessing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pipeline/Evaluation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pipeline/ReadData.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,9 +22,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -76,6 +83,7 @@
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="inzynierka_deduplikacja" />
+      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -160,6 +168,7 @@
       <workItem from="1733159908363" duration="8240000" />
       <workItem from="1733168600474" duration="1241000" />
       <workItem from="1733251992411" duration="2398000" />
+      <workItem from="1733580414966" duration="9118000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Add react frontend, configure docker containers">
       <created>1722272364083</created>

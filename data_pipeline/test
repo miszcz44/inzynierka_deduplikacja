@@ -1,0 +1,23 @@
+,block_id,row1,row2,name_similarity,address_similarity,city_similarity,cuisine_similarity,row1_name,row2_name,row1_address,row2_address,row1_city,row2_city,row1_cuisine,row2_cuisine,weighted_similarity,normalized_similarity,classification
+83,1,11,12,1.0,0.9789473684210527,1.0,0.6666666666666666,buckhead diner,buckhead diner, 3073 piedmont road, 3073 piedmont rd, atlanta, atlanta, american, american new,2.5122807017543862,0.92313855504904,Match
+294,4,47,48,1.0,0.9096774193548387,1.0,1.0,nikolais roof,nikolais roof, 255 courtland st, 255 courtland st  at harris st, atlanta, atlanta, continental, continental,2.609677419354839,0.9630175260350521,Match
+547,8,77,82,1.0,0.87983789260385,1.0,1.0,la grotta,la grotta, 2637 peachtree rd  peachtree house condominium, 2637 peachtree rd ne, atlanta, atlanta, italian, italian,2.5798378926038503,0.9507997670503954,Match
+612,8,80,81,1.0,0.8712454212454211,1.0,1.0,abruzzi,abruzzi, 2355 peachtree rd  peachtree battle shopping center, 2355 peachtree rd ne, atlanta, atlanta, italian, italian,2.5712454212454214,0.9472815898012749,Match
+828,11,97,104,1.0,1.0,1.0,1.0,mary macs tea room,mary macs tea room, 224 ponce de leon ave, 224 ponce de leon ave, atlanta, atlanta, southernsoul, southern,2.7,1.0,Match
+2341,65,362,364,1.0,1.0,0.9285714285714286,0.6666666666666666,gotham bar  grill,gotham bar  grill, 12 e 12th st, 12 e 12th st, new york city, new york, american new, american,2.5190476190476194,0.9259092613423323,Match
+2393,65,370,372,1.0,1.0,0.9285714285714286,0.6666666666666666,aureole,aureole, 34 e 61st st, 34 e 61st st, new york city, new york, american new, american,2.5190476190476194,0.9259092613423323,Match
+2436,65,355,356,1.0,1.0,0.9285714285714286,0.6666666666666666,union square cafe,union square cafe, 21 e 16th st, 21 e 16th st, new york, new york city, american, american new,2.5190476190476194,0.9259092613423323,Match
+2645,66,373,383,1.0,1.0,0.9285714285714286,0.6666666666666666,21 club,21 club, 21 w 52nd st, 21 w 52nd st, new york, new york city, american, american new,2.5190476190476194,0.9259092613423323,Match
+3549,73,490,497,1.0,1.0,0.9285714285714286,0.6,daniel,daniel, 20 e 76th st, 20 e 76th st, new york, new york city, french, french new,2.4857142857142858,0.9122609673790776,Match
+3964,77,544,556,1.0,1.0,0.9285714285714286,1.0,felidia,felidia, 243 e 58th st, 243 e 58th st, new york city, new york, italian, italian,2.685714285714286,0.9941507311586052,Match
+4168,78,566,569,1.0,1.0,0.9285714285714286,1.0,san domenico,san domenico, 240 central park s, 240 central park s, new york city, new york, italian, italian,2.685714285714286,0.9941507311586052,Match
+4274,78,557,559,1.0,0.8682926829268294,0.9285714285714286,1.0,carmines,carmines, 2450 broadway, 2450 broadway  between 90th and 91st sts, new york city, new york, italian, italian,2.554006968641115,0.9402233257428187,Match
+4562,80,603,606,1.0,0.8846153846153847,0.9285714285714286,1.0,mi cocina,mi cocina, 57 jane st, 57 jane st  off hudson st, new york city, new york, mexican, mexican,2.57032967032967,0.9469066366704161,Match
+4701,83,628,637,1.0,1.0,0.9285714285714286,1.0,manhattan ocean club,manhattan ocean club, 57 w 58th st, 57 w 58th st, new york city, new york, seafood, seafood,2.685714285714286,0.9941507311586052,Match
+4739,83,633,636,1.0,0.8947368421052632,0.9285714285714286,1.0,pisces,pisces, 95 ave a at 6th st, 95 ave a, new york, new york city, seafood, seafood,2.5804511278195488,0.9510508554851695,Match
+4859,83,624,625,1.0,1.0,0.9285714285714286,1.0,oceana,oceana, 55 e 54th st, 55 e 54th st, new york city, new york, seafood, seafood,2.685714285714286,0.9941507311586052,Match
+4991,96,675,678,1.0,1.0,1.0,0.6666666666666666,boulevard,boulevard, 1 mission st, 1 mission st, san francisco, san francisco, american new, american,2.5333333333333337,0.9317585301837271,Match
+5061,96,670,671,1.0,1.0,1.0,0.6666666666666666,campton place,campton place, 340 stockton st, 340 stockton st, san francisco, san francisco, american new, american,2.5333333333333337,0.9317585301837271,Match
+5495,99,732,733,1.0,1.0,1.0,0.6,masas,masas, 648 bush st, 648 bush st, san francisco, san francisco, french new, french,2.5,0.9181102362204724,Match
+5588,99,726,727,1.0,1.0,1.0,0.6,fleur de lys,fleur de lys, 777 sutter st, 777 sutter st, san francisco, san francisco, french, french new,2.5,0.9181102362204724,Match
+5671,100,744,747,1.0,1.0,1.0,0.6,la folie,la folie, 2316 polk st, 2316 polk st, san francisco, san francisco, french new, french,2.5,0.9181102362204724,Match
