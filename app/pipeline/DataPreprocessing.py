@@ -3,7 +3,7 @@ import numpy as np
 import unicodedata
 import string
 import re
-
+import json
 
 class DataPreprocessing:
     def __init__(self, data):
@@ -137,3 +137,13 @@ class DataPreprocessing:
         :return: Preprocessed pandas DataFrame.
         """
         return self.processed_data
+
+    def dataframe_to_jsonb(self):
+        """
+        Convert a DataFrame to a JSONB-compatible string.
+        :param dataframe: pandas DataFrame
+        :return: JSON string
+        """
+        # Convert the DataFrame to a JSON string
+        json_data = self.processed_data.to_json(orient='records', date_format='iso')
+        return json.loads(json_data)

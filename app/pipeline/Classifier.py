@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import json
 
 class Classifier:
     def __init__(self, blocked_data, comparison_table):
@@ -12,7 +13,8 @@ class Classifier:
         self.comparison_table = comparison_table
         self.classification_results = None  # To store classification results
 
-    def classify_matches(self, method='threshold_based', thresholds=None, weights=None, possible_match=False, costs=None, probabilities=None):
+    def classify_matches(self, method='threshold_based', thresholds=None, weights=None, possible_match=False,
+                         costs=None, probabilities=None):
         """
         Classify the results based on the selected method.
         :param method: The classification method to use ('threshold_based', 'weighted', 'cost_based').
@@ -96,12 +98,12 @@ class Classifier:
         P_M = probabilities['M']
         P_U = probabilities['U']
         merged_data['cost_non_match'] = (
-            costs['non_match_true_match'] * merged_data['average_similarity'] * P_M +
-            costs['non_match_true_non_match'] * (1 - merged_data['average_similarity']) * P_U
+                costs['non_match_true_match'] * merged_data['average_similarity'] * P_M +
+                costs['non_match_true_non_match'] * (1 - merged_data['average_similarity']) * P_U
         )
         merged_data['cost_match'] = (
-            costs['match_true_match'] * merged_data['average_similarity'] * P_M +
-            costs['match_true_non_match'] * (1 - merged_data['average_similarity']) * P_U
+                costs['match_true_match'] * merged_data['average_similarity'] * P_M +
+                costs['match_true_non_match'] * (1 - merged_data['average_similarity']) * P_U
         )
 
         merged_data['classification'] = merged_data.apply(
@@ -164,3 +166,13 @@ class Classifier:
         :return: Dictionary of parameters.
         """
         return self.parameters
+
+    def dataframe_to_jsonb(self):
+        """
+        Convert a DataFrame to a JSONB-compatible string.
+        :param dataframe: pandas DataFrame
+        :return: JSON string
+        """
+        # Convert the DataFrame to a JSON string
+        json_data = self.classification_results.to_json(orient='records', date_format='iso')
+        return json.loads(json_data)

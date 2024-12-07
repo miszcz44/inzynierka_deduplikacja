@@ -3,7 +3,7 @@ import numpy as np
 from fuzzywuzzy import fuzz
 from jellyfish import soundex
 import itertools
-
+import json
 
 class Comparison:
     def __init__(self, data):
@@ -119,3 +119,14 @@ class Comparison:
         :return: Dictionary of methods and their parameters.
         """
         return self.parameters
+
+    def dataframe_to_jsonb(self):
+        """
+        Convert a DataFrame to a JSONB-compatible string.
+        :param dataframe: pandas DataFrame
+        :return: JSON string
+        """
+        # Convert the DataFrame to a JSON string
+        json_data = self.comparison_results.to_json(orient='records', date_format='iso')
+        return json.loads(json_data)
+

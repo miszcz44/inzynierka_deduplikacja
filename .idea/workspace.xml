@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/pipeline/BlockBuilding.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pipeline/Classifier.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pipeline/Comparison.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pipeline/DataPreprocessing.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pipeline/Evaluation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/pipeline/ReadData.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/pipeline/BlockBuilding.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/BlockBuilding.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/pipeline/Classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/Classifier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/pipeline/Comparison.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/Comparison.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/pipeline/DataPreprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/DataPreprocessing.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,7 +165,7 @@
       <workItem from="1733159908363" duration="8240000" />
       <workItem from="1733168600474" duration="1241000" />
       <workItem from="1733251992411" duration="2398000" />
-      <workItem from="1733580414966" duration="9118000" />
+      <workItem from="1733580414966" duration="9890000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Add react frontend, configure docker containers">
       <created>1722272364083</created>

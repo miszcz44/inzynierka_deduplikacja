@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from fuzzywuzzy import fuzz
 from jellyfish import soundex
-
+import json
 
 class BlockBuilding:
     def __init__(self, data, method):
@@ -191,3 +191,13 @@ class BlockBuilding:
             raise ValueError("No blocks have been generated. Run block building first.")
 
         return self.blocks
+
+    def dataframe_to_jsonb(self):
+        """
+        Convert a DataFrame to a JSONB-compatible string.
+        :param dataframe: pandas DataFrame
+        :return: JSON string
+        """
+        # Convert the DataFrame to a JSON string
+        json_data = self.blocks.to_json(orient='records', date_format='iso')
+        return json.loads(json_data)
