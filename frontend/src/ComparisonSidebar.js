@@ -7,7 +7,7 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepI
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true); // Loading state
 
-  const algorithms = ["jaro-winkler", "Q-gram"];
+  const algorithms = ["Jaro-Winkler", "Q-gram", "Levenshtein"];
 
     const stepOrder = [
     'DATA_PREPROCESSING',
@@ -46,41 +46,51 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepI
 
       const fileData = await fileResponse.json();
       const uniqueColumns = fileData.columns || [];
-      setColumns(uniqueColumns);
+
+      const filteredColumns = uniqueColumns.filter((column) => column !== "ID");
+      setColumns(filteredColumns);
 
       // Initialize algorithms with default values
-      const initialAlgorithms = uniqueColumns.reduce((acc, column) => {
-        acc[column] = "jaro-winkler";
+      const initialAlgorithms = filteredColumns.reduce((acc, column) => {
+        acc[column] = "Jaro-Winkler"; // Default value for each column
         return acc;
       }, {});
+
+      // Update selected algorithms with initial value
+      setSelectedAlgorithms(initialAlgorithms);
 
       // Fetch existing step parameters
       const stepResponse = await fetch(
         `http://localhost:8000/api/workflow-step/${workflowId}/step?step_name=FIELD_AND_RECORD_COMPARISON`,
         {
+          method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
       if (stepResponse.ok) {
         const stepData = await stepResponse.json();
-        const parameters = stepData.parameters || {};
 
-        setSelectedAlgorithms({
-          ...initialAlgorithms,
-          ...parameters.selectedAlgorithms,
-        });
+        if (stepData.parameters) {
+          const parameters = stepData.parameters || {};
 
-        if (parameters.qValue) {
-          setQValue(parameters.qValue);
+          // Update selected algorithms based on existing parameters
+          setSelectedAlgorithms((prevState) => ({
+            ...prevState,
+            ...parameters.selectedAlgorithms, // Merge previous state and existing step data
+          }));
+
+          if (parameters.qValue) {
+            setQValue(parameters.qValue); // Set qValue if it exists
+          }
+        } else {
+          console.warn("No existing parameters found.");
         }
       } else {
         console.warn("No existing parameters found.");
-        setSelectedAlgorithms(initialAlgorithms);
       }
     } catch (err) {
       console.error("Error during data fetching:", err);
-      setError("An error occurred while loading data.");
     } finally {
       setLoading(false); // Finish loading
     }

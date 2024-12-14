@@ -53,13 +53,14 @@ class Comparison:
         score = matches / total_qgrams if total_qgrams > 0 else 0
         return max(0, min(1, score))  # Ensure the value is between 0 and 1
 
-    def compare_within_blocks(self, block_col, column_algorithms):
+    def compare_within_blocks(self, column_algorithms):
         """
         Compare all possible pairs within each block for specified columns.
         :param block_col: The column name containing block IDs.
         :param column_algorithms: Dictionary where keys are column names and values are comparison functions.
         :return: DataFrame with comparison results for all pairs in each block.
         """
+        block_col = "block_id"
         if block_col not in self.data.columns:
             raise ValueError(f"Block column '{block_col}' not found in data.")
 

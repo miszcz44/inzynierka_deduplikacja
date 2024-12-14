@@ -170,6 +170,15 @@ async def get_workflow_file_content(workflow_id: int, db: Session, user_id: int)
     return extract_unique_columns(project.file_content)
 
 
+async def get_workflow_processed_data(workflow_id: int, db: Session, user_id: int):
+    workflow = await get_workflow_by_id(db=db, workflow_id=workflow_id)
+
+    if workflow is None:
+        raise HTTPException(status_code=404, detail="Workflow not found")
+
+    return workflow.processed_data
+
+
 def extract_unique_columns(data: list) -> set:
     """
     Recursively extracts all unique keys from a list of dictionaries, handling nested objects.

@@ -86,6 +86,19 @@ async def get_workflow_file_content(
     }
 
 
+@router.get("/{workflow_id}/processed-data")
+async def get_workflow_processed_data(
+        workflow_id: int,
+        db: Session = Depends(get_db),
+        current_user: _schemas_user = Depends(get_current_user)
+):
+    return await _crud.get_workflow_processed_data(
+        workflow_id=workflow_id,
+        db=db,
+        user_id=current_user.id
+    )
+
+
 @router.put("/{workflow_id}/set-file", status_code=200)
 async def set_file(
         workflow_id: int,

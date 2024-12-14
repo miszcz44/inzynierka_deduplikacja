@@ -13,6 +13,7 @@ class Workflow(Base):
     filename = Column(String)
     last_step = Column(String)
     processed_data = Column(JSONB)
+    block_building_data = Column(JSONB)
     date_created = Column(DateTime, default=dt.datetime.utcnow, nullable=False)
     date_updated = Column(DateTime, default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow, nullable=False)
     workflow_steps = relationship("WorkflowStep", back_populates="workflow", cascade="all, delete-orphan")

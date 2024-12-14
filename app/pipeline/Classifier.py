@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import json
 
+
 class Classifier:
     def __init__(self, blocked_data, comparison_table):
         """
