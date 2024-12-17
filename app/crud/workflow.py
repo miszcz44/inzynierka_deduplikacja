@@ -3,6 +3,7 @@ from crud.project import get_project_by_id
 from fastapi import HTTPException, UploadFile
 import models.workflow as _models
 import schemas.workflow as _schemas
+from models.enums.step_name import StepName
 import datetime as _dt
 from typing import List
 import json
@@ -176,7 +177,16 @@ async def get_workflow_processed_data(workflow_id: int, db: Session, user_id: in
     if workflow is None:
         raise HTTPException(status_code=404, detail="Workflow not found")
 
-    return workflow.processed_data
+    if workflow.last_step == StepName.DATA_PREPROCESSING:
+        return workflow.preprocessing_data
+    if workflow.last_step == StepName.BLOCK_BUILDING:
+        return workflow.block_building_data
+    if workflow.last_step == StepName.FIELD_AND_RECORD_COMPARISON:
+        return workflow.comparison_data
+    if workflow.last_step == StepName.CLASSIFICATION:
+        return workflow.classification_data
+
+    return workflow.preprocessing_data
 
 
 def extract_unique_columns(data: list) -> set:

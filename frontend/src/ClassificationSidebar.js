@@ -66,11 +66,11 @@ const ClassificationSidebar = ({
       if (response.ok) {
         const data = await response.json();
         const uniqueColumns = data.columns || [];
-        const filteredColumns = uniqueColumns.filter(
-          (column) => column !== "ID"
-        );
+        const filteredColumns = uniqueColumns
+          .filter((column) => column !== "ID")
+          .map((column) => `${column}_similarity`); // Add '_similarity' suffix
         setColumns(filteredColumns);
-        initializeWeights(uniqueColumns);
+        initializeWeights(filteredColumns);
       } else {
         const err = await response.json();
         setError(err.detail || "Failed to fetch file content");

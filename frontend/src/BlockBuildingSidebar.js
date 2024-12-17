@@ -8,7 +8,7 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
     threshold: 0.8,
   };
 
-    const stepOrder = [
+  const stepOrder = [
     'DATA_PREPROCESSING',
     'BLOCK_BUILDING',
     'FIELD_AND_RECORD_COMPARISON',
@@ -78,12 +78,10 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Ensure only numeric values are accepted
-    if (!/^\d*\.?\d*$/.test(value)) return;
-
+    // Parse numeric inputs to their appropriate type
     setInputs((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "threshold" ? parseFloat(value) : parseInt(value, 10) || "", // Handle empty or invalid values
     }));
   };
 
@@ -170,7 +168,7 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
             id="windowSize"
             name="windowSize"
             min="1"
-            value={inputs.windowSize}
+            value={inputs.windowSize || ""}
             onChange={handleInputChange}
           />
 
@@ -180,7 +178,7 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
             id="nLetters"
             name="nLetters"
             min="1"
-            value={inputs.nLetters}
+            value={inputs.nLetters || ""}
             onChange={handleInputChange}
           />
         </div>
@@ -194,7 +192,7 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
             id="maxWindowSize"
             name="maxWindowSize"
             min="1"
-            value={inputs.maxWindowSize}
+            value={inputs.maxWindowSize || ""}
             onChange={handleInputChange}
           />
 
@@ -204,7 +202,7 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
             id="nLetters"
             name="nLetters"
             min="1"
-            value={inputs.nLetters}
+            value={inputs.nLetters || ""}
             onChange={handleInputChange}
           />
 
@@ -215,7 +213,7 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
             name="threshold"
             min="0"
             step="0.01"
-            value={inputs.threshold}
+            value={inputs.threshold || ""}
             onChange={handleInputChange}
           />
         </div>
