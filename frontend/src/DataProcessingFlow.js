@@ -3,14 +3,16 @@ import ReactFlow, { MiniMap, Controls, Background, useNodesState, useEdgesState 
 import './css/Sidebar.css';
 import StepSidebarFactory from './StepSidebarFactory';
 import { useParams } from "react-router-dom";
+import PreprocessingModal from './PreprocessingModal';
+import Modal from "./Modal"; // Import the Modal component
 
-  const initialNodes = [
-    { id: '2', data: { label: 'Data Pre-processing' }, position: { x: 100, y: 200 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
-    { id: '3', data: { label: 'Block Building' }, position: { x: 100, y: 300 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
-    { id: '4', data: { label: 'Field and Record Comparison' }, position: { x: 100, y: 400 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
-    { id: '5', data: { label: 'Classification' }, position: { x: 100, y: 500 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
-    { id: '6', data: { label: 'Evaluation' }, position: { x: 100, y: 600 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
-  ];
+const initialNodes = [
+  { id: '2', data: { label: 'Data Pre-processing' }, position: { x: 100, y: 200 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
+  { id: '3', data: { label: 'Block Building' }, position: { x: 100, y: 300 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
+  { id: '4', data: { label: 'Field and Record Comparison' }, position: { x: 100, y: 400 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
+  { id: '5', data: { label: 'Classification' }, position: { x: 100, y: 500 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
+  { id: '6', data: { label: 'Evaluation' }, position: { x: 100, y: 600 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
+];
 
 const initialEdges = [
   { id: 'e1-2', source: '1', target: '2' },
@@ -43,8 +45,9 @@ const DataProcessingFlow = () => {
     removePunctuation: false,
   });
 
-  const initialStyles = initialNodes.map((node) => ({ id: node.id, style: node.style }));
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
 
+  const initialStyles = initialNodes.map((node) => ({ id: node.id, style: node.style }));
 
   useEffect(() => {
     loadWorkflowData();
@@ -92,86 +95,82 @@ const DataProcessingFlow = () => {
     }
   };
 
- const updateNodeStyles = (lastStep) => {
-  const lastStepIndex = stepOrder.indexOf(lastStep);
-  const currentStepIndex = lastStepIndex + 1;
+  const updateNodeStyles = (lastStep) => {
+    const lastStepIndex = stepOrder.indexOf(lastStep);
+    const currentStepIndex = lastStepIndex + 1;
 
-  // Reset all node styles and labels to their initial state
-  setNodes((prevNodes) =>
-    prevNodes.map((node) => {
-      const originalNode = initialNodes.find((n) => n.id === node.id); // Find matching initial node
-      return {
-        ...node,
-        style: { ...originalNode.style }, // Reset style
-        data: { ...node.data, label: originalNode.data.label }, // Reset label
-      };
-    })
-  );
-
-  // Apply styles based on lastStep
-  setNodes((prevNodes) =>
-    prevNodes.map((node, index) => {
-      if (index === lastStepIndex) {
-        // Style for the previous step
+    setNodes((prevNodes) =>
+      prevNodes.map((node) => {
+        const originalNode = initialNodes.find((n) => n.id === node.id);
         return {
           ...node,
-          style: { ...node.style, background: '#FFDF85', fontWeight: 'bold' },
+          style: { ...originalNode.style },
+          data: { ...node.data, label: originalNode.data.label },
         };
-      } else if (index === currentStepIndex) {
-        // Style for the current step
-        return {
-          ...node,
-          style: { ...node.style, background: '#FFD700', border: '2px solid #000' },
-        };
-      } else if (index > currentStepIndex) {
-        // Disable future steps
-        const originalNode = initialNodes.find((n) => n.id === node.id); // Use original node for label
-        return {
-          ...node,
-          style: { ...node.style, opacity: 0.5, pointerEvents: 'none' },
-          data: { ...node.data, label: `${originalNode.data.label} (Locked)` }, // Append "(Locked)"
-        };
-      }
+      })
+    );
 
-      return node; // Keep the rest unchanged
-    })
-  );
-};
-
+    setNodes((prevNodes) =>
+      prevNodes.map((node, index) => {
+        if (index === lastStepIndex) {
+          return {
+            ...node,
+            style: { ...node.style, background: '#FFDF85', fontWeight: 'bold' },
+          };
+        } else if (index === currentStepIndex) {
+          return {
+            ...node,
+            style: { ...node.style, background: '#FFD700', border: '2px solid #000' },
+          };
+        } else if (index > currentStepIndex) {
+          const originalNode = initialNodes.find((n) => n.id === node.id);
+          return {
+            ...node,
+            style: { ...node.style, opacity: 0.5, pointerEvents: 'none' },
+            data: { ...node.data, label: `${originalNode.data.label} (Locked)` },
+          };
+        }
+        return node;
+      })
+    );
+  };
 
   const handleNodeClick = (event, node) => {
-    // Allow interaction only with the current step or earlier
     const nodeStepIndex = stepOrder.indexOf(node.data.label.replace(' (Locked)', ''));
     const lastStepIndex = stepOrder.indexOf(lastStep);
     if (nodeStepIndex <= lastStepIndex + 1) {
-      setActiveStepId(node.id); // Set the active step ID
+      setActiveStepId(node.id);
     }
   };
 
   const handleSave = () => {
     console.log('Saved');
-
-    // Find the current step index using activeStepId
     const currentNode = nodes.find((node) => node.id === activeStepId);
     const currentStepIndex = nodes.findIndex((node) => node.id === activeStepId);
 
     if (currentStepIndex !== -1) {
-      // Get the corresponding step from stepOrder
-      const currentStepKey = stepOrder[activeStepId-2];
-      // Update lastStep (frontend logic only)
+      const currentStepKey = stepOrder[activeStepId - 2];
       setLastStep(currentStepKey);
-
-      // Trigger node styles update via updateNodeStyles
       updateNodeStyles(currentStepKey);
     }
 
-    // Close sidebar
     setActiveStepId(null);
   };
 
   const handleCancel = () => {
-    setActiveStepId(null); // Close sidebar without saving
+    setActiveStepId(null);
   };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Only render the modal and open button if lastStep is not null
+  const shouldOpenModal = lastStep !== null;
 
   return (
     <div style={{ display: 'flex', height: '800px' }}>
@@ -200,9 +199,34 @@ const DataProcessingFlow = () => {
           lastStep={lastStep}
           onSave={handleSave}
           onCancel={handleCancel}
-          sharedState={{ checkboxValues, setCheckboxValues }} // This is where the error originates
+          sharedState={{ checkboxValues, setCheckboxValues }}
         />
       )}
+
+      {/* Only show the "Open Modal" button if the lastStep exists */}
+      {shouldOpenModal && !isModalOpen && (
+        <button
+          style={{
+            position: 'fixed',
+            left: '20px',
+            bottom: '30px',
+            width: '10%',
+            padding: '10px 0',
+            background: '#FF4500',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            zIndex: 1001, // Ensure the button is above other elements
+          }}
+          onClick={openModal}
+        >
+          Open Modal
+        </button>
+      )}
+
+      {/* Modal component */}
+      {shouldOpenModal && <Modal isOpen={isModalOpen} onClose={closeModal} workflowId={workflowId} lastStep={lastStep} />}
     </div>
   );
 };

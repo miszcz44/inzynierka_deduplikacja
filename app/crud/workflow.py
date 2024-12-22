@@ -171,11 +171,32 @@ async def get_workflow_file_content(workflow_id: int, db: Session, user_id: int)
     return extract_unique_columns(project.file_content)
 
 
+
+async def get_workflow_content(workflow_id: int, db: Session, user_id: int):
+    workflow = await get_workflow_by_id(db=db, workflow_id=workflow_id)
+
+    if workflow is None:
+        raise HTTPException(status_code=404, detail="Workflow not found")
+
+    project = await get_project_by_id(db=db, project_id=workflow.project_id)
+
+    if project.user_id != user_id:
+        raise HTTPException(status_code=403,
+                            detail="Not enough permissions to access this workflow")
+
+    if not project.file_content:
+        raise HTTPException(status_code=404, detail="No file content available for this workflow")
+
+    return project.file_content
+
+
 async def get_workflow_processed_data(workflow_id: int, db: Session, user_id: int):
     workflow = await get_workflow_by_id(db=db, workflow_id=workflow_id)
 
     if workflow is None:
         raise HTTPException(status_code=404, detail="Workflow not found")
+
+    project = await get_project_by_id(db=db, project_id=workflow.project_id)
 
     if workflow.last_step == StepName.DATA_PREPROCESSING:
         return workflow.preprocessing_data
@@ -186,7 +207,7 @@ async def get_workflow_processed_data(workflow_id: int, db: Session, user_id: in
     if workflow.last_step == StepName.CLASSIFICATION:
         return workflow.classification_data
 
-    return workflow.preprocessing_data
+    return project.file_content
 
 
 def extract_unique_columns(data: list) -> set:
