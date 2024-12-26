@@ -1,5 +1,8 @@
 import React from 'react';
-import PreprocessingModal from './PreprocessingModal'; // Assuming PreprocessingModal is in the same folder
+import PreprocessingModal from './PreprocessingModal';
+import BlockBuildingModal from "./BlockBuildingModal";
+import FieldAndRecordComparisonModal from "./FieldAndRecordComparisonModal";
+import ClassificationModal from "./ClassificationModal";
 
 const stepOrder = [
   'DATA_PREPROCESSING',
@@ -10,26 +13,23 @@ const stepOrder = [
 ];
 
 const BaseModal = ({ isOpen, onClose, workflowId, lastStep }) => {
-  // Determine which step to display based on lastStep value
   const renderStepComponent = () => {
     switch (lastStep) {
       case 'DATA_PREPROCESSING':
         return <PreprocessingModal isOpen={isOpen} onClose={onClose} workflowId={workflowId} lastStep={lastStep} />;
-      // Add other cases for different steps as needed, for example:
-      // case 'BLOCK_BUILDING':
-      //   return <BlockBuildingModal isOpen={isOpen} onClose={onClose} />;
-      // case 'FIELD_AND_RECORD_COMPARISON':
-      //   return <FieldAndRecordComparisonModal isOpen={isOpen} onClose={onClose} />;
-      // case 'CLASSIFICATION':
-      //   return <ClassificationModal isOpen={isOpen} onClose={onClose} />;
-      // case 'EVALUATION':
-      //   return <EvaluationModal isOpen={isOpen} onClose={onClose} />;
+      case 'BLOCK_BUILDING':
+        return <BlockBuildingModal isOpen={isOpen} onClose={onClose} workflowId={workflowId} lastStep={lastStep} />;
+      case 'FIELD_AND_RECORD_COMPARISON':
+        return <FieldAndRecordComparisonModal isOpen={isOpen} onClose={onClose} workflowId={workflowId} lastStep={lastStep} />;
+      case 'CLASSIFICATION':
+        return <ClassificationModal isOpen={isOpen} onClose={onClose} workflowId={workflowId} lastStep={lastStep}/>
       default:
         return <div>Unknown step</div>;
     }
   };
 
   if (!isOpen) return null; // Don't render anything if the modal is not open
+  if (isOpen && lastStep === 'FIELD_AND_RECORD_COMPARISON') return (<div>{renderStepComponent()}</div>);
 
   return (
     <div
@@ -46,6 +46,31 @@ const BaseModal = ({ isOpen, onClose, workflowId, lastStep }) => {
         zIndex: 1000, // Ensure the modal is above everything
       }}
     >
+      {/* Hoverable close button with 'Close' label */}
+      <div
+        onClick={onClose}
+        style={{
+          position: 'absolute',
+          top: '3%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          padding: '10px 20px',
+          backgroundColor: 'white',
+          borderRadius: '20px',
+          boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+          cursor: 'pointer',
+          zIndex: 1100,
+          fontSize: '18px',
+          fontWeight: 'bold',
+          textAlign: 'center',
+          marginBottom: '20px'
+        }}
+        onMouseOver={(e) => (e.target.style.backgroundColor = '#f0f0f0')}
+        onMouseOut={(e) => (e.target.style.backgroundColor = 'white')}
+      >
+        Close
+      </div>
+
       <div
         style={{
           backgroundColor: 'white',
@@ -57,31 +82,7 @@ const BaseModal = ({ isOpen, onClose, workflowId, lastStep }) => {
           overflow: 'auto', // Ensure scroll if content overflows
         }}
       >
-        <button
-          onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: '10px',
-            right: '10px',
-            width: '5%', // 5% of the modal width
-            height: '5%', // 5% of the modal height
-            backgroundColor: 'transparent',
-            border: 'none',
-            fontSize: '24px',
-            color: 'black', // Set color to black
-            cursor: 'pointer',
-            padding: '0',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontWeight: 'bold',
-          }}
-        >
-          X
-        </button>
-
         <h2 style={{ textAlign: 'center' }}>Workflow Step: {lastStep}</h2>
-
         {renderStepComponent()}
       </div>
     </div>

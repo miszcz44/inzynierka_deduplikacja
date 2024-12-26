@@ -1,0 +1,100 @@
+/* FieldAndRecordComparisonModal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  max-height: 80%;
+}
+
+.modal-content.loading {
+  text-align: center;
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.comparison-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.comparison-block {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+.block-selector {
+  margin-bottom: 20px;
+}
+
+.comparison-block h3 {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.comparison-rows {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.row-data {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.row-data h4 {
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.row-data p {
+  margin: 5px 0;
+}
+
+.similarity-scores {
+  margin-top: 10px;
+  padding: 10px;
+  background: #eaf4ff;
+  border-radius: 4px;
+}
+
+.similarity-scores p {
+  margin: 5px 0;
+  color: #003366;
+}

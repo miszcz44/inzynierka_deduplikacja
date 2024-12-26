@@ -21,15 +21,7 @@ const fetchWorkflowData = async (workflowId, endpoint) => {
   }
 };
 
-// Function to compare data and highlight differences
-const compareData = (inputRow, processedRow) => {
-  return Object.keys(inputRow).map((key) => {
-    return inputRow[key] !== processedRow[key];
-  });
-};
-
-const PreprocessingModal = ({ isOpen, onClose, workflowId, lastStep }) => {
-  const [inputData, setInputData] = useState([]);
+const BlockBuildingModal = ({ isOpen, onClose, workflowId }) => {
   const [processedData, setProcessedData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,9 +29,7 @@ const PreprocessingModal = ({ isOpen, onClose, workflowId, lastStep }) => {
     if (isOpen) {
       const fetchData = async () => {
         setLoading(true);
-        const input = await fetchWorkflowData(workflowId, 'content');
         const processed = await fetchWorkflowData(workflowId, 'processed-data');
-        setInputData(input);
         setProcessedData(processed);
         setLoading(false);
       };
@@ -82,17 +72,6 @@ const PreprocessingModal = ({ isOpen, onClose, workflowId, lastStep }) => {
     );
   }
 
-  // Create a merged list of input and processed rows
-  const mergedData = inputData.map((inputRow) => {
-    const matchingProcessedRow = processedData.find(
-      (processedRow) => processedRow.ID === inputRow.ID
-    );
-    return {
-      inputRow,
-      processedRow: matchingProcessedRow || {}, // Use empty object if no match
-    };
-  });
-
   return (
     <div
       style={{
@@ -120,54 +99,30 @@ const PreprocessingModal = ({ isOpen, onClose, workflowId, lastStep }) => {
         }}
       >
 
-        <h2 style={{ textAlign: 'center' }}>Data Comparison</h2>
+        <h2 style={{ textAlign: 'center' }}>Block Building Data</h2>
 
-        {/* Combined Table */}
+        {/* Table to display processed data */}
         <div>
           <table style={{ width: '100%', borderCollapse: 'collapse', overflowX: 'auto' }}>
             <thead>
               <tr>
-                {Object.keys(inputData[0] || {}).map((key) => (
-                  <th key={`input-${key}`} style={{ border: '1px solid black', padding: '5px' }}>
-                    {key} (Input)
-                  </th>
-                ))}
                 {Object.keys(processedData[0] || {}).map((key) => (
-                  <th key={`processed-${key}`} style={{ border: '1px solid black', padding: '5px' }}>
-                    {key} (Processed)
+                  <th key={key} style={{ border: '1px solid black', padding: '5px' }}>
+                    {key}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {mergedData.map(({ inputRow, processedRow }) => {
-                const differences = compareData(inputRow, processedRow);
-
-                return (
-                  <tr key={inputRow.ID}>
-                    {Object.entries(inputRow).map(([key, value]) => (
-                      <td
-                        key={`input-${key}`}
-                        style={{ border: '1px solid black', padding: '5px' }}
-                      >
-                        {value}
-                      </td>
-                    ))}
-                    {Object.entries(processedRow).map(([key, value], index) => (
-                      <td
-                        key={`processed-${key}`}
-                        style={{
-                          border: '1px solid black',
-                          padding: '5px',
-                          backgroundColor: differences[index] ? '#FFAAAA' : '', // Highlight if different
-                        }}
-                      >
-                        {value}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
+              {processedData.map((row) => (
+                <tr key={row.ID}>
+                  {Object.entries(row).map(([key, value]) => (
+                    <td key={key} style={{ border: '1px solid black', padding: '5px' }}>
+                      {value}
+                    </td>
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -176,4 +131,4 @@ const PreprocessingModal = ({ isOpen, onClose, workflowId, lastStep }) => {
   );
 };
 
-export default PreprocessingModal;
+export default BlockBuildingModal;
