@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pipeline/Evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/Evaluation.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +163,7 @@
       <workItem from="1734196413594" duration="449000" />
       <workItem from="1734541304144" duration="1012000" />
       <workItem from="1734681479850" duration="17000" />
-      <workItem from="1735324850960" duration="3113000" />
+      <workItem from="1735324850960" duration="6798000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Add react frontend, configure docker containers">
       <created>1722272364083</created>
