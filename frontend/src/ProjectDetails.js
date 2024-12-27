@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, ListGroup, Alert, Form, Modal } from 'react-bootstrap';
+import { BackButton, HomeButton } from './Buttons';
 
 const ProjectDetails = () => {
   const { projectId } = useParams();
@@ -83,7 +84,7 @@ const ProjectDetails = () => {
         const { message } = await response.json();
         setError(message);
       } else {
-        setError('Wystąpił błąd podczas aktualizacji projektu.');
+        setError('An error occurred while updating the project.');
       }
       return;
     }
@@ -92,13 +93,13 @@ const ProjectDetails = () => {
 
     setIsEditing(false);
   } catch (err) {
-    setError('Wystąpił błąd podczas komunikacji z serwerem.');
+    setError('An error occurred while communicating with the server.');
   }
 };
 
   const handleCreateWorkflow = async () => {
     if (!newWorkflowTitle) {
-      setWorkflowError('Tytuł workflow nie może być pusty.');
+      setWorkflowError('Workflow name cannot be empty.');
       return;
     }
 
@@ -122,7 +123,7 @@ const ProjectDetails = () => {
           const { detail } = await response.json();
           setWorkflowError(detail.message);
         } else {
-          setWorkflowError('Wystąpił błąd podczas tworzenia workflow.');
+          setWorkflowError('An error occurred while creating the workflow.');
         }
         return;
       }
@@ -131,12 +132,12 @@ const ProjectDetails = () => {
       navigate(`/projects/${projectId}/workflow/${newWorkflow.id}`);
 
     } catch (err) {
-      setWorkflowError('Wystąpił błąd podczas komunikacji z serwerem.');
+      setWorkflowError('An error occurred while communicating with the server.');
     }
   };
 
   const handleDelete = async () => {
-    if (window.confirm('Czy na pewno chcesz usunąć ten projekt?')) {
+    if (window.confirm('Do you really want to delete this project?')) {
       try {
         const token = localStorage.getItem('token');
         const response = await fetch(`http://localhost:8000/api/projects/${projectId}`, {
@@ -151,15 +152,15 @@ const ProjectDetails = () => {
           return;
         }
 
-        navigate('/dashboard', { state: { message: 'Projekt został usunięty pomyślnie.' } });
+        navigate('/dashboard', { state: { message: 'Project was deleted successfully' } });
       } catch (err) {
-        setError('Wystąpił błąd podczas komunikacji z serwerem.');
+        setError('An error occurred while communicating with the server.');
       }
     }
   };
 
   if (loading) {
-    return <div>Ładowanie...</div>;
+    return <div>Loading...</div>;
   }
 
   const handleOpenUpdateModal = (workflow) => {
@@ -227,14 +228,17 @@ const ProjectDetails = () => {
 
   return (
     <Container fluid className="mt-4">
+      <BackButton/>
+      <HomeButton/>
+      
       {error && <Alert variant="danger" className="text-center">{error}</Alert>}
-      <h2 className="text-center mb-4">Szczegóły projektu: {projectData !== null ? projectData.title : 'd'}</h2>
+      <h2 className="text-center mb-4">Project details: {projectData !== null ? projectData.title : 'd'}</h2>
 
       <Row className="mb-4">
         <Col md={8} className="mx-auto">
           <Card>
             <Card.Header as="h5" className="d-flex justify-content-between align-items-center">
-              Informacje o projekcie
+              Information about the project
               <div>
                 <Button
                   size="sm"
@@ -245,7 +249,7 @@ const ProjectDetails = () => {
                   onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#343a40'}
                   onMouseOut={(e) => e.currentTarget.style.backgroundColor = ''}
                 >
-                  Edytuj
+                  Edit
                 </Button>
                 <Button
                   size="sm"
@@ -256,7 +260,7 @@ const ProjectDetails = () => {
                   onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#627577'}
                   onMouseOut={(e) => e.currentTarget.style.backgroundColor = ''}
                 >
-                  Usuń
+                  Delete
                 </Button>
               </div>
             </Card.Header>
@@ -264,7 +268,7 @@ const ProjectDetails = () => {
               {isEditing ? (
     <Form>
       <Form.Group className="mb-3" controlId="projectTitle">
-        <Form.Label>Tytuł</Form.Label>
+        <Form.Label>Title</Form.Label>
         <Form.Control
           type="text"
           value={title}
@@ -272,12 +276,12 @@ const ProjectDetails = () => {
           isInvalid={!title && isEditing}
         />
         <Form.Control.Feedback type="invalid">
-          Tytuł nie może być pusty.
+          Title cannot be empty.
         </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="projectDescription">
-        <Form.Label>Opis</Form.Label>
+        <Form.Label>Description</Form.Label>
         <Form.Control
           as="textarea"
           rows={3}
@@ -292,7 +296,7 @@ const ProjectDetails = () => {
         className="me-2"
         disabled={!title}
       >
-        Zapisz
+        Save
       </Button>
 
       <Button
@@ -300,25 +304,25 @@ const ProjectDetails = () => {
         onClick={() => setIsEditing(false)}
         className="mt-2"
       >
-        Anuluj
+        Cancel
       </Button>
     </Form>
               ) : (
                 <>
                   <Card.Text>
-                    <strong>Tytuł:</strong> {projectData.title}
+                    <strong>Title:</strong> {projectData.title}
                   </Card.Text>
                   <Card.Text>
-                    <strong>Opis:</strong> {projectData.description}
+                    <strong>Description:</strong> {projectData.description}
                   </Card.Text>
                   <Card.Text>
-                    <strong>Plik:</strong> {projectData.filename}
+                    <strong>File:</strong> {projectData.filename}
                   </Card.Text>
                   <Card.Text>
-                    <strong>Data utworzenia:</strong> {projectData.date_created.slice(0, 19).replace('T', ' ')}
+                    <strong>Creation date:</strong> {projectData.date_created.slice(0, 19).replace('T', ' ')}
                   </Card.Text>
                   <Card.Text>
-                    <strong>Data aktualizacji:</strong> {projectData.date_updated.slice(0, 19).replace('T', ' ')}
+                    <strong>Update date:</strong> {projectData.date_updated.slice(0, 19).replace('T', ' ')}
                   </Card.Text>
                 </>
               )}
@@ -330,7 +334,7 @@ const ProjectDetails = () => {
       <Row>
         <Col md={8} className="mx-auto">
           <Card>
-            <Card.Header as="h5">Workflowy</Card.Header>
+            <Card.Header as="h5">Workflows</Card.Header>
             <Card.Body>
               <ListGroup>
                 {workflows.map((workflow) => (
@@ -338,7 +342,7 @@ const ProjectDetails = () => {
                     <span>
                       {workflow.title}{" "}
                       <Link to={`/projects/${projectId}/workflow/${workflow.id}`}>
-                        Zobacz wyniki
+                        Show results
                       </Link>
                     </span>
 
@@ -369,7 +373,7 @@ const ProjectDetails = () => {
                 className="mt-3"
                 onClick={() => setShowCreateModal(true)}
               >
-                Utwórz nowy workflow
+                Create new workflow
               </Button>
             </Card.Body>
           </Card>
@@ -408,13 +412,13 @@ const ProjectDetails = () => {
 
       <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Utwórz nowy workflow</Modal.Title>
+          <Modal.Title>Create new workflow</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {workflowError && <Alert variant="danger">{workflowError}</Alert>}
           <Form>
             <Form.Group controlId="workflowTitle">
-              <Form.Label>Tytuł workflow</Form.Label>
+              <Form.Label>Workflow title</Form.Label>
               <Form.Control
                 type="text"
                 value={newWorkflowTitle}
@@ -422,17 +426,17 @@ const ProjectDetails = () => {
                 isInvalid={!newWorkflowTitle}
               />
               <Form.Control.Feedback type="invalid">
-                Tytuł workflow nie może być pusty.
+                Workflow title cannot be empty.
               </Form.Control.Feedback>
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleCreateWorkflow}>
-            Utwórz
+            Create
           </Button>
           <Button variant="secondary" onClick={() => setShowCreateModal(false)}>
-            Anuluj
+            Cancel
           </Button>
         </Modal.Footer>
       </Modal>

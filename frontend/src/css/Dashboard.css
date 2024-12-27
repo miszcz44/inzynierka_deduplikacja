@@ -1,0 +1,74 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    font-family: Arial, sans-serif;
+    background-color: #D0D0D0;
+}
+
+.navbar-brand {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 2.5rem;
+}
+
+.p-margin {
+    padding: 32px;
+    font-size: 2rem;
+}
+
+.div-button {
+    display: inline-block;
+    width: 500px;
+    height: 250px;
+    background: #D2F5FF;
+    border-radius: 24px;
+    outline-style: solid;
+    outline-color: #98B4BC;
+    outline-width: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.button-title {
+    height: 30%;
+    width: 100%;
+    border-radius: 24px 24px 0px 0px;
+    background: #768C8C;
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 2rem;
+    padding: 0 10px;
+    position: relative;
+}
+
+.button-title .icon {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    margin-left: 30px;
+    margin-top: -45px;
+    position: relative;
+    z-index: 1;
+  }
+
+.button-title .title-text {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+.button-desc {
+    height: 70%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
