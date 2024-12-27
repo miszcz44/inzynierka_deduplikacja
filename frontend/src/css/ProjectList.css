@@ -1,5 +1,5 @@
 .project-list-container {
-  margin: 20px;
+  padding-bottom: 32px;
   font-family: Arial, sans-serif;
 }
 
@@ -50,4 +50,121 @@ h1 {
 
 .pagination__link--disabled {
   color: #ccc;
+}
+
+.div-project {
+  display: inline-block;
+  min-width: 200px;
+  width: 20%;
+  max-width: 20%;
+  min-height: 90%;
+  max-height: 90%;
+  padding: 32px;
+  background: #FFF6E3;
+  border-radius: 24px;
+  outline-style: solid;
+  outline-color: #FFDF9A;
+  outline-width: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.project-title {
+  font-size: 1.5rem;
+  border-radius: 24px;
+  font-weight: bold;
+  background: #D1D0D0;
+  width: 100%;
+  padding: 4px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 3;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  min-height: 100px;
+  max-height: 100px;
+  word-break: break-word;
+  border: 2px solid #b3b3b3;
+}
+
+.div-project hr {
+  width: 100%;
+  border: none;
+  border-top: 2px solid black;
+  margin: 8px 0;
+  flex-grow: 0;
+}
+
+.project-description {
+  font-size: 1rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 4px;
+  text-align: left;
+  flex-grow: 8;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.project-date, .project-workflows, .project-id {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  width: 100%;
+  padding: 4px;
+  text-align: left;
+  flex-grow: 0;
+}
+
+.div-project button {
+  align-self: center;
+  margin-top: auto;
+  width: 100%;
+  flex-grow: 2;
+  padding: 4px;
+  background-color: purple;
+  color:white;
+  font-size: 2rem;
+}
+
+.div-nav-button {
+  display: inline-block;
+  padding: 10px;
+  background-color: #7486FF;
+  color: white;
+  border: 2px solid black;
+  border-radius: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.div-nav-button .icon {
+  width: 40px;
+  height: 40px;
+}
+
+.back-button {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 99999;
+}
+
+.home-button {
+  position: fixed;
+  top: 94px;
+  left: 14px;
+  z-index: 99999;
 }
