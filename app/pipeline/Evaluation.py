@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import json
 
 class Evaluation:
     def __init__(self, source_data, classified_data):
@@ -10,6 +11,7 @@ class Evaluation:
         """
         self.source_data = source_data
         self.classified_data = classified_data
+        self.evaluated_data = None
 
     def show_matches_side_by_side(self):
         """
@@ -43,6 +45,7 @@ class Evaluation:
         result_df = pd.DataFrame(rows)
         columns = ['dedup_id'] + [col for col in result_df.columns if col != 'dedup_id']
         result_df = result_df[columns]
+        self.evaluated_data = result_df
 
         return result_df
 
@@ -105,3 +108,12 @@ class Evaluation:
             })
         return pd.DataFrame(stats)
 
+    def dataframe_to_jsonb(self):
+        """
+        Convert a DataFrame to a JSONB-compatible string.
+        :param dataframe: pandas DataFrame
+        :return: JSON string
+        """
+        # Convert the DataFrame to a JSON string
+        json_data = self.evaluated_data.to_json(orient='records', date_format='iso')
+        return json.loads(json_data)
