@@ -24,9 +24,10 @@ class Evaluation:
         dedup_id = 1
 
         for _, row in matches.iterrows():
+
             # Get rows for row1 and row2 from source data
-            row1 = self.source_data.iloc[row['row1']].copy()
-            row2 = self.source_data.iloc[row['row2']].copy()
+            row1 = self.source_data.iloc[int(row['row1'])].copy()
+            row2 = self.source_data.iloc[int(row['row2'])].copy()
 
             # Add 'dropped' column
             row1['dropped'] = 'NO'
