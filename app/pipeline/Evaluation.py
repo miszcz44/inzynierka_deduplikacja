@@ -1,6 +1,6 @@
 import pandas as pd
-import numpy as np
 import json
+
 
 class Evaluation:
     def __init__(self, source_data, classified_data):
@@ -9,9 +9,13 @@ class Evaluation:
         :param source_data: DataFrame containing the original source data.
         :param classified_data: DataFrame containing classified match results.
         """
+        self.json_data = None
         self.source_data = source_data
         self.classified_data = classified_data
         self.evaluated_data = None
+        self.matches = None
+        self.statistics = None
+        self.used_parameters = None
 
     def show_matches_side_by_side(self):
         """
@@ -24,31 +28,22 @@ class Evaluation:
         dedup_id = 1
 
         for _, row in matches.iterrows():
-
-            # Get rows for row1 and row2 from source data
             row1 = self.source_data.iloc[int(row['row1'])].copy()
             row2 = self.source_data.iloc[int(row['row2'])].copy()
 
-            # Add 'dropped' column
             row1['dropped'] = 'NO'
             row2['dropped'] = 'YES'
-
             row1['dedup_id'] = dedup_id
             row2['dedup_id'] = dedup_id
 
             dedup_id += 1
-
-            # Append both rows
             rows.append(row1)
             rows.append(row2)
 
-            # Combine all rows into a single DataFrame
         result_df = pd.DataFrame(rows)
         columns = ['dedup_id'] + [col for col in result_df.columns if col != 'dedup_id']
-        result_df = result_df[columns]
-        self.evaluated_data = result_df
-
-        return result_df
+        self.matches = result_df[columns]
+        return self.matches
 
     def get_deduplicated_data(self):
         """
@@ -56,25 +51,20 @@ class Evaluation:
         :return: Deduplicated DataFrame.
         """
         to_drop = self.classified_data[self.classified_data['classification'] == 'Match']['row2'].unique()
-        deduplicated_data = self.source_data.drop(index=to_drop).reset_index(drop=True)
-        return deduplicated_data
+        self.evaluated_data = self.source_data.drop(index=to_drop).reset_index(drop=True)
+        return self.evaluated_data
 
     def get_statistics(self):
         """
-        Get statistics about the deduplication process, including:
-        - Row count before deduplication
-        - Row count after deduplication
-        - Duplicate percentage
-        - Average similarity of rows in blocks (block_id).
+        Get statistics about the deduplication process.
         :return: DataFrame with statistics.
         """
         row_count_before = len(self.source_data)
         deduplicated_data = self.get_deduplicated_data()
         row_count_after = len(deduplicated_data)
         num_duplicates = row_count_before - row_count_after
-        duplicate_percentage = ((row_count_before - row_count_after) / row_count_before) * 100
+        duplicate_percentage = (num_duplicates / row_count_before) * 100
 
-        # Average similarity within blocks
         avg_similarity_per_block = (
             self.classified_data.groupby('block_id')['normalized_similarity']
             .mean()
@@ -90,11 +80,11 @@ class Evaluation:
             'Average similarity per block': round(avg_similarity_per_block['avg_similarity'].mean(), 2)
         }
 
-        stats_df = pd.DataFrame([stats])
-        return stats_df
+        self.statistics = pd.DataFrame([stats])
+        return self.statistics
 
     @staticmethod
-    def used_methods_parameters(*workflow_objects):
+    def used_methods_parameters(self, *workflow_objects):
         """
         Collect statistics about all workflow steps into a table.
         :param workflow_objects: Instances of classes (e.g., BlockBuilding, Comparison, Classifier).
@@ -107,14 +97,39 @@ class Evaluation:
                 'Method': obj.used_methods(),
                 'Parameters': obj.used_parameters(),
             })
-        return pd.DataFrame(stats)
+        self.used_parameters = pd.DataFrame(stats)
+        return self.used_parameters
 
-    def dataframe_to_jsonb(self):
+    def dataframes_to_jsonb(self):
         """
-        Convert a DataFrame to a JSONB-compatible string.
-        :param dataframe: pandas DataFrame
-        :return: JSON string
+        Convert multiple DataFrames to a JSONB-compatible string.
+        :return: JSON-compatible string containing all DataFrames.
         """
-        # Convert the DataFrame to a JSON string
-        json_data = self.evaluated_data.to_json(orient='records', date_format='iso')
-        return json.loads(json_data)
+        dataframes_dict = {
+            'evaluated_data': self.evaluated_data,
+            'matches': self.matches,
+            'statistics': self.statistics,
+        }
+
+        json_data = {}
+        for keyword, dataframe in dataframes_dict.items():
+            if dataframe is not None:
+                json_data[keyword] = json.loads(dataframe.to_json(orient='records', date_format='iso'))
+
+        self.json_data = json.dumps(json_data, indent=4)
+        return self.json_data
+
+    def retrieve_dataframe_from_jsonb(self, keyword):
+        """
+        Retrieve a specific DataFrame from a JSONB-compatible string.
+        :param keyword: The keyword of the desired DataFrame.
+        :return: The reconstructed pandas DataFrame.
+        """
+        if not self.json_data:
+            raise ValueError("No JSON data available. Call `dataframes_to_jsonb()` first.")
+
+        json_dict = json.loads(self.json_data)
+        if keyword not in json_dict:
+            raise KeyError(f"Keyword '{keyword}' not found in the JSON data.")
+
+        return pd.DataFrame(json_dict[keyword])
