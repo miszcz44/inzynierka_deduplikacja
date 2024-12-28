@@ -4,10 +4,13 @@ from fastapi import HTTPException, UploadFile
 import models.workflow as _models
 import schemas.workflow as _schemas
 from models.enums.step_name import StepName
+from pipeline.Evaluation import Evaluation
 import datetime as _dt
 from typing import List
+import pandas as pd
 import json
 import csv
+import random
 
 MAX_FILE_SIZE = 10 * 1024 * 1024
 
@@ -208,6 +211,31 @@ async def get_workflow_processed_data(workflow_id: int, db: Session, user_id: in
         return workflow.classification_data
 
     return project.file_content
+
+
+async def get_evaluation(workflow_id: int, db: Session, user_id: int):
+    workflow = await get_workflow_by_id(db=db, workflow_id=workflow_id)
+
+    if workflow is None:
+        raise HTTPException(status_code=404, detail="Workflow not found")
+
+    project = await get_project_by_id(db=db, project_id=workflow.project_id)
+
+    source_data = pd.DataFrame(project.file_content)
+    classified_data = pd.DataFrame(workflow.classification_data)
+
+    evaluation = Evaluation(source_data, classified_data)
+    random_number = random.randint(1, 4)
+    evaluation.dataframes_to_jsonb()
+
+    if(random_number == 1):
+        return evaluation.retrieve_dataframe_from_jsonb('statistics')
+    if (random_number == 2):
+        return evaluation.retrieve_dataframe_from_jsonb('evaluated_data')
+    if(random_number == 3):
+        return evaluation.retrieve_dataframe_from_jsonb('matches')
+    if(random_number == 4):
+        return evaluation.used_methods_parameters
 
 
 def extract_unique_columns(data: list) -> set:
