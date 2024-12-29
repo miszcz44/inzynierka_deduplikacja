@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, Form, UploadFile, File
 from sqlalchemy.orm import Session
 import schemas.user as _schemas_user
+import schemas.statistics as _schemas_statistics
 import schemas.workflow as _schemas
 import crud.workflow as _crud
 from common.dependencies import get_db, get_current_user
 from typing import Dict, Any, List
+from crud.workflow import get_workflow_by_id, get_statistics
 
 
 router = APIRouter(
@@ -112,16 +114,96 @@ async def get_workflow_processed_data(
     )
 
 
-@router.get("/{workflow_id}/evaluation")
-async def get_workflow_processed_data(
-        workflow_id: int,
+@router.get("/{workflow_id}/statistics")
+async def get_workflow_statistics(workflow_id: int,
         db: Session = Depends(get_db),
-        current_user: _schemas_user = Depends(get_current_user)
-):
+        current_user: _schemas_user = Depends(get_current_user)):
+
     return await _crud.get_evaluation(
         workflow_id=workflow_id,
         db=db,
-        user_id=current_user.id
+        user_id=current_user.id,
+        type='statistics'
+    )
+
+
+@router.get("/{workflow_id}/deduplicated-data")
+async def get_workflow_deduplicated_data(workflow_id: int,
+                                  db: Session = Depends(get_db),
+                                  current_user: _schemas_user = Depends(get_current_user)):
+    return await _crud.get_evaluation(
+        workflow_id=workflow_id,
+        db=db,
+        user_id=current_user.id,
+        type='evaluated_data'
+    )
+
+
+@router.get("/{workflow_id}/matches")
+async def get_workflow_matches(workflow_id: int,
+                                  db: Session = Depends(get_db),
+                                  current_user: _schemas_user = Depends(get_current_user)):
+    return await _crud.get_evaluation(
+        workflow_id=workflow_id,
+        db=db,
+        user_id=current_user.id,
+        type='matches'
+    )
+
+
+@router.get("/{workflow_id}/parameters")
+async def get_workflow_matches(workflow_id: int,
+                                  db: Session = Depends(get_db),
+                                  current_user: _schemas_user = Depends(get_current_user)):
+    return await _crud.get_parameters(
+        workflow_id=workflow_id,
+        db=db,
+        user_id=current_user.id,
+    )
+
+
+@router.get("/{statistics_id}/get_statistics")
+async def get_statistics(statistics_id: int,
+                                  db: Session = Depends(get_db),
+                                  current_user: _schemas_user = Depends(get_current_user)):
+    return await _crud.get_statistics(
+        statistics_id=statistics_id,
+        db=db,
+        user_id=current_user,
+    )
+
+
+@router.get("/{statistics_id}/get_parameters")
+async def get_params(statistics_id: int,
+                                  db: Session = Depends(get_db),
+                                  current_user: _schemas_user = Depends(get_current_user)):
+    statistics = await get_statistics(statistics_id, db, current_user.id)
+    workflow = await get_workflow_by_id(db, statistics.workflow_id)
+    return await _crud.get_parameters(
+        workflow_id=workflow.id,
+        db=db,
+        user_id=current_user.id,
+    )
+
+
+@router.post("/{workflow_id}/save-statistics")
+async def save_statistics(workflow_id: int,
+                                  db: Session = Depends(get_db),
+                                  title: str = Form(...),
+                                  current_user: _schemas_user = Depends(get_current_user)):
+    return await _crud.save_statistics(
+        workflow_id=workflow_id,
+        db=db,
+        title=title,
+        user_id=current_user.id,
+    )
+
+
+@router.get("/statistics-list")
+async def get_statistics_list(db: Session = Depends(get_db), current_user: _schemas_user = Depends(get_current_user)):
+    return await _crud.get_statistics_list(
+        db=db,
+        user_id=current_user.id,
     )
 
 

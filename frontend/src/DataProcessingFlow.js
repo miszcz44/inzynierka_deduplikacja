@@ -207,7 +207,7 @@ const DataProcessingFlow = () => {
       )}
 
       {/* Only show the "Open Modal" button if the lastStep exists */}
-      {shouldOpenModal && !isModalOpen && (
+      {shouldOpenModal && !isModalOpen && lastStep !== 'CLASSIFICATION' && (
         <button
           style={{
             position: 'fixed',

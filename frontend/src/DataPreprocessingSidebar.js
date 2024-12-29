@@ -124,7 +124,7 @@ const DataPreprocessingSidebar = ({ workflowId, lastStep, activeStepId,  onSave,
         />
       </div>
 
-      <div className="button-group">
+      <div className="button-group1">
         <button className="save-button" onClick={handleSave}>
           Save
         </button>

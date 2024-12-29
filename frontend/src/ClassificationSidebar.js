@@ -354,7 +354,7 @@ const ClassificationSidebar = ({
         <div className="validation-error">{validationError}</div>
       )}
 
-      <div className="button-group">
+      <div className="button-group1">
         <button className="save-button" onClick={handleSave}>
           Save
         </button>

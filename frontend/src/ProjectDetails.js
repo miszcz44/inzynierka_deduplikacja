@@ -129,7 +129,7 @@ const ProjectDetails = () => {
       }
 
       const newWorkflow = await response.json();
-      navigate(`/projects/${projectId}/workflow/${newWorkflow.id}`);
+      navigate(`/workflow/${newWorkflow.id}`);
 
     } catch (err) {
       setWorkflowError('An error occurred while communicating with the server.');
@@ -341,7 +341,7 @@ const ProjectDetails = () => {
                   <ListGroup.Item key={workflow.id} className="d-flex justify-content-between align-items-center">
                     <span>
                       {workflow.title}{" "}
-                      <Link to={`/projects/${projectId}/workflow/${workflow.id}`}>
+                      <Link to={`/workflow/${workflow.id}`}>
                         Show results
                       </Link>
                     </span>

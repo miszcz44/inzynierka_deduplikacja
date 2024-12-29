@@ -35,6 +35,23 @@ const ClassificationModal = ({ isOpen, onClose, data }) => {
         zIndex: 1000,
       }}
     >
+
+          <button
+            onClick={onClose}
+            style={{
+              position: 'absolute',
+              top: 'calc(50% - 250px)', // Adjust this value for distance above modal
+              transform: 'translateY(-100%)', // Move the button above the modal dynamically
+              backgroundColor: '#f1f1f1',
+              border: '1px solid #ccc',
+              padding: '10px 20px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              zIndex: 1001, // Ensure it's above the modal
+            }}
+          >
+            Close
+          </button>
       <div
         style={{
           backgroundColor: 'white',
@@ -46,22 +63,6 @@ const ClassificationModal = ({ isOpen, onClose, data }) => {
           overflow: 'auto',
         }}
       >
-        <button
-          onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: '10px',
-            right: '10px',
-            backgroundColor: 'transparent',
-            border: 'none',
-            fontSize: '16px',
-            color: 'black',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-          }}
-        >
-          Close
-        </button>
 
         <h2 style={{ textAlign: 'center' }}>Classification Results</h2>
 

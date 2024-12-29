@@ -88,7 +88,7 @@
 }
 
 /* Button styles */
-.button-group {
+.button-group1 {
   display: flex;
   gap: 10px;
   margin-top: 20px;
@@ -130,7 +130,7 @@
     position: fixed; /* Ensures it stays fixed on mobile */
   }
 
-  .button-group {
+  .button-group1 {
     flex-direction: column; /* Stack buttons vertically */
     gap: 15px;
   }
