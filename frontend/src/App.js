@@ -15,6 +15,7 @@ import ProjectDetails from "./ProjectDetails";
 import ProjectList from "./ProjectList"
 import StatisticsView from "./StatisticsView";
 import ReadableStatisticsView from "./ReadableStatisticsView";
+import StatisticsList from "./StatisticsList";
 
 const Version = () => {
   const [version, setVersion] = useState('');
@@ -58,11 +59,6 @@ const App = () => {
                     <Settings />
                 </ProtectedRoute>
             } />
-            <Route path="/statistics" element={
-                <ProtectedRoute>
-                    <Statistics />
-                </ProtectedRoute>
-            } />
             <Route path="/upload" element={
                 <ProtectedRoute>
                     <FileUpload />
@@ -101,6 +97,11 @@ const App = () => {
             <Route path="/statistics/:statisticsId" element={
                 <ProtectedRoute>
                     <ReadableStatisticsView />
+                </ProtectedRoute>
+            } />
+            <Route path="/statistics" element={
+                <ProtectedRoute>
+                    <StatisticsList/>
                 </ProtectedRoute>
             } />
         </Routes>

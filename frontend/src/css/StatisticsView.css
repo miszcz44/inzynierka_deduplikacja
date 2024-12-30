@@ -74,29 +74,33 @@
     overflow: auto;
     width: 100%;
     overflow-x: auto;
-      white-space: nowrap; /* Prevents wrapping of table rows */
+    white-space: nowrap; /* Prevents wrapping of table rows */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    /*table-layout: fixed;*/
 }
 
-table th,
-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+table th {
+  cursor: pointer;
+  background-color: #f2f2f2;
+  /* Removed sticky positioning */
+}
+
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 th {
     cursor: pointer;
     background-color: #f2f2f2;
-    position: sticky;
     top: 0;
 }
 

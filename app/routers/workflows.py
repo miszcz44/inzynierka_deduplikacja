@@ -199,7 +199,7 @@ async def save_statistics(workflow_id: int,
     )
 
 
-@router.get("/statistics-list")
+@router.get("/get/statistics-list")
 async def get_statistics_list(db: Session = Depends(get_db), current_user: _schemas_user = Depends(get_current_user)):
     return await _crud.get_statistics_list(
         db=db,

@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="tmp: endpoint to test evaluation">
-      <change afterPath="$PROJECT_DIR$/app/models/statistics.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/schemas/statistics.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/workflow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pipeline/BlockBuilding.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/BlockBuilding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pipeline/Comparison.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/Comparison.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pipeline/Evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/Evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/workflows.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/workflows.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -175,6 +168,7 @@
       <workItem from="1735324850960" duration="6798000" />
       <workItem from="1735474015035" duration="6252000" />
       <workItem from="1735488305886" duration="16290000" />
+      <workItem from="1735578408093" duration="6810000" />
     </task>
     <task id="LOCAL-00001" summary="feat: Add react frontend, configure docker containers">
       <created>1722272364083</created>

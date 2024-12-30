@@ -212,7 +212,7 @@ useEffect(() => {
         <h3><strong>Workflow Statistics</strong></h3>
         <div className="button-group">
           <button onClick={() => {navigate(`/workflow/${workflowId}`);}}>Go to Workflow</button>
-          <button onClick={() => {/* Add navigation logic */}}>Go to Statistics List</button>
+          <button onClick={() => {navigate(`/statistics`);}}>Go to Statistics List</button>
         </div>
       </div>
       <div className="card-container">
