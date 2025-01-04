@@ -125,21 +125,6 @@ const Dashboard = () => {
             </div>
           </div>
         </Col>
-        <Col className="d-flex justify-content-center align-items-center">
-          <div className="div-button"> 
-            <div className="button-title">
-              <img src="./images/cog.png" alt="Icon" className="icon" />
-              <div className="title-text">
-                <p>Settings</p>
-              </div>
-            </div>
-            <div className="button-desc">
-              <div className="text-center">
-                <p>TODO</p>
-              </div>
-            </div>
-          </div>
-        </Col>
       </Row>
 
       <Modal show={showModal} onHide={handleCloseModal}>

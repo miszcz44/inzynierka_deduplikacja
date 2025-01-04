@@ -4,14 +4,17 @@ import { Navbar, Container, Row, Col, Button } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
 import './css/ProjectList.css';
 import { BackButton, HomeButton } from './Buttons';
+import Loading from './Loading';
 
 const ProjectList = () => {
   const [projects, setProjects] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
+  const [loading, setLoading] = useState(true);
   const projectsPerPage = 4;
 
   useEffect(() => {
     const fetchProjects = async () => {
+      setLoading(true);
       const token = localStorage.getItem('token');
 
       try {
@@ -27,6 +30,7 @@ const ProjectList = () => {
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
+      setLoading(false);
     };
 
     fetchProjects();
@@ -120,13 +124,17 @@ const ProjectList = () => {
         />
       </div>*/}
 
+      {loading ? (
+        <Loading />
+      ) : (<></>)}
+
       <Navbar bg="dark" variant="dark" className="navbar">
         <Container>
           <Navbar.Brand className="navbar-brand">Your Projects</Navbar.Brand>
         </Container>
       </Navbar>
 
-      <Row className="flex-grow-1 no-margin">
+      <Row className="project-row flex-grow-1 no-margin">
         <Col className="d-flex flex-wrap justify-content-around align-items-center">
           {currentProjects.map((project, index) => (
             <div className="div-project">

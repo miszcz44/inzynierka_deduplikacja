@@ -8,12 +8,15 @@ const BackButton = () => {
 
   const handleBackClick = () => {
     const currentPath = location.pathname;
+    const isWorkflowDetailPage = /^\/workflows\/\d+$/.test(currentPath);
     const isProjectDetailPage = /^\/projects\/\d+$/.test(currentPath);
     const isProjectPage = /^\/projects$/.test(currentPath);
 
     if (isProjectDetailPage) {
       navigate('/projects');
-    } else if (isProjectPage) {
+    } else if (isWorkflowDetailPage) {
+      navigate('/')
+    }else if (isProjectPage) {
       navigate('/')
     } else {
       navigate(-1);

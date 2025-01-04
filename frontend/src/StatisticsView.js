@@ -3,6 +3,7 @@ import './css/StatisticsView.css';
 import {useNavigate, useParams} from "react-router-dom";
 import { CSVLink } from "react-csv"; // Import CSVLink for CSV export
 import {BackButton, HomeButton} from "./Buttons";
+import Loading from './Loading';
 
 // Utility function to fetch workflow data
 const fetchWorkflowData = async (workflowId, endpoint) => {
@@ -209,6 +210,9 @@ const StatisticsView = () => {
 
   return (
     <div className="statistics-view">
+      {loading ? (
+        <Loading />
+      ) : (<></>)}
       <div className="header-container">
         <h3><strong>Workflow Statistics</strong></h3>
         <div className="button-group">
