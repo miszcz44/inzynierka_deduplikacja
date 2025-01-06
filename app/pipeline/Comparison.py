@@ -83,7 +83,7 @@ class Comparison:
             if col not in self.data.columns:
                 raise ValueError(f"Comparison column '{col}' not found in data.")
 
-        # Store methods and parameters for statistics
+        # Store methods and parameters for statistics.py
         self.methods = list(column_algorithms.keys())
         self.parameters = {col: func.__name__ for col, func in column_algorithms.items()}
 

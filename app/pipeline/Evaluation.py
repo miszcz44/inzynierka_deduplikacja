@@ -50,14 +50,14 @@ class Evaluation:
         Get deduplicated data by dropping all rows from source_data whose indexes are in row_2 of classified_data.
         :return: Deduplicated DataFrame.
         """
-        to_drop = self.classified_data[self.classified_data['classification'] == 'Match']['row2'].unique()
+        to_drop = [int(x) for x in self.classified_data[self.classified_data['classification'] == 'Match']['row2'].unique()]
         self.evaluated_data = self.source_data.drop(index=to_drop).reset_index(drop=True)
         return self.evaluated_data
 
     def get_statistics(self):
         """
-        Get statistics about the deduplication process.
-        :return: DataFrame with statistics.
+        Get statistics.py about the deduplication process.
+        :return: DataFrame with statistics.py.
         """
         row_count_before = int(self.source_data.shape[0])
         deduplicated_data = self.get_deduplicated_data()
@@ -78,7 +78,7 @@ class Evaluation:
     @staticmethod
     def used_methods_parameters(self, *workflow_objects):
         """
-        Collect statistics about all workflow steps into a table.
+        Collect statistics.py about all workflow steps into a table.
         :param workflow_objects: Instances of classes (e.g., BlockBuilding, Comparison, Classifier).
         :return: DataFrame summarizing methods and parameters for each step.
         """
@@ -124,4 +124,5 @@ class Evaluation:
         if keyword not in json_dict:
             raise KeyError(f"Keyword '{keyword}' not found in the JSON data.")
 
-        return pd.DataFrame(json_dict[keyword])
+        df = pd.DataFrame(json_dict[keyword])
+        return df.to_dict(orient='records')  # Converts to a list of dictionaries

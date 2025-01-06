@@ -33,7 +33,7 @@ class BlockBuilding:
         if columns is None:
             raise ValueError("You must specify the columns for generating keys.")
 
-        self.parameters = {  # Store parameters for statistics
+        self.parameters = {  # Store parameters for statistics.py
             'columns': columns,
             'window_size': window_size,
             'max_window_size': max_window_size,

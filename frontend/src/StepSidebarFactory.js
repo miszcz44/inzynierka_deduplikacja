@@ -1,10 +1,21 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import DataPreprocessingSidebar from './DataPreprocessingSidebar';
 import BlockBuildingSidebar from './BlockBuildingSidebar';
 import ComparisonSidebar from './ComparisonSidebar';
 import ClassificationSidebar from './ClassificationSidebar';
+import StatisticsView from "./StatisticsView";
+import {useNavigate} from "react-router-dom";
 
 const StepSidebarFactory = ({ workflowId, stepId, lastStep, onSave, onCancel, sharedState }) => {
+
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  useEffect(() => {
+    if (stepId === '6') {
+      navigate(`/workflow/statistics/${workflowId}`); // Redirect to the statistics.py view
+    }
+  }, [stepId, workflowId, navigate]);
+
   switch (stepId) {
     case '2':
       return (
@@ -47,6 +58,8 @@ const StepSidebarFactory = ({ workflowId, stepId, lastStep, onSave, onCancel, sh
             onCancel={onCancel}
           />
         );
+    case '6':
+      return (<StatisticsView/>);
     default:
       return null; // No sidebar if the step isn't recognized
   }

@@ -2,12 +2,19 @@ from sqlalchemy.orm import Session
 from crud.project import get_project_by_id
 from fastapi import HTTPException, UploadFile
 import models.workflow as _models
+import models.statistics as _models_statistics
+import models.workflow_step as _step_model
+import models.project as _project_model
 import schemas.workflow as _schemas
+import schemas.statistics as _schemas_statistics
 from models.enums.step_name import StepName
+from pipeline.Evaluation import Evaluation
 import datetime as _dt
 from typing import List
+import pandas as pd
 import json
 import csv
+import random
 
 MAX_FILE_SIZE = 10 * 1024 * 1024
 
@@ -208,6 +215,82 @@ async def get_workflow_processed_data(workflow_id: int, db: Session, user_id: in
         return workflow.classification_data
 
     return project.file_content
+
+
+async def get_evaluation(workflow_id: int, db: Session, user_id: int, type: str):
+    workflow = await get_workflow_by_id(db=db, workflow_id=workflow_id)
+
+    if workflow is None:
+        raise HTTPException(status_code=404, detail="Workflow not found")
+
+    project = await get_project_by_id(db=db, project_id=workflow.project_id)
+
+    source_data = pd.DataFrame(project.file_content)
+    classified_data = pd.DataFrame(workflow.classification_data)
+
+    evaluation = Evaluation(source_data, classified_data)
+    if type == 'statistics':
+        evaluation.get_statistics()
+    elif type == 'evaluated_data':
+        evaluation.get_deduplicated_data()
+    elif type == 'matches':
+        evaluation.show_matches_side_by_side()
+    evaluation.dataframes_to_jsonb()
+    return evaluation.retrieve_dataframe_from_jsonb(type)
+
+
+async def save_statistics(workflow_id: int, db: Session, user_id: int, title: str):
+    workflow = await get_workflow_by_id(db, workflow_id)
+    project = await get_project_by_id(db, workflow.project_id)
+
+    statistics = _models_statistics.Statistics(
+        title=title,
+        workflow_id=workflow_id,
+        filename=project.filename,
+        workflow_name=workflow.title,
+        project_name=project.title,
+        deduplicated_data=await get_evaluation(workflow_id, db, user_id, 'evaluated_data'),
+        statistics=await get_evaluation(workflow_id, db, user_id, 'statistics'),
+        matches=await get_evaluation(workflow_id, db, user_id, 'matches'),
+    )
+
+    db.add(statistics)
+    db.commit()
+    db.refresh(statistics)
+
+    return statistics
+
+
+async def get_statistics_list(db: Session, user_id: int):
+    list = (
+        db.query(_models_statistics.Statistics)
+        .join(_models.Workflow, _models_statistics.Statistics.workflow_id == _models.Workflow.id)
+        .join(_project_model.Project, _models.Workflow.project_id == _project_model.Project.id)
+        .filter(_project_model.Project.user_id == user_id)
+        .all()
+    )
+
+    result = []
+    for record in list:
+        # Construct the dictionary manually for each record
+        mapped_record = {
+            "title": record.title,
+            "project_name": record.project_name,
+            "workflow_name": record.workflow_name,
+            "filename": record.filename,
+            "statistics": record.statistics,  # Assuming it's already a JSON-compatible structure
+        }
+        result.append(mapped_record)
+
+    # Return the list of mapped records
+    return result
+
+async def get_statistics(statistics_id: int, db: Session, user_id: int):
+    return db.query(_models_statistics.Statistics).filter(_models_statistics.Statistics.id == statistics_id).first()
+
+
+async def get_parameters(workflow_id: int, db: Session, user_id: int):
+    return db.query(_step_model.WorkflowStep).filter(_step_model.WorkflowStep.workflow_id == workflow_id).all()
 
 
 def extract_unique_columns(data: list) -> set:

@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import PreprocessingModal from './PreprocessingModal';
 import Modal from "./Modal"; // Import the Modal component
 import { BackButton, HomeButton } from './Buttons';
+import './css/DataProcessingFlow.css';
 
 const initialNodes = [
   { id: '2', data: { label: 'Data Pre-processing' }, position: { x: 100, y: 200 }, style: { padding: '10px', border: '1px solid #777', background: '#fff' } },
@@ -174,11 +175,14 @@ const DataProcessingFlow = () => {
   const shouldOpenModal = lastStep !== null;
 
   return (
-    <div style={{ display: 'flex', height: '800px' }}>
+    <div style={{ display: 'flex', height: '100%' }}>
       <BackButton/>
       <HomeButton/>
-      <div style={{ flex: 1, position: 'relative' }}>
-        <h2>Data deduplication process: {workflowData ? workflowData.title : 'Loading...'}</h2>
+      <div style={{ flex: 1, position: 'relative', height: '100%' }}>
+        
+        <div className="title-container">
+          <h2>Data deduplication process: {workflowData ? workflowData.title : 'Loading...'}</h2>
+        </div>
 
         <ReactFlow
           nodes={nodes}
@@ -189,8 +193,6 @@ const DataProcessingFlow = () => {
           fitView
           onNodeClick={handleNodeClick}
         >
-          <MiniMap />
-          <Controls />
           <Background />
         </ReactFlow>
       </div>
@@ -207,7 +209,7 @@ const DataProcessingFlow = () => {
       )}
 
       {/* Only show the "Open Modal" button if the lastStep exists */}
-      {shouldOpenModal && !isModalOpen && (
+      {shouldOpenModal && !isModalOpen && lastStep !== 'CLASSIFICATION' && (
         <button
           style={{
             position: 'fixed',

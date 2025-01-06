@@ -104,19 +104,24 @@ const DataPreprocessingSidebar = ({ workflowId, lastStep, activeStepId,  onSave,
     <div className="sidebar">
       <h3>Data Pre-processing</h3>
       <div className="checkbox-group">
-        <Checkbox
+        <Checkbox 
+          class="checkbox"
           name="removeDiacritics"
           label="Remove diacritics"
           checked={sharedState.checkboxValues.removeDiacritics}
           onChange={handleCheckboxChange}
         />
-        <Checkbox
+        <hr />
+        <Checkbox 
+          class="checkbox"
           name="removePunctuation"
           label="Remove punctuation"
           checked={sharedState.checkboxValues.removePunctuation}
           onChange={handleCheckboxChange}
         />
-        <Checkbox
+        <hr />
+        <Checkbox 
+          class="checkbox"
           name="lowercase"
           label="Ignore case sensitivity"
           checked={sharedState.checkboxValues.lowercase}
@@ -124,7 +129,7 @@ const DataPreprocessingSidebar = ({ workflowId, lastStep, activeStepId,  onSave,
         />
       </div>
 
-      <div className="button-group">
+      <div className="button-group1">
         <button className="save-button" onClick={handleSave}>
           Save
         </button>

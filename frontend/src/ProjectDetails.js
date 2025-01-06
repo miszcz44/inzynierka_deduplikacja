@@ -46,7 +46,7 @@ const ProjectDetails = () => {
       setDescription(data.description);
       setWorkflows(data.workflows)
     } catch (err) {
-      setError('Wystąpił błąd podczas komunikacji z serwerem.');
+      setError('An error has occurred while communicating with the server.');
     } finally {
       setLoading(false);
     }
@@ -54,11 +54,11 @@ const ProjectDetails = () => {
 
   const handleError = (status) => {
     if (status === 403) {
-      navigate('/dashboard', { state: { message: 'Nie masz uprawnień do wyświetlenia tego projektu.' } });
+      navigate('/dashboard', { state: { message: 'You do not have the permissions to view this project.' } });
     } else if (status === 404) {
-      navigate('/dashboard', { state: { message: 'Projekt o podanym identyfikatorze nie istnieje.' } });
+      navigate('/dashboard', { state: { message: 'Project with this identifier does not exist.' } });
     } else {
-      setError('Wystąpił błąd podczas pobierania danych projektu.');
+      setError('An error occurred while downloading the data of the project.');
     }
   };
 
@@ -129,7 +129,7 @@ const ProjectDetails = () => {
       }
 
       const newWorkflow = await response.json();
-      navigate(`/projects/${projectId}/workflow/${newWorkflow.id}`);
+      navigate(`/workflow/${newWorkflow.id}`);
 
     } catch (err) {
       setWorkflowError('An error occurred while communicating with the server.');
@@ -341,7 +341,7 @@ const ProjectDetails = () => {
                   <ListGroup.Item key={workflow.id} className="d-flex justify-content-between align-items-center">
                     <span>
                       {workflow.title}{" "}
-                      <Link to={`/projects/${projectId}/workflow/${workflow.id}`}>
+                      <Link to={`/workflow/${workflow.id}`}>
                         Show results
                       </Link>
                     </span>

@@ -6,6 +6,7 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
     nLetters: 3,
     maxWindowSize: 10,
     threshold: 0.8,
+    columns: [],
   };
 
   const stepOrder = [
@@ -21,13 +22,14 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
 
   const shouldWarn = activeStepIndex < lastStepIndex;
 
-  const [algorithm, setAlgorithm] = useState("standardBlocking"); // Default algorithm
+  const [algorithm, setAlgorithm] = useState("standardBlocking");
   const [inputs, setInputs] = useState(defaultInputs);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [columns, setColumns] = useState([]); // For available columns
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStepParameters = async () => {
-      setLoading(true); // Start loading
+      setLoading(true);
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
@@ -43,17 +45,12 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
         if (response.ok) {
           const data = await response.json();
 
-          // Check if parameters exist and set state accordingly
           if (data.parameters) {
             const params = data.parameters;
-
-            // Set algorithm and input values from response
             setAlgorithm(params.algorithm || "standardBlocking");
             setInputs({
-              windowSize: params.inputs?.windowSize || defaultInputs.windowSize,
-              nLetters: params.inputs?.nLetters || defaultInputs.nLetters,
-              maxWindowSize: params.inputs?.maxWindowSize || defaultInputs.maxWindowSize,
-              threshold: params.inputs?.threshold || defaultInputs.threshold,
+              ...defaultInputs,
+              ...params.inputs,
             });
           }
         } else {
@@ -62,41 +59,88 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
       } catch (error) {
         console.error("An error occurred while fetching the parameters:", error);
       } finally {
-        setLoading(false); // Finish loading
+        setLoading(false);
+      }
+    };
+
+    const fetchFileContent = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          `http://localhost:8000/api/workflows/${workflowId}/file-content`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          const uniqueColumns = data.columns || [];
+          const filteredColumns = uniqueColumns.filter((column) => column !== "ID");
+          setColumns(filteredColumns);
+        } else {
+          console.error("Failed to fetch file content:", await response.json());
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching file content:", error);
       }
     };
 
     fetchStepParameters();
-  }, [workflowId]); // Trigger when workflowId changes
+    fetchFileContent();
+  }, [workflowId]);
 
   const handleAlgorithmChange = (e) => {
     const selectedAlgorithm = e.target.value;
     setAlgorithm(selectedAlgorithm);
-    setInputs(defaultInputs); // Reset inputs to default when algorithm changes
+    setInputs(defaultInputs);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    // Parse numeric inputs to their appropriate type
     setInputs((prev) => ({
       ...prev,
-      [name]: name === "threshold" ? parseFloat(value) : parseInt(value, 10) || "", // Handle empty or invalid values
+      [name]: name === "threshold" ? parseFloat(value) : parseInt(value, 10) || "",
     }));
   };
 
+  const handleColumnChange = (columnName) => {
+    setInputs((prev) => {
+      const newColumns = prev.columns.includes(columnName)
+        ? prev.columns.filter((col) => col !== columnName)
+        : [...prev.columns, columnName];
+      return { ...prev, columns: newColumns };
+    });
+  };
+
   const handleSave = async () => {
-    // Validation for required fields based on algorithm
     const errors = [];
-    if (algorithm === "sortedNeighborhood" && (!inputs.windowSize || !inputs.nLetters)) {
-      errors.push("Window size and N letters are required for Sorted Neighborhood Method.");
-    } else if (
-      algorithm === "dynamicSortedNeighborhood" &&
-      (!inputs.maxWindowSize || !inputs.nLetters || !inputs.threshold)
-    ) {
-      errors.push(
-        "Max window size, N letters, and Threshold are required for Dynamic Sorted Neighborhood Method."
-      );
+
+    // Filter inputs based on the selected algorithm
+    let filteredInputs = { columns: inputs.columns };
+    if (algorithm === "sortedNeighborhood") {
+      if (!inputs.windowSize || !inputs.nLetters) {
+        errors.push("Window size and N letters are required for Sorted Neighborhood Method.");
+      }
+      filteredInputs = {
+        ...filteredInputs,
+        windowSize: inputs.windowSize,
+        nLetters: inputs.nLetters,
+      };
+    } else if (algorithm === "dynamicSortedNeighborhood") {
+      if (!inputs.maxWindowSize || !inputs.nLetters || !inputs.threshold) {
+        errors.push(
+          "Max window size, N letters, and Threshold are required for Dynamic Sorted Neighborhood Method."
+        );
+      }
+      filteredInputs = {
+        ...filteredInputs,
+        maxWindowSize: inputs.maxWindowSize,
+        nLetters: inputs.nLetters,
+        threshold: inputs.threshold,
+      };
     }
 
     if (errors.length > 0) {
@@ -104,12 +148,11 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
       return;
     }
 
-    // Prepare the payload for the API
     const payload = {
-      step: "BLOCK_BUILDING", // Specify the step name
+      step: "BLOCK_BUILDING",
       parameters: JSON.stringify({
-        algorithm, // Selected algorithm
-        inputs, // The input fields
+        algorithm,
+        inputs: filteredInputs,
       }),
     };
 
@@ -123,13 +166,13 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(payload), // Send payload
+          body: JSON.stringify(payload),
         }
       );
 
       if (response.ok) {
         console.log("Block building step saved successfully");
-        onSave(); // Call the parent-provided `onSave` to handle any post-save actions
+        onSave();
       } else {
         const errorData = await response.json();
         console.error("Failed to save workflow step:", errorData.detail);
@@ -142,14 +185,13 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
   };
 
   if (loading) {
-    return <div className="sidebar">Loading...</div>; // Show a loading state
+    return <div className="sidebar">Loading...</div>;
   }
 
   return (
     <div className="sidebar">
       <h3>Block Building</h3>
 
-      {/* Algorithm Dropdown */}
       <div className="dropdown-group">
         <label htmlFor="algorithm">Algorithm</label>
         <select id="algorithm" value={algorithm} onChange={handleAlgorithmChange}>
@@ -159,7 +201,6 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
         </select>
       </div>
 
-      {/* Conditional Input Fields */}
       {algorithm === "sortedNeighborhood" && (
         <div className="input-group">
           <label htmlFor="windowSize">Window Size</label>
@@ -219,7 +260,29 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
         </div>
       )}
 
-      <div className="button-group">
+      <div className="input-group">
+        <label>Columns</label>
+        <div style={{ marginLeft: '10px', marginTop: '20px' }}>
+          {columns.map((column) => (
+            <div
+              key={column}
+              className="column-item"
+              style={{
+                marginBottom: '10px',
+                padding: '5px 10px',
+                borderRadius: '5px',
+                backgroundColor: inputs.columns.includes(column) ? '#d3f9d8' : '#f1f1f1',
+                cursor: 'pointer',
+              }}
+              onClick={() => handleColumnChange(column)}
+            >
+              {column}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="button-group1">
         <button className="save-button" onClick={handleSave}>
           Save
         </button>

@@ -61,6 +61,10 @@ const Dashboard = () => {
     navigate('/projects');
   };
 
+  const handleStatisticsClick = () => {
+    navigate('/statistics');
+  };
+
   return (
     <div className="vh-100 d-flex flex-column">
       <Navbar bg="dark" variant="dark" className="navbar">
@@ -107,7 +111,7 @@ const Dashboard = () => {
       </Row>
       <Row className="flex-grow-1 no-margin">
         <Col className="d-flex justify-content-center align-items-center">
-          <div className="div-button"> 
+          <div className="div-button" onClick={handleStatisticsClick}>
             <div className="button-title">
               <img src="./images/stats.png" alt="Icon" className="icon" />
               <div className="title-text">
@@ -116,22 +120,7 @@ const Dashboard = () => {
             </div>
             <div className="button-desc">
               <div className="text-center">
-                <p>TODO</p>
-              </div>
-            </div>
-          </div>
-        </Col>
-        <Col className="d-flex justify-content-center align-items-center">
-          <div className="div-button"> 
-            <div className="button-title">
-              <img src="./images/cog.png" alt="Icon" className="icon" />
-              <div className="title-text">
-                <p>Settings</p>
-              </div>
-            </div>
-            <div className="button-desc">
-              <div className="text-center">
-                <p>TODO</p>
+                <p>View the statistics of your workflows</p>
               </div>
             </div>
           </div>

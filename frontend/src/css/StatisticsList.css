@@ -1,0 +1,113 @@
+.statistics-list-container {
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+  padding-top: 56px; /* Adjust for Navbar height */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure full height of the page */
+}
+
+.statistics-navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.statistics-search-row {
+  position: absolute;
+  top: 70px; /* Position it below the navbar */
+  right: 20px; /* Align it to the right */
+  width: 250px; /* Set width of the search bar */
+  z-index: 5;
+}
+
+.statistics-search-input {
+  font-size: 1rem;
+  padding: 8px;
+  border: 1px solid #dee2e6;
+  margin-top: 30px;
+  border-radius: 5px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.statistics-div-statistic {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 10px;
+  width: 300px;
+  text-align: left;
+}
+
+.statistics-div-statistic:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+  transition: all 0.2s ease-in-out;
+}
+
+.statistics-stat-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #343a40;
+  margin-bottom: 10px;
+}
+
+.statistics-stat-detail {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.statistics-stat-detail div {
+  margin-bottom: 5px;
+}
+
+.statistics-pagination-row {
+  background-color: #ffffff;
+  padding: 15px 0;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: auto; /* This ensures that the pagination is pushed to the bottom */
+}
+
+.statistics-pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.statistics-pagination__link {
+  color: #007bff;
+  text-decoration: none;
+  padding: 10px 15px;
+  border: 1px solid #dee2e6;
+  margin: 0 5px;
+  border-radius: 5px;
+}
+
+.statistics-pagination__link:hover {
+  background-color: #f1f1f1;
+  color: #0056b3;
+}
+
+.statistics-pagination__link--active {
+  background-color: #007bff;
+  color: #ffffff;
+  border-color: #007bff;
+}
+
+.statistics-pagination__link--disabled {
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+/*button {*/
+/*  font-size: 0.9rem;*/
+/*}*/
+
+/*button:hover {*/
+/*  cursor: pointer;*/
+/*}*/
