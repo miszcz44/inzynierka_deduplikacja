@@ -5,6 +5,7 @@ from jellyfish import soundex
 import itertools
 import json
 
+
 class Comparison:
     def __init__(self, data):
         """
@@ -21,7 +22,12 @@ class Comparison:
         """
         Calculate the normalized Levenshtein similarity between two strings.
         Ensures the result is between 0 and 1.
+        Returns 0 if either string is NaN or empty.
         """
+        if not str1 or not str2 or pd.isna(str1) or pd.isna(str2):
+            return 0
+        str1 = str(str1)
+        str2 = str(str2)
         from rapidfuzz.distance import Levenshtein
         score = Levenshtein.normalized_similarity(str1, str2)
         return max(0, min(1, score))  # Ensure the value is between 0 and 1
@@ -31,21 +37,31 @@ class Comparison:
         """
         Calculate the normalized Jaro-Winkler similarity between two strings.
         Ensures the result is between 0 and 1.
+        Returns 0 if either string is NaN or empty.
         """
+        if not str1 or not str2 or pd.isna(str1) or pd.isna(str2):
+            return 0
+        str1 = str(str1)
+        str2 = str(str2)
         from rapidfuzz.distance import JaroWinkler
         score = JaroWinkler.similarity(str1, str2)
         return max(0, min(1, score))  # Ensure the value is between 0 and 1
 
     @staticmethod
-    def qgram_similarity(str1, str2, q=2):
+    def qgram_similarity(str1, str2, q=10):
         """
         Calculate the Q-gram similarity between two strings.
         Ensures the result is between 0 and 1.
+        Returns 0 if either string is NaN or empty.
         """
+        if not str1 or not str2 or pd.isna(str1) or pd.isna(str2):
+            return 0
 
         def generate_qgrams(s, q):
             return [s[i:i + q] for i in range(len(s) - q + 1)]
 
+        str1 = str(str1)
+        str2 = str(str2)
         qgrams1 = generate_qgrams(str1, q)
         qgrams2 = generate_qgrams(str2, q)
         matches = sum(1 for q in qgrams1 if q in qgrams2)
@@ -53,14 +69,13 @@ class Comparison:
         score = matches / total_qgrams if total_qgrams > 0 else 0
         return max(0, min(1, score))  # Ensure the value is between 0 and 1
 
-    def compare_within_blocks(self, column_algorithms):
+    def compare_within_blocks(self, block_col, column_algorithms):
         """
         Compare all possible pairs within each block for specified columns.
         :param block_col: The column name containing block IDs.
         :param column_algorithms: Dictionary where keys are column names and values are comparison functions.
         :return: DataFrame with comparison results for all pairs in each block.
         """
-        block_col = "block_id"
         if block_col not in self.data.columns:
             raise ValueError(f"Block column '{block_col}' not found in data.")
 
@@ -130,4 +145,3 @@ class Comparison:
         # Convert the DataFrame to a JSON string
         json_data = self.comparison_results.to_json(orient='records', date_format='iso')
         return json.loads(json_data)
-
