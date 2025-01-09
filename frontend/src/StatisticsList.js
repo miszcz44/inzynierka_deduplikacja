@@ -64,7 +64,7 @@ const StatisticsList = () => {
       </Navbar>
 
       {/* Search Bar */}
-      <Row className="statistics-search-row">
+      <Row className="statistics-search-row no-margin">
         <Col className="d-flex justify-content-end">
           <Form.Control
             type="text"
@@ -77,7 +77,7 @@ const StatisticsList = () => {
       </Row>
 
       {/* Statistics List */}
-      <Row className="flex-grow-1 statistics-no-margin">
+      <Row className="flex-grow-1 statistics-no-margin no-margin">
         <Col className="d-flex flex-wrap justify-content-around align-items-center">
           {currentStats.length > 0 ? (
             currentStats.map((stat, index) => (
@@ -106,7 +106,7 @@ const StatisticsList = () => {
       </Row>
 
       {/* Buttons Row */}
-      <Row className="statistics-buttons-row statistics-no-margin">
+      <Row className="statistics-buttons-row statistics-no-margin no-margin">
         <Col className="d-flex justify-content-around">
           <BackButton />
           <HomeButton />
@@ -114,7 +114,7 @@ const StatisticsList = () => {
       </Row>
 
       {/* Pagination Row */}
-      <Row className="statistics-pagination-row statistics-no-margin">
+      <Row className="statistics-pagination-row statistics-no-margin no-margin">
         <Col className="d-flex justify-content-center align-items-center">
           <ReactPaginate
             previousLabel={'Previous'}

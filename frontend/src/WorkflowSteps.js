@@ -6,9 +6,7 @@ const WorkflowSteps = () => {
   const { projectId } = useParams();
 
   return (
-    <div>
-      <DataProcessingFlow />
-    </div>
+    <DataProcessingFlow />
   );
 };
 

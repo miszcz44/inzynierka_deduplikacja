@@ -229,6 +229,7 @@ th:hover {
 
 .header-container h3 {
     margin: 0;
+    width: 40%;
 }
 
 .button-group {
@@ -237,7 +238,6 @@ th:hover {
   width: 100%;
   gap: 10px; /* Space between the buttons */
   justify-content: flex-end; /* Align the buttons to the right */
-  position: absolute; /* Position them relative to the parent container */
   right: 60px; /* Adjust the distance from the right edge */
   /*top: 20px; !* Adjust the vertical positioning if needed *!*/
 }

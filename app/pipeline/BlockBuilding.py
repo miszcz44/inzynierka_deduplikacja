@@ -4,6 +4,7 @@ from fuzzywuzzy import fuzz
 from jellyfish import soundex
 import json
 
+
 class BlockBuilding:
     def __init__(self, data, method):
         """
@@ -40,13 +41,13 @@ class BlockBuilding:
             'n_letters': n_letters,
         }
 
-        if self.method == 'standardBlocking':
+        if self.method == 'standard_blocking':
             self.standard_blocking(columns)
-        elif self.method == 'sortedNeighborhood':
+        elif self.method == 'sorted_neighborhood':
             if window_size is None:
                 raise ValueError("Window size must be provided for the sorted neighborhood method.")
             self.sorted_neighborhood(columns, window_size, n_letters)
-        elif self.method == 'dynamicSortedNeighborhood':
+        elif self.method == 'dynamic_sorted_neighborhood':
             if max_window_size is None or match_threshold is None:
                 raise ValueError(
                     "Both max_window_size and match_threshold must be provided for the dynamic sorted neighborhood method.")
