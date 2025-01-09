@@ -189,8 +189,6 @@ const DataProcessingFlow = () => {
           fitView
           onNodeClick={handleNodeClick}
         >
-          <MiniMap />
-          <Controls />
           <Background />
         </ReactFlow>
       </div>
