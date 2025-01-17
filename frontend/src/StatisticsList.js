@@ -91,7 +91,6 @@ const StatisticsList = () => {
                   <div key={i} className="statistics-stat-detail">
                     <div><strong>Detected Duplicates:</strong> {statDetail['Detected duplicates']}</div>
                     <div><strong>Duplicate Percentage:</strong> {statDetail['Duplicate percentage']}%</div>
-                    <div><strong>Average Similarity per Block:</strong> {statDetail['Average similarity per block']}</div>
                     <div><strong>Row Count After Deduplication:</strong> {statDetail['Row count after deduplication']}</div>
                     <div><strong>Row Count Before Deduplication:</strong> {statDetail['Row count before deduplication']}</div>
                   </div>

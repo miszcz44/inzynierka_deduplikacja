@@ -41,13 +41,13 @@ class BlockBuilding:
             'n_letters': n_letters,
         }
 
-        if self.method == 'standard_blocking':
+        if self.method == 'standardBlocking':
             self.standard_blocking(columns)
-        elif self.method == 'sorted_neighborhood':
+        elif self.method == 'sortedNeighborhood':
             if window_size is None:
                 raise ValueError("Window size must be provided for the sorted neighborhood method.")
             self.sorted_neighborhood(columns, window_size, n_letters)
-        elif self.method == 'dynamic_sorted_neighborhood':
+        elif self.method == 'dynamicSortedNeighborhood':
             if max_window_size is None or match_threshold is None:
                 raise ValueError(
                     "Both max_window_size and match_threshold must be provided for the dynamic sorted neighborhood method.")
