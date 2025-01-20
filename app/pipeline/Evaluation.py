@@ -59,25 +59,17 @@ class Evaluation:
         Get statistics.py about the deduplication process.
         :return: DataFrame with statistics.py.
         """
-        row_count_before = len(self.source_data)
+        row_count_before = int(self.source_data.shape[0])
         deduplicated_data = self.get_deduplicated_data()
-        row_count_after = len(deduplicated_data)
+        row_count_after = int(deduplicated_data.shape[0])
         num_duplicates = row_count_before - row_count_after
         duplicate_percentage = (num_duplicates / row_count_before) * 100
-
-        avg_similarity_per_block = (
-            self.classified_data.groupby('block_id')['normalized_similarity']
-            .mean()
-            .reset_index()
-            .rename(columns={'normalized_similarity': 'avg_similarity'})
-        )
 
         stats = {
             'Detected duplicates': num_duplicates,
             'Row count before deduplication': row_count_before,
             'Row count after deduplication': row_count_after,
             'Duplicate percentage': round(duplicate_percentage, 2),
-            'Average similarity per block': round(avg_similarity_per_block['avg_similarity'].mean(), 2)
         }
 
         self.statistics = pd.DataFrame([stats])

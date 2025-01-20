@@ -4,6 +4,7 @@ from fuzzywuzzy import fuzz
 from jellyfish import soundex
 import json
 
+
 class BlockBuilding:
     def __init__(self, data, method):
         """

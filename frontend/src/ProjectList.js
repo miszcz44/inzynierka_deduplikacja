@@ -55,7 +55,7 @@ const ProjectList = () => {
       { Header: 'Description', accessor: 'description' },
       { Header: 'Date Created', accessor: 'date_created', Cell: ({ value }) => formatDate(value) },
       { Header: 'Date Updated', accessor: 'date_updated', Cell: ({ value }) => formatDate(value) },
-      { Header: '# of Workflows', accessor: 'workflows', Cell: ({ value }) => value.length },
+      { Header: 'Number of Workflows', accessor: 'workflows', Cell: ({ value }) => value.length },
       { Header: 'Actions', accessor: 'actions', Cell: ({ row }) => <a href={`/projects/${row.original.id}`}>DETAILS</a> },
     ],
     []
@@ -143,7 +143,7 @@ const ProjectList = () => {
               <hr />
               <div className="project-date">Created: {formatDate(project.date_created)}</div>
               <div className="project-date">Modified: {formatDate(project.date_updated)}</div>
-              <div className="project-workflows"># of Workflows: {project.workflows.length}</div>
+              <div className="project-workflows">Number of Workflows: {project.workflows.length}</div>
               <div className="project-id">Project ID: {project.id}</div>
               <Button variant="primary" href={`/projects/${project.id}`}>DETAILS</Button>
             </div>

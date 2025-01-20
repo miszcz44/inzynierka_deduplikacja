@@ -355,7 +355,6 @@ const StatisticsView = () => {
                 <p style={{marginBottom: '12px'}}>Row Count Before Deduplication: {stat["Row count before deduplication"]}</p>
                 <p style={{marginBottom: '12px'}}>Row Count After Deduplication: {stat["Row count after deduplication"]}</p>
                 <p style={{marginBottom: '12px'}}>Duplicate Percentage: {stat["Duplicate percentage"]}%</p>
-                <p style={{marginBottom: '12px'}}>Average Similarity Per Block: {stat["Average similarity per block"]}</p>
               </li>
             ))}
           </ul>

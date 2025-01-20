@@ -204,7 +204,7 @@ const ClassificationSidebar = ({
 
   return (
     <div className="sidebar">
-      <h3>Classification Settings</h3>
+      <h3>Classification Configuration</h3>
       {error ? (
         <div className="error">{error}</div>
       ) : (

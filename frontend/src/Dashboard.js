@@ -135,11 +135,11 @@ const Dashboard = () => {
           <Form onSubmit={handleCreateProject}>
             <Form.Group className="mb-3" controlId="projectTitle">
               <Form.Label>Project Title</Form.Label>
-              <Form.Control type="text" placeholder="Wprowadź nazwę projektu" required />
+              <Form.Control type="text" placeholder="Enter project title" required />
             </Form.Group>
             <Form.Group className="mb-3" controlId="projectDescription">
               <Form.Label>Description (optional)</Form.Label>
-              <Form.Control as="textarea" rows={3} placeholder="Krótki opis projektu" />
+              <Form.Control as="textarea" rows={3} placeholder="Short project description" />
             </Form.Group>
                         <Form.Group className="mb-3" controlId="dataFile">
               <Form.Label>Data File (CSV/JSON)</Form.Label>
