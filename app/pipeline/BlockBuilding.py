@@ -9,7 +9,7 @@ class BlockBuilding:
         """
         Initialize the BlockBuilder with data and method.
         :param data: pandas DataFrame containing the entity data.
-        :param method: The blocking method to use ('sorted_neighborhood', 'dynamic_sorted_neighborhood', or 'standard_blocking').
+        :param method: The blocking method to use ('sortedNeighborhood', 'dynamicSortedNeighborhood', or 'standardBlocking').
         """
         self.data = data
         self.method = method
@@ -53,7 +53,7 @@ class BlockBuilding:
             self.dynamic_sorted_neighborhood(columns, max_window_size, match_threshold, n_letters)
         else:
             raise ValueError(
-                "Invalid method. Use 'standard_blocking', 'sorted_neighborhood', or 'dynamic_sorted_neighborhood'.")
+                "Invalid method. Use 'standardBlocking', 'sortedNeighborhood', or 'dynamicSortedNeighborhood'.")
 
         return self.display_block(block_index)
 
