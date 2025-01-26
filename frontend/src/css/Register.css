@@ -1,6 +1,3 @@
-/* Register.css */
-
-/* General styles for the form container */
 section {
     display: flex;
     flex-direction: column;
@@ -71,7 +68,6 @@ button:hover:not(:disabled) {
     background-color: #0056b3;
 }
 
-/* Validation icons */
 .valid {
     color: #28a745;
     margin-left: 10px;

@@ -5,27 +5,12 @@ import json
 
 class Classifier:
     def __init__(self, blocked_data, comparison_table):
-        """
-        Initialize the MatchClassifier with blocked data and comparison table.
-        :param blocked_data: DataFrame containing blocked source data with block_ids and SKVs/BKVs.
-        :param comparison_table: DataFrame containing pairwise comparisons with similarities.
-        """
         self.blocked_data = blocked_data
         self.comparison_table = comparison_table
         self.classification_results = None  # To store classification results
 
     def classify_matches(self, method='threshold_based', thresholds=None, weights=None, possible_match=False,
                          costs=None, probabilities=None):
-        """
-        Classify the results based on the selected method.
-        :param method: The classification method to use ('threshold_based', 'weighted', 'cost_based').
-        :param thresholds: Dictionary with thresholds for classification.
-        :param weights: Dictionary with weights for each similarity column (only for 'weighted' method).
-        :param possible_match: Boolean indicating whether to include 'Possible Match' as a category.
-        :param costs: Dictionary with costs for cost-based classification.
-        :param probabilities: Dictionary with prior probabilities for cost-based classification.
-        :return: DataFrame with classifications added.
-        """
 
         self.method = method
         self.parameters = {
@@ -115,15 +100,9 @@ class Classifier:
         return merged_data
 
     def _merge_row_details(self):
-        """
-        Merge row1 and row2 details into the comparison table using the `ID` column.
-        :return: Merged DataFrame with row details added.
-        """
-        # Fetch rows based on 'ID' instead of index
         row1_details = self.blocked_data.set_index('ID').loc[self.comparison_table['row1']].reset_index(drop=True)
         row2_details = self.blocked_data.set_index('ID').loc[self.comparison_table['row2']].reset_index(drop=True)
 
-        # Merge the details into the comparison table
         merged_data = self.comparison_table.copy()
         for col in self.blocked_data.columns:
             if col not in ['block_id', 'SKV', 'BKV', 'ID']:  # Exclude metadata columns
@@ -146,34 +125,16 @@ class Classifier:
                 return 'Match'
 
     def get_classification_results(self):
-        """
-        Get the classification results.
-        :return: DataFrame with the classification results.
-        """
         if self.classification_results is None:
             raise ValueError("No classification results available. Run 'classify_matches' first.")
         return self.classification_results
 
     def used_methods(self):
-        """
-        Get the classification method used.
-        :return: String representing the classification method.
-        """
         return self.method
 
     def used_parameters(self):
-        """
-        Get the parameters used for the classification method.
-        :return: Dictionary of parameters.
-        """
         return self.parameters
 
     def dataframe_to_jsonb(self):
-        """
-        Convert a DataFrame to a JSONB-compatible string.
-        :param dataframe: pandas DataFrame
-        :return: JSON string
-        """
-        # Convert the DataFrame to a JSON string
         json_data = self.classification_results.to_json(orient='records', date_format='iso')
         return json.loads(json_data)

@@ -5,7 +5,6 @@ const ClassificationModal = ({ isOpen, onClose, data }) => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
 
-  // Filter and paginate the data
   const filteredData = data.filter(
     item =>
       item.row1_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -40,14 +39,14 @@ const ClassificationModal = ({ isOpen, onClose, data }) => {
             onClick={onClose}
             style={{
               position: 'absolute',
-              top: 'calc(50% - 250px)', // Adjust this value for distance above modal
-              transform: 'translateY(-100%)', // Move the button above the modal dynamically
+              top: 'calc(50% - 250px)',
+              transform: 'translateY(-100%)',
               backgroundColor: '#f1f1f1',
               border: '1px solid #ccc',
               padding: '10px 20px',
               borderRadius: '4px',
               cursor: 'pointer',
-              zIndex: 1001, // Ensure it's above the modal
+              zIndex: 1001,
             }}
           >
             Close

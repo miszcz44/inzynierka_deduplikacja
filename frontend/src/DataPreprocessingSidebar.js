@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const DataPreprocessingSidebar = ({ workflowId, lastStep, activeStepId,  onSave, onCancel, sharedState }) => {
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
   const stepOrder = [
     'DATA_PREPROCESSING',
@@ -16,13 +16,12 @@ const DataPreprocessingSidebar = ({ workflowId, lastStep, activeStepId,  onSave,
 
   const shouldWarn = activeStepIndex < lastStepIndex;
 
-  // Fetch step parameters on mount
   useEffect(() => {
     fetchStepData();
-  }, [workflowId]); // Dependency on `workflowId` ensures the fetch happens when the workflow ID changes
+  }, [workflowId]);
 
   const fetchStepData = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
@@ -38,11 +37,9 @@ const DataPreprocessingSidebar = ({ workflowId, lastStep, activeStepId,  onSave,
       if (response.ok) {
         const data = await response.json();
 
-        // Check if the response contains `parameters`
         if (data.parameters) {
-          // Map the response parameters to checkbox values in sharedState
           sharedState.setCheckboxValues({
-            lowercase: data.parameters.lowercase || false, // Default to false if undefined
+            lowercase: data.parameters.lowercase || false,
             removeDiacritics: data.parameters.removeDiacritics || false,
             removePunctuation: data.parameters.removePunctuation || false,
           });
@@ -53,7 +50,7 @@ const DataPreprocessingSidebar = ({ workflowId, lastStep, activeStepId,  onSave,
     } catch (error) {
       console.error("An error occurred while fetching the step data:", error);
     } finally {
-      setLoading(false); // Finish loading
+      setLoading(false);
     }
   };
 
@@ -67,8 +64,8 @@ const DataPreprocessingSidebar = ({ workflowId, lastStep, activeStepId,  onSave,
 
   const handleSave = async () => {
     const payload = {
-      step: "DATA_PREPROCESSING", // Specify the step name
-      parameters: JSON.stringify(sharedState.checkboxValues), // Convert parameters to JSON string
+      step: "DATA_PREPROCESSING",
+      parameters: JSON.stringify(sharedState.checkboxValues),
     };
 
     try {
@@ -97,7 +94,7 @@ const DataPreprocessingSidebar = ({ workflowId, lastStep, activeStepId,  onSave,
   };
 
   if (loading) {
-    return <div className="sidebar">Loading...</div>; // Show a loading state
+    return <div className="sidebar">Loading...</div>;
   }
 
   return (

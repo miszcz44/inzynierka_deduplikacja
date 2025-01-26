@@ -22,7 +22,6 @@ const fetchWorkflowData = async (workflowId, endpoint) => {
   }
 };
 
-// Function to compare data and highlight differences
 const compareData = (inputRow, processedRow) => {
   return Object.keys(inputRow).map((key) => {
     return inputRow[key] !== processedRow[key];
@@ -48,7 +47,7 @@ const PreprocessingModal = ({ isOpen, onClose, workflowId, lastStep }) => {
     }
   }, [isOpen, workflowId]);
 
-  if (!isOpen) return null; // Don't render anything if the modal is not open
+  if (!isOpen) return null;
 
   if (loading) {
     return (
@@ -56,14 +55,13 @@ const PreprocessingModal = ({ isOpen, onClose, workflowId, lastStep }) => {
     );
   }
 
-  // Create a merged list of input and processed rows
   const mergedData = inputData.map((inputRow) => {
     const matchingProcessedRow = processedData.find(
       (processedRow) => processedRow.ID === inputRow.ID
     );
     return {
       inputRow,
-      processedRow: matchingProcessedRow || {}, // Use empty object if no match
+      processedRow: matchingProcessedRow || {},
     };
   });
 
@@ -75,11 +73,11 @@ const PreprocessingModal = ({ isOpen, onClose, workflowId, lastStep }) => {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 1000, // Ensure the modal is above everything
+        zIndex: 1000,
       }}
     >
       <div
@@ -90,13 +88,12 @@ const PreprocessingModal = ({ isOpen, onClose, workflowId, lastStep }) => {
           borderRadius: '8px',
           padding: '20px',
           position: 'relative',
-          overflow: 'auto', // Ensure scroll if content overflows
+          overflow: 'auto',
         }}
       >
 
         <h2 style={{ textAlign: 'center' }}>Data Comparison</h2>
 
-        {/* Combined Table */}
         <div>
           <table style={{ width: '100%', borderCollapse: 'collapse', overflowX: 'auto' }}>
             <thead>
@@ -133,7 +130,7 @@ const PreprocessingModal = ({ isOpen, onClose, workflowId, lastStep }) => {
                         style={{
                           border: '1px solid black',
                           padding: '5px',
-                          backgroundColor: differences[index] ? '#FFAAAA' : '', // Highlight if different
+                          backgroundColor: differences[index] ? '#FFAAAA' : '', 
                         }}
                       >
                         {value}

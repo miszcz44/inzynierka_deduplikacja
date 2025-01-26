@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 const ComparisonSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepId }) => {
   const [columns, setColumns] = useState([]);
   const [selectedAlgorithms, setSelectedAlgorithms] = useState({});
-  const [qValue, setQValue] = useState(2); // Default value for Q-gram
+  const [qValue, setQValue] = useState(2);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
   const algorithms = ["Jaro-Winkler", "Q-gram", "Levenshtein"];
 
@@ -22,17 +22,15 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepI
 
   const shouldWarn = activeStepIndex < lastStepIndex;
 
-  // Fetch the existing comparison parameters
   useEffect(() => {
     fetchData();
   }, [workflowId]);
 
   const fetchData = async () => {
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
 
-      // Fetch file content
       const fileResponse = await fetch(
         `http://localhost:8000/api/workflows/${workflowId}/file-content`,
         {
@@ -50,16 +48,13 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepI
       const filteredColumns = uniqueColumns.filter((column) => column !== "ID");
       setColumns(filteredColumns);
 
-      // Initialize algorithms with default values
       const initialAlgorithms = filteredColumns.reduce((acc, column) => {
-        acc[column] = "Jaro-Winkler"; // Default value for each column
+        acc[column] = "Jaro-Winkler";
         return acc;
       }, {});
 
-      // Update selected algorithms with initial value
       setSelectedAlgorithms(initialAlgorithms);
 
-      // Fetch existing step parameters
       const stepResponse = await fetch(
         `http://localhost:8000/api/workflow-step/${workflowId}/step?step_name=FIELD_AND_RECORD_COMPARISON`,
         {
@@ -74,14 +69,13 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepI
         if (stepData.parameters) {
           const parameters = stepData.parameters || {};
 
-          // Update selected algorithms based on existing parameters
           setSelectedAlgorithms((prevState) => ({
             ...prevState,
-            ...parameters.selectedAlgorithms, // Merge previous state and existing step data
+            ...parameters.selectedAlgorithms,
           }));
 
           if (parameters.qValue) {
-            setQValue(parameters.qValue); // Set qValue if it exists
+            setQValue(parameters.qValue);
           }
         } else {
           console.warn("No existing parameters found.");
@@ -92,7 +86,7 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepI
     } catch (err) {
       console.error("Error during data fetching:", err);
     } finally {
-      setLoading(false); // Finish loading
+      setLoading(false);
     }
   };
 
@@ -105,10 +99,10 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepI
 
   const handleSave = async () => {
     const payload = {
-      step: "FIELD_AND_RECORD_COMPARISON", // Specify the step name
+      step: "FIELD_AND_RECORD_COMPARISON",
       parameters: JSON.stringify({
         selectedAlgorithms,
-        ...(Object.values(selectedAlgorithms).includes("Q-gram") && { qValue }), // Include qValue only if Q-gram is selected
+        ...(Object.values(selectedAlgorithms).includes("Q-gram") && { qValue }),
       }),
     };
 
@@ -143,7 +137,7 @@ const ComparisonSidebar = ({ workflowId, onSave, onCancel, lastStep, activeStepI
   const hasQGramSelected = Object.values(selectedAlgorithms).includes("Q-gram");
 
   if (loading) {
-    return <div className="sidebar">Loading...</div>; // Show a loading state
+    return <div className="sidebar">Loading...</div>;
   }
 
   if (error) {

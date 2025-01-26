@@ -4,11 +4,6 @@ import json
 
 class Evaluation:
     def __init__(self, source_data, classified_data):
-        """
-        Initialize the Evaluation class with the source data and classified data.
-        :param source_data: DataFrame containing the original source data.
-        :param classified_data: DataFrame containing classified match results.
-        """
         self.json_data = None
         self.source_data = source_data
         self.classified_data = classified_data
@@ -18,11 +13,6 @@ class Evaluation:
         self.used_parameters = None
 
     def show_matches_side_by_side(self):
-        """
-        Show all rows classified as 'Match' in an unflattened format,
-        with an additional 'dropped' column ('NO' for row1 and 'YES' for row2).
-        :return: DataFrame with matched rows from source_data and 'dropped' column.
-        """
         matches = self.classified_data[self.classified_data['classification'] == 'Match']
         rows = []
         dedup_id = 1
@@ -46,19 +36,11 @@ class Evaluation:
         return self.matches
 
     def get_deduplicated_data(self):
-        """
-        Get deduplicated data by dropping all rows from source_data whose indexes are in row_2 of classified_data.
-        :return: Deduplicated DataFrame.
-        """
         to_drop = [int(x) for x in self.classified_data[self.classified_data['classification'] == 'Match']['row2'].unique()]
         self.evaluated_data = self.source_data.drop(index=to_drop).reset_index(drop=True)
         return self.evaluated_data
 
     def get_statistics(self):
-        """
-        Get statistics.py about the deduplication process.
-        :return: DataFrame with statistics.py.
-        """
         row_count_before = int(self.source_data.shape[0])
         deduplicated_data = self.get_deduplicated_data()
         row_count_after = int(deduplicated_data.shape[0])
@@ -77,11 +59,6 @@ class Evaluation:
 
     @staticmethod
     def used_methods_parameters(self, *workflow_objects):
-        """
-        Collect statistics.py about all workflow steps into a table.
-        :param workflow_objects: Instances of classes (e.g., BlockBuilding, Comparison, Classifier).
-        :return: DataFrame summarizing methods and parameters for each step.
-        """
         stats = []
         for obj in workflow_objects:
             stats.append({
@@ -93,10 +70,6 @@ class Evaluation:
         return self.used_parameters
 
     def dataframes_to_jsonb(self):
-        """
-        Convert multiple DataFrames to a JSONB-compatible string.
-        :return: JSON-compatible string containing all DataFrames.
-        """
         dataframes_dict = {
             'evaluated_data': self.evaluated_data,
             'matches': self.matches,
@@ -112,11 +85,6 @@ class Evaluation:
         return self.json_data
 
     def retrieve_dataframe_from_jsonb(self, keyword):
-        """
-        Retrieve a specific DataFrame from a JSONB-compatible string.
-        :param keyword: The keyword of the desired DataFrame.
-        :return: The reconstructed pandas DataFrame.
-        """
         if not self.json_data:
             raise ValueError("No JSON data available. Call `dataframes_to_jsonb()` first.")
 
@@ -125,4 +93,4 @@ class Evaluation:
             raise KeyError(f"Keyword '{keyword}' not found in the JSON data.")
 
         df = pd.DataFrame(json_dict[keyword])
-        return df.to_dict(orient='records')  # Converts to a list of dictionaries
+        return df.to_dict(orient='records')

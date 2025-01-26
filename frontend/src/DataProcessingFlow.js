@@ -4,7 +4,7 @@ import './css/Sidebar.css';
 import StepSidebarFactory from './StepSidebarFactory';
 import { useParams } from "react-router-dom";
 import PreprocessingModal from './PreprocessingModal';
-import Modal from "./Modal"; // Import the Modal component
+import Modal from "./Modal";
 import { BackButton, HomeButton } from './Buttons';
 import './css/DataProcessingFlow.css';
 
@@ -47,7 +47,7 @@ const DataProcessingFlow = () => {
     removePunctuation: false,
   });
 
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const initialStyles = initialNodes.map((node) => ({ id: node.id, style: node.style }));
 
@@ -87,7 +87,7 @@ const DataProcessingFlow = () => {
 
       if (response.ok) {
         const lastStepData = await response.json();
-        setLastStep(lastStepData); // Save the last step
+        setLastStep(lastStepData);
         updateNodeStyles(lastStepData);
       } else {
         console.error('Failed to fetch last step');
@@ -171,7 +171,6 @@ const DataProcessingFlow = () => {
     setIsModalOpen(false);
   };
 
-  // Only render the modal and open button if lastStep is not null
   const shouldOpenModal = lastStep !== null;
 
   return (
@@ -208,7 +207,6 @@ const DataProcessingFlow = () => {
         />
       )}
 
-      {/* Only show the "Open Modal" button if the lastStep exists */}
       {shouldOpenModal && !isModalOpen && lastStep !== 'CLASSIFICATION' && (
         <button
           style={{
@@ -222,7 +220,7 @@ const DataProcessingFlow = () => {
             border: 'none',
             borderRadius: '5px',
             cursor: 'pointer',
-            zIndex: 1001, // Ensure the button is above other elements
+            zIndex: 1001,
           }}
           onClick={openModal}
         >
@@ -230,7 +228,6 @@ const DataProcessingFlow = () => {
         </button>
       )}
 
-      {/* Modal component */}
       {shouldOpenModal && <Modal isOpen={isModalOpen} onClose={closeModal} workflowId={workflowId} lastStep={lastStep} />}
     </div>
   );

@@ -31,7 +31,7 @@
 }
 
 .statistics-card .statistics-row {
-  margin-bottom: 30px; /* Add spacing between rows */
+  margin-bottom: 30px;
 }
 
 .deduplicated-data-card {
@@ -74,19 +74,17 @@
     overflow: auto;
     width: 100%;
     overflow-x: auto;
-    white-space: nowrap; /* Prevents wrapping of table rows */
+    white-space: nowrap;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    /*table-layout: fixed;*/
 }
 
 table th {
   cursor: pointer;
   background-color: #f2f2f2;
-  /* Removed sticky positioning */
 }
 
 table td, table th {
@@ -220,11 +218,11 @@ th:hover {
 }
 
 .header-container {
-  display: flex; /* Enable flexbox layout */
-  align-items: center; /* Vertically align items */
-  justify-content: space-between; /* Distribute space between the title and buttons */
-  padding: 0 20px; /* Optional: Add padding for spacing */
-  margin-bottom: 20px; /* Add spacing below the header */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  margin-bottom: 20px;
 }
 
 .header-container h3 {
@@ -236,16 +234,15 @@ th:hover {
   display: flex;
     margin-top: 20px;
   width: 100%;
-  gap: 10px; /* Space between the buttons */
-  justify-content: flex-end; /* Align the buttons to the right */
-  right: 60px; /* Adjust the distance from the right edge */
-  /*top: 20px; !* Adjust the vertical positioning if needed *!*/
+  gap: 10px;
+  justify-content: flex-end;
+  right: 60px;
 }
 
 .button-group button {
-  width: 12%; /* Set the width to 15% */
-  padding: 10px; /* Adjust padding for aesthetics */
-  font-size: 14px; /* Optional: Adjust font size for smaller buttons */
+  width: 12%;
+  padding: 10px;
+  font-size: 14px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -262,15 +259,15 @@ th:hover {
 }
 
 .button-group .save {
-  background-color: #28a745; /* Distinct green color for "Save" */
+  background-color: #28a745;
 }
 
 .button-group .save:active {
-  background-color: #218838; /* Darker green on click */
+  background-color: #218838;
 }
 
 .button-group .save:hover {
-  background-color: #218838; /* Hover effect for "Save" */
+  background-color: #218838;
 }
 
 .modal-overlay1 {
@@ -283,7 +280,7 @@ th:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999; /* Ensure it overlays everything */
+  z-index: 999;
 }
 
 .modal1 {
@@ -308,13 +305,13 @@ th:hover {
 }
 
 .modal-actions1 .modal-save {
-  background-color: #28a745; /* Distinct green color for "Save" */
+  background-color: #28a745;
 }
 
 .modal-actions1 .modal-save:active {
-  background-color: #218838; /* Darker green on click */
+  background-color: #218838;
 }
 
 .modal-actions1 .modal-save:hover {
-  background-color: #218838; /* Hover effect for "Save" */
+  background-color: #218838;
 }

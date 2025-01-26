@@ -37,7 +37,7 @@ const BlockBuildingModal = ({ isOpen, onClose, workflowId }) => {
     }
   }, [isOpen, workflowId]);
 
-  if (!isOpen) return null; // Don't render anything if the modal is not open
+  if (!isOpen) return null;
 
   if (loading) {
     return (
@@ -48,11 +48,11 @@ const BlockBuildingModal = ({ isOpen, onClose, workflowId }) => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          zIndex: 1000, // Ensure the modal is above everything
+          zIndex: 1000,
         }}
       >
         <div
@@ -80,11 +80,11 @@ const BlockBuildingModal = ({ isOpen, onClose, workflowId }) => {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 1000, // Ensure the modal is above everything
+        zIndex: 1000,
       }}
     >
       <div
@@ -95,13 +95,12 @@ const BlockBuildingModal = ({ isOpen, onClose, workflowId }) => {
           borderRadius: '8px',
           padding: '20px',
           position: 'relative',
-          overflow: 'auto', // Ensure scroll if content overflows
+          overflow: 'auto',
         }}
       >
 
         <h2 style={{ textAlign: 'center' }}>Block Building Data</h2>
 
-        {/* Table to display processed data */}
         <div>
           <table style={{ width: '100%', borderCollapse: 'collapse', overflowX: 'auto' }}>
             <thead>

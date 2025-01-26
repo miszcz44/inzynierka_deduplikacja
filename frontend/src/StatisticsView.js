@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './css/StatisticsView.css';
 import {useNavigate, useParams} from "react-router-dom";
-import { CSVLink } from "react-csv"; // Import CSVLink for CSV export
+import { CSVLink } from "react-csv";
 import {BackButton, HomeButton} from "./Buttons";
 import Loading from './Loading';
 
-// Utility function to fetch workflow data
 const fetchWorkflowData = async (workflowId, endpoint) => {
   try {
     const token = localStorage.getItem('token');
@@ -28,7 +27,6 @@ const fetchWorkflowData = async (workflowId, endpoint) => {
 };
 
 const formatStepName = (name) => {
-  // Convert step names to title case
   return name
     .split('_')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -37,7 +35,6 @@ const formatStepName = (name) => {
 
 const renderStepParameters = (parameters) => {
   return Object.entries(parameters).map(([key, value]) => {
-    // Handle specific cases for formatting certain parameters
     if (typeof value === 'boolean') {
       return (
         <div key={key} className="parameter-item">
@@ -74,11 +71,10 @@ const renderStepParameters = (parameters) => {
 };
 
 const formatParameterName = (name) => {
-  // Convert parameter names to a human-readable format
   return name
-    .replace(/_/g, ' ')      // Replace underscores with spaces
-    .replace(/([A-Z])/g, ' $1')  // Add a space before capital letters
-    .replace(/^./, (str) => str.toUpperCase());  // Capitalize the first letter
+    .replace(/_/g, ' ')    
+    .replace(/([A-Z])/g, ' $1') 
+    .replace(/^./, (str) => str.toUpperCase());
 };
 
 
@@ -92,11 +88,11 @@ const StatisticsView = () => {
   const [searchQueryMatches, setSearchQueryMatches] = useState('');
   const [searchQueryDedup, setSearchQueryDedup] = useState('');
   const [filteredMatches, setFilteredMatches] = useState([]);
-  const [showSaveModal, setShowSaveModal] = useState(false); // Modal visibility
-  const [saveTitle, setSaveTitle] = useState(''); // Title input
-  const [successMessage, setSuccessMessage] = useState(''); // Success message
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [saveTitle, setSaveTitle] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,7 +103,6 @@ const StatisticsView = () => {
         const matchesData = await fetchWorkflowData(workflowId, 'matches');
         const paramsData = await fetchWorkflowData(workflowId, 'parameters');
 
-        // Sort the parameters in the desired order
         const sortedParams = paramsData.sort((a, b) => {
             const order = {
                 "DATA_PREPROCESSING": 0,
@@ -204,8 +199,8 @@ const StatisticsView = () => {
 
 
   const csvHeaders = dynamicColumns.map((column) => ({
-    label: column, // Column label
-    key: column,   // Key in the data
+    label: column,
+    key: column,
   }));
 
   return (
@@ -239,14 +234,12 @@ const StatisticsView = () => {
         </div>
       )}
 
-      {/* Success Message */}
       {successMessage && (
         <div className="success-message">
           <p>{successMessage}</p>
         </div>
       )}
       <div className="card-container">
-        {/* First Row: Parameters and Deduplicated Data */}
         <div className="card parameters-card">
           <h3><strong>Workflow Parameters</strong></h3>
           <div className="parameters-scroll-container">
@@ -307,7 +300,6 @@ const StatisticsView = () => {
         </div>
       </div>
 
-      {/* Second Row: Matches and Statistics */}
       <div className="card-container">
         <div className="card matches-card">
           <div className="title-search-container">

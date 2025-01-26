@@ -1,5 +1,3 @@
-// src/components/Settings.js
-
 import React from 'react';
 import { Card, Placeholder } from 'react-bootstrap';
 

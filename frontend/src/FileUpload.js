@@ -4,17 +4,16 @@ import { useNavigate } from 'react-router-dom';
 function FileUpload() {
     const [file, setFile] = useState(null);
     const [error, setError] = useState('');
-    const [rawData, setRawData] = useState(null); // Start with null to indicate no data has been loaded
-    const [loading, setLoading] = useState(false); // Only load data when necessary
-    const [uploading, setUploading] = useState(false); // To handle the upload process state
-    const [id, setId] = useState(null); // Store the id after upload
+    const [rawData, setRawData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [id, setId] = useState(null);
     const navigate = useNavigate();
 
-    // Fetch raw data by ID from the backend
     const fetchRawDataByID = async (id) => {
-        setLoading(true); // Start loading when fetching data
+        setLoading(true);
         try {
-            const response = await fetch(`http://localhost:8000/api/raw-data/${id}`, { // Fetch by ID
+            const response = await fetch(`http://localhost:8000/api/raw-data/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -22,7 +21,7 @@ function FileUpload() {
 
             if (response.ok) {
                 const data = await response.json();
-                setRawData(data); // Set the data once fetched
+                setRawData(data);
             } else {
                 const errorData = await response.json();
                 setError(errorData.detail || 'Failed to fetch data');
@@ -30,24 +29,21 @@ function FileUpload() {
         } catch (error) {
             setError('An error occurred. Please try again later.');
         } finally {
-            setLoading(false); // End loading after fetching data
+            setLoading(false);
         }
     };
 
-    // Clear the state when the component first mounts
     useEffect(() => {
         setFile(null);
         setError('');
-        setRawData(null); // Start in a clear state, no data loaded
-        setId(null);  // Clear any previous id
+        setRawData(null);
+        setId(null);
     }, []);
 
-    // Handle file selection
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
 
-    // Handle form submission
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -56,7 +52,7 @@ function FileUpload() {
             return;
         }
 
-        setUploading(true); // Start uploading state
+        setUploading(true);
 
         const formData = new FormData();
         formData.append('file', file);
@@ -72,9 +68,9 @@ function FileUpload() {
 
             if (response.ok) {
                 const result = await response.json();
-                setId(result.id); // Store the id
-                fetchRawDataByID(result.id); // Fetch the data immediately after upload
-                setFile(null); // Reset the file input
+                setId(result.id);
+                fetchRawDataByID(result.id);
+                setFile(null);
             } else {
                 const errorData = await response.json();
                 setError(errorData.detail || 'File upload failed');
@@ -82,11 +78,10 @@ function FileUpload() {
         } catch (error) {
             setError('An error occurred. Please try again later.');
         } finally {
-            setUploading(false); // End uploading state
+            setUploading(false);
         }
     };
 
-    // Navigate to the block_building page
     const goToBlockBuilding = (raw_data) => {
         if (raw_data) {
             navigate(`/block_building/${raw_data.id}`, { state: { table_name: raw_data.table_name } });
@@ -110,10 +105,8 @@ function FileUpload() {
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
-            {/* Header section with "Existing Data" and button on the same line */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <h2>Uploaded Data</h2>
-                {/* render the button when rawData is available */}
                 {rawData && (
                     <button
                         onClick={goToBlockBuilding}
@@ -139,10 +132,10 @@ function FileUpload() {
                         height: '60vh',
                         overflow: 'auto',
                         border: '1px solid #ccc',
-                        margin: '0 auto', // Center the table
+                        margin: '0 auto',
                         padding: '10px',
-                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', // Add slight shadow for better appearance
-                        backgroundColor: '#f9f9f9' // Light background color for the table container
+                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+                        backgroundColor: '#f9f9f9' 
                     }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse', margin: '0 auto' }}>
                             <thead>
@@ -173,7 +166,7 @@ function FileUpload() {
                                                     border: '1px solid #ddd',
                                                     padding: '8px',
                                                     textAlign: 'left',
-                                                    backgroundColor: idx % 2 === 0 ? '#f9f9f9' : '#ffffff' // Alternate row colors
+                                                    backgroundColor: idx % 2 === 0 ? '#f9f9f9' : '#ffffff'
                                                 }}>
                                                 {value}
                                             </td>

@@ -68,7 +68,7 @@ const ClassificationSidebar = ({
         const uniqueColumns = data.columns || [];
         const filteredColumns = uniqueColumns
           .filter((column) => column !== "ID")
-          .map((column) => `${column}_similarity`); // Add '_similarity' suffix
+          .map((column) => `${column}_similarity`);
         setColumns(filteredColumns);
         initializeWeights(filteredColumns);
       } else {
@@ -144,7 +144,7 @@ const ClassificationSidebar = ({
       ...prev,
       [name]: Number(value),
     }));
-    setValidationError(""); // Clear validation error on change
+    setValidationError("");
   };
 
   const handleSave = async () => {

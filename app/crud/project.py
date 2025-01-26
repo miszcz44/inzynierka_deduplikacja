@@ -69,7 +69,6 @@ async def _process_file(file: UploadFile) -> tuple:
     if file.content_type == 'application/json':
         try:
             file_content = json.loads(content.decode('utf-8'))
-            # Add ID field if missing
             if isinstance(file_content, list):
                 for idx, obj in enumerate(file_content, start=1):
                     if 'ID' not in obj:
@@ -80,15 +79,13 @@ async def _process_file(file: UploadFile) -> tuple:
             raise HTTPException(status_code=400, detail={"message": "Invalid JSON file."})
     elif file.content_type == 'text/csv':
         try:
-            # Convert CSV to JSON
             csv_content = content.decode('utf-8')
             csv_reader = csv.DictReader(csv_content.splitlines())
 
-            # Convert each row to a JSON object and add ID field if missing
             file_content = []
             for idx, row in enumerate(csv_reader, start=1):
                 if 'ID' not in row:
-                    row['ID'] = str(idx)  # CSV values are usually strings
+                    row['ID'] = str(idx)
                 file_content.append(row)
         except Exception as e:
             raise HTTPException(status_code=400, detail={"message": f"Error processing CSV file: {str(e)}"})

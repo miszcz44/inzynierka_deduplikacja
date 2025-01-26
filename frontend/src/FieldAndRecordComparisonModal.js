@@ -55,7 +55,6 @@ const FieldAndRecordComparisonModal = ({ isOpen, onClose, workflowId }) => {
     );
   }
 
-  // Combine input and comparison data for display
   const enrichedComparisonData = comparisonData.map((comp) => {
     const row1Data = inputData.find((row) => row.ID === comp.row1) || {};
     const row2Data = inputData.find((row) => row.ID === comp.row2) || {};

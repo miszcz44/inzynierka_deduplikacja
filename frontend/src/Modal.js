@@ -28,7 +28,7 @@ const BaseModal = ({ isOpen, onClose, workflowId, lastStep }) => {
     }
   };
 
-  if (!isOpen) return null; // Don't render anything if the modal is not open
+  if (!isOpen) return null;
   if (isOpen && lastStep === 'FIELD_AND_RECORD_COMPARISON') return (<div>{renderStepComponent()}</div>);
 
   return (
@@ -39,14 +39,13 @@ const BaseModal = ({ isOpen, onClose, workflowId, lastStep }) => {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 1000, // Ensure the modal is above everything
+        zIndex: 1000,
       }}
     >
-      {/* Hoverable close button with 'Close' label */}
       <div
         onClick={onClose}
         style={{
@@ -79,7 +78,7 @@ const BaseModal = ({ isOpen, onClose, workflowId, lastStep }) => {
           borderRadius: '8px',
           padding: '20px',
           position: 'relative',
-          overflow: 'auto', // Ensure scroll if content overflows
+          overflow: 'auto',
         }}
       >
         <h2 style={{ textAlign: 'center' }}>Workflow Step: {lastStep}</h2>

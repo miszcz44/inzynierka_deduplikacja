@@ -24,7 +24,7 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
 
   const [algorithm, setAlgorithm] = useState("standardBlocking");
   const [inputs, setInputs] = useState(defaultInputs);
-  const [columns, setColumns] = useState([]); // For available columns
+  const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -118,7 +118,6 @@ const BlockBuildingSidebar = ({ workflowId, onSave, onCancel, lastStep, activeSt
   const handleSave = async () => {
     const errors = [];
 
-    // Filter inputs based on the selected algorithm
     let filteredInputs = { columns: inputs.columns };
     if (algorithm === "sortedNeighborhood") {
       if (!inputs.windowSize || !inputs.nLetters) {

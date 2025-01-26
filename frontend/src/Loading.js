@@ -9,11 +9,11 @@ const Loading = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          zIndex: 1000, // Ensure the modal is above everything
+          zIndex: 1000,
         }}
       >
         <div

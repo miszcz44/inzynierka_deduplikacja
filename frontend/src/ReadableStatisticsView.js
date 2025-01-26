@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './css/StatisticsView.css';
 import {useNavigate, useParams} from "react-router-dom";
-import { CSVLink } from "react-csv"; // Import CSVLink for CSV export
+import { CSVLink } from "react-csv";
 import {BackButton, HomeButton} from "./Buttons";
 
-// Utility function to fetch workflow data
 const fetchWorkflowData = async (statisticsId) => {
   try {
     const token = localStorage.getItem('token');
@@ -48,7 +47,7 @@ const fetchParameters = async (statisticsId) => {
 };
 
 const formatStepName = (name) => {
-  // Convert step names to title case
+
   return name
     .split('_')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -57,7 +56,6 @@ const formatStepName = (name) => {
 
 const renderStepParameters = (parameters) => {
   return Object.entries(parameters).map(([key, value]) => {
-    // Handle specific cases for formatting certain parameters
     if (typeof value === 'boolean') {
       return (
         <div key={key} className="parameter-item">
@@ -94,11 +92,10 @@ const renderStepParameters = (parameters) => {
 };
 
 const formatParameterName = (name) => {
-  // Convert parameter names to a human-readable format
   return name
-    .replace(/_/g, ' ')      // Replace underscores with spaces
-    .replace(/([A-Z])/g, ' $1')  // Add a space before capital letters
-    .replace(/^./, (str) => str.toUpperCase());  // Capitalize the first letter
+    .replace(/_/g, ' ')  
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, (str) => str.toUpperCase());
 };
 
 
@@ -113,26 +110,23 @@ const ReadableStatisticsView = () => {
   const [searchQueryDedup, setSearchQueryDedup] = useState('');
   const [filteredMatches, setFilteredMatches] = useState([]);
   const [workflowId, setWorkflowId] = useState();
-  const [showSaveModal, setShowSaveModal] = useState(false); // Modal visibility
-  const [saveTitle, setSaveTitle] = useState(''); // Title input
-  const [successMessage, setSuccessMessage] = useState(''); // Success message
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [saveTitle, setSaveTitle] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
 useEffect(() => {
   const fetchData = async () => {
     setLoading(true);
 
     try {
-      // Fetch data from your endpoint
-      const response = await fetchWorkflowData(statisticsId); // Fetch from the endpoint
+      const response = await fetchWorkflowData(statisticsId);
 
-      // Destructure the response to extract data
       const { statistics, deduplicated_data, matches, workflow_id } = response;
 
       setWorkflowId(workflow_id)
       const parameters = await fetchParameters(statisticsId)
-      // Sort the parameters in the desired order
       const sortedParams = parameters.sort((a, b) => {
         const order = {
           "DATA_PREPROCESSING": 0,
@@ -143,16 +137,15 @@ useEffect(() => {
         return order[a.name] - order[b.name];
       });
 
-      // Set the state
       setStatistics(statistics);
       setDeduplicatedData(deduplicated_data);
       setMatches(matches);
       setParameters(sortedParams);
 
     } catch (error) {
-      console.error("Error fetching data:", error);  // Log the error for debugging
+      console.error("Error fetching data:", error);
     } finally {
-      setLoading(false);  // Ensure loading is set to false even if there is an error
+      setLoading(false);
     }
   };
 
@@ -202,8 +195,8 @@ useEffect(() => {
 
 
   const csvHeaders = dynamicColumns.map((column) => ({
-    label: column, // Column label
-    key: column,   // Key in the data
+    label: column,
+    key: column,
   }));
 
   return (
@@ -216,7 +209,6 @@ useEffect(() => {
         </div>
       </div>
       <div className="card-container">
-        {/* First Row: Parameters and Deduplicated Data */}
         <div className="card parameters-card">
           <h3><strong>Workflow Parameters</strong></h3>
           <div className="parameters-scroll-container">
@@ -277,7 +269,6 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* Second Row: Matches and Statistics */}
       <div className="card-container">
         <div className="card matches-card">
           <div className="title-search-container">

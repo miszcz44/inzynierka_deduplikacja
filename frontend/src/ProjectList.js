@@ -66,64 +66,8 @@ const ProjectList = () => {
     pagesVisited + projectsPerPage
   );
 
-  /*
-  const displayProjects = React.useMemo(
-    () => projects.slice(pagesVisited, pagesVisited + projectsPerPage),
-    [projects, pagesVisited, projectsPerPage]
-  );
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(
-    { columns, data: displayProjects },
-    useSortBy
-  );*/
-
   return (
     <div className="vh-100 d-flex flex-column project-list-container">
-      {/*
-      <div className="project-list-container">
-        <h1>Your Projects</h1>
-        <table {...getTableProps()} className="project-table">
-          <thead>
-            {headerGroups.map(headerGroup => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render('Header')}
-                    <span>
-                      {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map(row => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <ReactPaginate
-          previousLabel={'Previous'}
-          nextLabel={'Next'}
-          breakLabel={'...'}
-          pageCount={pageCount}
-          onPageChange={handlePageClick}
-          containerClassName={'pagination'}
-          previousLinkClassName={'pagination__link'}
-          nextLinkClassName={'pagination__link'}
-          disabledClassName={'pagination__link--disabled'}
-          activeClassName={'pagination__link--active'}
-        />
-      </div>*/}
-
       {loading ? (
         <Loading />
       ) : (<></>)}
@@ -148,11 +92,6 @@ const ProjectList = () => {
               <Button variant="primary" href={`/projects/${project.id}`}>DETAILS</Button>
             </div>
           ))}
-          {/*currentEntries.map((entry, index) => (
-            <div key={index} className="div-entry">
-              {entry}
-            </div>
-          ))*/}
         </Col>
       </Row>
 

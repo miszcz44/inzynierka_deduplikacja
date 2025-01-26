@@ -8,11 +8,11 @@ import {useNavigate} from "react-router-dom";
 
 const StepSidebarFactory = ({ workflowId, stepId, lastStep, onSave, onCancel, sharedState }) => {
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (stepId === '6') {
-      navigate(`/workflow/statistics/${workflowId}`); // Redirect to the statistics.py view
+      navigate(`/workflow/statistics/${workflowId}`);
     }
   }, [stepId, workflowId, navigate]);
 
@@ -23,7 +23,7 @@ const StepSidebarFactory = ({ workflowId, stepId, lastStep, onSave, onCancel, sh
           workflowId={workflowId}
           onSave={onSave}
           onCancel={onCancel}
-          lastStep={lastStep} // Pass lastStep
+          lastStep={lastStep}
           activeStepId={stepId}
           sharedState={sharedState}
         />
@@ -33,26 +33,26 @@ const StepSidebarFactory = ({ workflowId, stepId, lastStep, onSave, onCancel, sh
         <BlockBuildingSidebar
           workflowId={workflowId}
           onSave={onSave}
-          lastStep={lastStep} // Pass lastStep
+          lastStep={lastStep}
           activeStepId={stepId}
           onCancel={onCancel}
         />
       );
-      case '4': // Assuming '4' is the ID for this step
+      case '4': 
         return (
           <ComparisonSidebar
             workflowId={workflowId}
-            lastStep={lastStep} // Pass lastStep
+            lastStep={lastStep} 
             activeStepId={stepId}
             onSave={onSave}
             onCancel={onCancel}
           />
         );
-      case '5': // Assuming '4' is the ID for this step
+      case '5': 
         return (
           <ClassificationSidebar
             workflowId={workflowId}
-            lastStep={lastStep} // Pass lastStep
+            lastStep={lastStep} 
             activeStepId={stepId}
             onSave={onSave}
             onCancel={onCancel}
@@ -61,7 +61,7 @@ const StepSidebarFactory = ({ workflowId, stepId, lastStep, onSave, onCancel, sh
     case '6':
       return (<StatisticsView/>);
     default:
-      return null; // No sidebar if the step isn't recognized
+      return null;
   }
 };
 

@@ -148,11 +148,9 @@ async def _process_file(file: UploadFile) -> tuple:
             raise HTTPException(status_code=400, detail={"message": "Invalid JSON file."})
     elif file.content_type == 'text/csv':
         try:
-            # Convert CSV to JSON
             csv_content = content.decode('utf-8')
             csv_reader = csv.DictReader(csv_content.splitlines())
 
-            # Convert each row to a JSON object
             file_content = [row for row in csv_reader]
         except Exception as e:
             raise HTTPException(status_code=400, detail={"message": f"Error processing CSV file: {str(e)}"})
@@ -272,17 +270,15 @@ async def get_statistics_list(db: Session, user_id: int):
 
     result = []
     for record in list:
-        # Construct the dictionary manually for each record
         mapped_record = {
             "title": record.title,
             "project_name": record.project_name,
             "workflow_name": record.workflow_name,
             "filename": record.filename,
-            "statistics": record.statistics,  # Assuming it's already a JSON-compatible structure
+            "statistics": record.statistics,
         }
         result.append(mapped_record)
 
-    # Return the list of mapped records
     return result
 
 async def get_statistics(statistics_id: int, db: Session, user_id: int):
@@ -294,9 +290,6 @@ async def get_parameters(workflow_id: int, db: Session, user_id: int):
 
 
 def extract_unique_columns(data: list) -> set:
-    """
-    Recursively extracts all unique keys from a list of dictionaries, handling nested objects.
-    """
     unique_columns = set()
 
     def recursive_keys(item, prefix=''):
@@ -305,7 +298,6 @@ def extract_unique_columns(data: list) -> set:
                 new_prefix = f"{prefix}.{key}" if prefix else key
                 recursive_keys(value, new_prefix)
         else:
-            # Non-dict values are considered leaf nodes
             unique_columns.add(prefix)
 
     for row in data:

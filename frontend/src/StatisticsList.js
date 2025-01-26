@@ -63,7 +63,6 @@ const StatisticsList = () => {
         </Container>
       </Navbar>
 
-      {/* Search Bar */}
       <Row className="statistics-search-row no-margin">
         <Col className="d-flex justify-content-end">
           <Form.Control
@@ -76,7 +75,6 @@ const StatisticsList = () => {
         </Col>
       </Row>
 
-      {/* Statistics List */}
       <Row className="flex-grow-1 statistics-no-margin no-margin">
         <Col className="d-flex flex-wrap justify-content-around align-items-center">
           {currentStats.length > 0 ? (
@@ -104,7 +102,6 @@ const StatisticsList = () => {
         </Col>
       </Row>
 
-      {/* Buttons Row */}
       <Row className="statistics-buttons-row statistics-no-margin no-margin">
         <Col className="d-flex justify-content-around">
           <BackButton />
@@ -112,7 +109,6 @@ const StatisticsList = () => {
         </Col>
       </Row>
 
-      {/* Pagination Row */}
       <Row className="statistics-pagination-row statistics-no-margin no-margin">
         <Col className="d-flex justify-content-center align-items-center">
           <ReactPaginate
