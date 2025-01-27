@@ -237,6 +237,16 @@ const ClassificationSidebar = ({
             </div>
           ) : classificationType === "weighted-threshold" ? (
             <div className="weights-group">
+              <label htmlFor="threshold-match">Threshold Match:</label>
+              <input
+                id="threshold-match"
+                type="number"
+                min="0"
+                max="1"
+                step="0.01"
+                value={thresholdMatch}
+                onChange={(e) => setThresholdMatch(Number(e.target.value))}
+              />
               <h4>Column Weights</h4>
               {columns.map((column) => (
                 <div key={column} className="input-group">

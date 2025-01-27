@@ -28,24 +28,16 @@ async def save_workflow_step(db: Session, workflow_step: _schemas.WorkflowStep, 
         existing_step.parameters = workflow_step.parameters
         db.add(existing_step)
 
+
     data_to_process = project.file_content
-    if workflow_step.step == StepName.BLOCK_BUILDING:
-        data_to_process = workflow.preprocessing_data
-    if workflow_step.step == StepName.FIELD_AND_RECORD_COMPARISON:
-        data_to_process = workflow.block_building_data
-    if workflow_step.step == StepName.CLASSIFICATION:
-        data_to_process = workflow.comparison_data
+    if workflow.processed_data:
+        data_to_process = workflow.processed_data
     processed_data = await execute(data_to_process, workflow_step.step,
                              existing_step.parameters if existing_step else step.parameters,
-                                   workflow.block_building_data)
-    if workflow_step.step == StepName.DATA_PREPROCESSING:
-        workflow.preprocessing_data = processed_data
+                                   workflow.blocked_data)
+    workflow.processed_data = processed_data
     if workflow_step.step == StepName.BLOCK_BUILDING:
-        workflow.block_building_data = processed_data
-    if workflow_step.step == StepName.FIELD_AND_RECORD_COMPARISON:
-        workflow.comparison_data = processed_data
-    if workflow_step.step == StepName.CLASSIFICATION:
-        workflow.classification_data = processed_data
+        workflow.blocked_data = processed_data
     workflow.last_step = workflow_step.step
     db.commit()
     db.refresh(existing_step if existing_step else step)

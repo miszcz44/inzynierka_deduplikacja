@@ -201,18 +201,13 @@ async def get_workflow_processed_data(workflow_id: int, db: Session, user_id: in
     if workflow is None:
         raise HTTPException(status_code=404, detail="Workflow not found")
 
+
     project = await get_project_by_id(db=db, project_id=workflow.project_id)
 
-    if workflow.last_step == StepName.DATA_PREPROCESSING:
-        return workflow.preprocessing_data
-    if workflow.last_step == StepName.BLOCK_BUILDING:
-        return workflow.block_building_data
-    if workflow.last_step == StepName.FIELD_AND_RECORD_COMPARISON:
-        return workflow.comparison_data
-    if workflow.last_step == StepName.CLASSIFICATION:
-        return workflow.classification_data
+    if not workflow.last_step:
+        return project.file_content
 
-    return project.file_content
+    return workflow.processed_data
 
 
 async def get_evaluation(workflow_id: int, db: Session, user_id: int, type: str):
@@ -224,7 +219,7 @@ async def get_evaluation(workflow_id: int, db: Session, user_id: int, type: str)
     project = await get_project_by_id(db=db, project_id=workflow.project_id)
 
     source_data = pd.DataFrame(project.file_content)
-    classified_data = pd.DataFrame(workflow.classification_data)
+    classified_data = pd.DataFrame(workflow.processed_data)
 
     evaluation = Evaluation(source_data, classified_data)
     if type == 'statistics':

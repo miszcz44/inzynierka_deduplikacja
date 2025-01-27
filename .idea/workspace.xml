@@ -5,34 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="tmp: endpoint to test evaluation">
-      <change beforePath="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inzynierka_deduplikacja.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Changes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Changes.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/project.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/step_executor.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/step_executor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/workflow_step.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow_step.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pipeline/BlockBuilding.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/BlockBuilding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pipeline/Classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/Classifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pipeline/Comparison.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/Comparison.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pipeline/DataPreprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/DataPreprocessing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pipeline/Evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/Evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pipeline/ReadData.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/pipeline/ReadData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas/workflow_step.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas/workflow_step.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/workflow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_pipeline/.ipynb_checkpoints/data_pipeline-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/.ipynb_checkpoints/data_pipeline-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/.ipynb_checkpoints/test_pipeline-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/.ipynb_checkpoints/test_pipeline-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/dedup/.ipynb_checkpoints/BlockBuilding-checkpoint.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/dedup/.ipynb_checkpoints/BlockBuilding-checkpoint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/dedup/.ipynb_checkpoints/ReadData-checkpoint.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/dedup/.ipynb_checkpoints/ReadData-checkpoint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/dedup/BlockBuilding.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/dedup/BlockBuilding.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/dedup/Classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/dedup/Classifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/dedup/Comparison.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/dedup/Comparison.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/dedup/DataPreprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/dedup/DataPreprocessing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/dedup/Evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/dedup/Evaluation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/dedup/ReadData.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/dedup/ReadData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/test_pipeline.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/test_pipeline.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,5 +233,9 @@
     <MESSAGE value="feat: Add react frontend, configure docker containers" />
     <MESSAGE value="tmp: endpoint to test evaluation" />
     <option name="LAST_COMMIT_MESSAGE" value="tmp: endpoint to test evaluation" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/inzynierka_deduplikacja$main.coverage" NAME="main Coverage Results" MODIFIED="1727377030678" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/inzynierka_deduplikacja$test.coverage" NAME="test Coverage Results" MODIFIED="1723641249855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
   </component>
 </project>
