@@ -5,12 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9cf52be2-bdee-4a41-a13a-7480714c0b89" name="Changes" comment="tmp: endpoint to test evaluation">
+      <change afterPath="$PROJECT_DIR$/app/strategies/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/strategies/base_strategy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/strategies/block_building.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/strategies/classifier.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/strategies/comparison.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/strategies/data_preprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Changes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Changes.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/crud/step_executor.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/step_executor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/crud/workflow_step.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud/workflow_step.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/workflow.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/workflow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/.ipynb_checkpoints/data_pipeline-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/.ipynb_checkpoints/data_pipeline-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_pipeline/data_pipeline.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,14 +24,15 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
